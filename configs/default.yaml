@@ -1,0 +1,7 @@
+# Safe public defaults. Credentials belong only in the local ignored .env.
+model: muse-wonder-1.0
+domain_mode: checked
+max_candidates: 30
+max_requests: 60
+wall_seconds: 1800
+finalization_reserve_seconds: 300

@@ -5,7 +5,7 @@ Plan: docs/superpowers/plans/2026-10-29-metalmind.md
 ## Current work
 
 Task 1 runtime foundation and Meta access probes are verified. Event-specific model eligibility remains to be checked before the evaluation campaign.
-Tasks 2–17 are not implemented.
+Task 2 complete: immutable contracts, safe defaults, signatures, and GPU ABI verified with 23 passing tests. Task 3 in progress; Tasks 4–17 remain pending.
 
 ## Decisions
 
@@ -52,3 +52,14 @@ tokens (including 8 reasoning tokens), 39 total. This is an access check,
 not a kernel-generation or optimization result. The sanitized local record is
 `runs/meta-access-check.json`, ignored by Git. General .env auto-loading and
 the durable model adapter are not implemented yet.
+
+## Task 2
+
+RED: new contract/ABI imports were absent. GREEN: full suite 23 passed, including
+mixed uint32/FP32 GPU arguments and runtime parameter updates.
+Pre-flight: workload → ABI → worker → verification → timing → controller share
+immutable semantic identity; all consumers use signature_for rather than own hashes.
+Ruling: future-only contracts are defined when their owning subsystem is implemented,
+instead of empty speculative schemas; consumers must preserve the documented names.
+Ruling: environment reports retain their existing frozen dataclasses to preserve
+asdict/CLI compatibility; optimizer contracts use frozen Pydantic models.
