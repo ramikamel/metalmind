@@ -9,6 +9,6 @@ dist/
 .env
 .env.*
 !.env.example
-runs/
-artifacts/
+/runs/
+/artifacts/
 .superpowers/

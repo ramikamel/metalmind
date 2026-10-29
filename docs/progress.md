@@ -71,3 +71,13 @@ checks implemented. Correct, constant-output, skipped-tail, and input-mutating
 kernels exercised on the GPU. Task 6: paired measurements and promotion
 statistics implemented; full suite 45 passed. Detailed evaluation breadth and
 failure recovery remain subject to final review before these gates are closed.
+
+Task 7: real muse-wonder-1.0 generated a Metal kernel which compiled and passed
+all ten public fixtures on GPU (maximum absolute error 4.768e-7). This was live
+generation request 1 of the user's approved bounded test allowance of 10.
+Task 8: controller/replay/deduplication/token reservation tests pass; full suite
+51 passed. No performance win or promoted artifact has been claimed.
+Ruling: benchmark drift is a valid rejection, not a test failure to hide. The GPU
+timing test skips unstable windows; deterministic synchronization ordering is
+covered separately. Source ignore patterns were anchored to the repository root
+so generated /artifacts is ignored while src/metalmind/artifacts is tracked.
