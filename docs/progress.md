@@ -65,3 +65,9 @@ Ruling: environment reports retain their existing frozen dataclasses to preserve
 asdict/CLI compatibility; optimizer contracts use frozen Pydantic models.
 
 Task 3: complete — full suite 32 passed; CPU oracles, parameter changes, ten public and twenty-two private fixtures, and real MPS references verified.
+
+Tasks 4–5: durable artifacts, spawned GPU evaluation, and correctness/integrity
+checks implemented. Correct, constant-output, skipped-tail, and input-mutating
+kernels exercised on the GPU. Task 6: paired measurements and promotion
+statistics implemented; full suite 45 passed. Detailed evaluation breadth and
+failure recovery remain subject to final review before these gates are closed.

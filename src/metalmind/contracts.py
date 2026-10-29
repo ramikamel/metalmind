@@ -105,16 +105,56 @@ class VerificationSummary(Contract):
     mismatches: int = Field(default=0, ge=0)
     reason: str | None = None
 
+class TimingSeries(Contract):
+    baseline_ms: tuple[float,...]
+    candidate_ms: tuple[float,...]
+    repetitions: int
+    order: tuple[str,...] = ()
+
+class ConfirmationResult(Contract):
+    speedup: float
+    lower: float
+    upper: float
+    pairs: int
+
+class BaselineTiming(Contract):
+    name: str
+    series: TimingSeries
+    summary: ConfirmationResult
+
+class TimingReport(Contract):
+    comparisons: tuple[BaselineTiming,...]
+    unavailable: tuple[str,...] = ()
+    boundary: str = "amortized synchronized public function latency"
+    domain_mode: Literal["checked","assume"] = "checked"
+
+class PromotionDecision(Contract):
+    promote: bool
+    reason: str
+
 class EvaluationResult(Contract):
     status: Literal["valid", "compile_error", "runtime_error", "incorrect", "timeout", "cancelled"]
     verification: VerificationSummary | None = None
     elapsed_ms: tuple[float,...] = ()
     reason: str | None = None
+    timing: TimingReport | None = None
 
     @model_validator(mode="after")
     def no_invalid_score(self):
-        if self.elapsed_ms and (self.status!="valid" or self.verification is None or not self.verification.passed):
+        if (self.elapsed_ms or self.timing is not None) and (self.status!="valid" or self.verification is None or not self.verification.passed):
             raise ValueError("invalid candidates cannot receive timing scores")
         if any(t<=0 for t in self.elapsed_ms):
             raise ValueError("timings must be positive")
         return self
+
+
+class EvaluationRequest(Contract):
+    candidate: CandidateSpec
+    workload: WorkloadSpec
+    mode: Literal["search","final_verify","confirm"] = "search"
+    private_seeds: tuple[int,...] = ()
+    compile_timeout_seconds: float = Field(default=60,gt=0)
+    execution_timeout_seconds: float = Field(default=30,gt=0)
+    measure: bool = False
+    domain_mode: Literal["checked","assume"] = "checked"
+    seed: int = 42
