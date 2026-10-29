@@ -42,5 +42,7 @@ python3 -m venv .venv
 `timed_events` in diagnostics describes API presence. The integration test
 separately verifies positive elapsed time around completed GPU work.
 Shader validation and general performance benchmarking are not implemented yet.
-MODEL_API_KEY was not configured, so no Meta request was made and the full M0
-gate remains pending. No optimized-kernel performance result is claimed.
+Meta access was subsequently verified with the key in the ignored local .env:
+a bounded muse-wonder-1.0 request completed and returned the expected output.
+The key was not displayed or committed. See progress.md for sanitized request
+metadata. No optimized-kernel performance result is claimed.
