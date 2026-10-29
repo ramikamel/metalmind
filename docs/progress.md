@@ -63,3 +63,5 @@ Ruling: future-only contracts are defined when their owning subsystem is impleme
 instead of empty speculative schemas; consumers must preserve the documented names.
 Ruling: environment reports retain their existing frozen dataclasses to preserve
 asdict/CLI compatibility; optimizer contracts use frozen Pydantic models.
+
+Task 3: complete — full suite 32 passed; CPU oracles, parameter changes, ten public and twenty-two private fixtures, and real MPS references verified.
