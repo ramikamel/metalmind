@@ -1,4 +1,6 @@
 import torch
+import math
+import pytest
 from test_region_partition import Block
 from metalmind.graph.capture import capture_module
 from metalmind.graph.rewrite import optimize_module, ModuleOptimizationConfig
@@ -126,3 +128,44 @@ def test_invocation_and_tensor_operator_changes_disable_rewrite(monkeypatch):
     with torch.inference_mode():
         monkeypatch.setattr(Block,"__call__",lambda self,*args: args[0])
         assert not captured.guard.matches((x,))
+
+
+@pytest.mark.parametrize("attribute",["_call_impl","_compiled_call_impl"])
+def test_instance_invocation_override_falls_back(monkeypatch, attribute):
+    from metalmind.graph.rewrite import GuardedModule
+    module = Block().eval()
+    x = torch.ones(2,3)
+    captured = capture_module(module,(x,))
+    guarded = GuardedModule(module,captured.graph,captured.guard)
+    monkeypatch.setattr(module,attribute,lambda *args,**kwargs: torch.zeros_like(args[0]))
+    with torch.inference_mode():
+        assert not captured.guard.matches((x,))
+        torch.testing.assert_close(guarded(x),module(x))
+    assert guarded.last_path == "fallback"
+
+
+class MathAttributeBlock(Block):
+    def forward(self, x):
+        return torch.softmax(x * math.pi, dim=-1)
+
+
+def test_changed_module_attribute_global_falls_back(monkeypatch):
+    from metalmind.graph.rewrite import GuardedModule
+    module = MathAttributeBlock().eval()
+    x = torch.tensor([[1.,2.,3.]])
+    captured = capture_module(module,(x,))
+    guarded = GuardedModule(module,captured.graph,captured.guard)
+    monkeypatch.setattr(math,"pi",0.)
+    with torch.inference_mode():
+        assert not captured.guard.matches((x,))
+        torch.testing.assert_close(guarded(x),module(x))
+    assert guarded.last_path == "fallback"
+
+
+def test_preexisting_instance_invocation_override_is_not_captured():
+    from metalmind.graph.profile import analyze_module
+    module = Block().eval()
+    calls = []
+    module._call_impl = lambda *args,**kwargs: calls.append(1) or torch.zeros_like(args[0])
+    assert not analyze_module(module,(torch.ones(2,3),)).supported
+    assert not calls

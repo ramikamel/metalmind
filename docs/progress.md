@@ -154,3 +154,31 @@ Ruling: module timing uses the original eager whole module as its explicitly
 labeled baseline — function artifacts already beat the verified compiled local
 baseline, but no compiled whole-module improvement is claimed; strongest whole-
 module compiler comparisons remain a separate research acceptance item.
+
+
+Fresh module review found no Critical issues and two Important guard gaps.
+Final: fixed instance `_call_impl` / `_compiled_call_impl` overrides — new CPU
+regressions RED→GREEN, including rejection before invoking an override.
+Final: fixed scalar/callable/module attributes read through admitted globals —
+`math.pi` change regression RED→GREEN; mutable attribute values and local module
+aliases are rejected rather than frozen without guards. Callable code/default
+identities are tracked alongside attribute values.
+Additional fault-policy regression reproduced an analysis-capture RuntimeError
+that did not latch MPS health; the MPS capture boundary now records the fault.
+CPU capture errors remain ordinary unsupported outcomes without poisoning GPU health.
+Final: Ruling: strongest compiled whole-module comparison remains deferred —
+the public baseline is explicitly eager, so these results cannot establish an
+advantage over compiling an entire model. Cost if wrong: users may prefer the
+compiler; no comparative claim is made.
+Final: Ruling: preliminary integrated results are development-only — the final
+guard code requires a fresh private gate and two sessions before publication;
+old evidence remains retained. Cost if wrong: no final module win is claimed.
+No deferred review minors; no second review is required by the execution workflow.
+
+
+Final review-fix verification: 113 passed in 13.62s, no skips. Both Important
+review findings and the MPS analysis fault-latch regression are fixed with
+RED→GREEN evidence. The pre-review host-guard optimization rehearsal
+`1c9ec52e17a34243be460c2f6462d730` passed eight private cases, two eager whole-module
+sessions (1.207× / 1.219×), and post-run value/parameter/shape/gradient checks.
+It is retained as development evidence; final guard fixes are remeasured next.

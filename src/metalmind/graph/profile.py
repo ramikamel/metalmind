@@ -48,5 +48,5 @@ def analysis_from_capture(captured, *, measure=False):
 
 def analyze_module(module, example_inputs, *, measure=False):
     try: return analysis_from_capture(capture_module(module,example_inputs),measure=measure)
-    except (ValueError,TypeError,RuntimeError,OSError,AttributeError,torch.fx.proxy.TraceError) as exc:
+    except (ValueError,TypeError,RuntimeError,OSError,AttributeError,AssertionError,torch.fx.proxy.TraceError) as exc:
         return ModuleAnalysis(supported=False,reason=str(exc)[:1000])

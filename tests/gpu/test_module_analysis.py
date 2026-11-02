@@ -33,3 +33,16 @@ def test_module_profile_reports_standalone_measurements_or_explicit_drift_reject
         assert any("drift" in e for e in analysis.exclusions)
     if analysis.regions[0].latency:
         assert "not exclusive" in analysis.ranking_basis
+
+
+def test_capture_runtime_failure_latches_gpu_until_health_probe(monkeypatch,tmp_path):
+    import metalmind.runtime.worker as worker
+    from metalmind.graph.capture import RecordingInterpreter
+    marker = tmp_path / "gpu-fault"
+    monkeypatch.setattr(worker,"FAULT_PATH",marker)
+    def fail(*args): raise RuntimeError("Simulated GPU device failure")
+    monkeypatch.setattr(RecordingInterpreter,"run",fail)
+    module = ResidualActivation(257).eval().to("mps")
+    result = analyze_module(module,(torch.ones(8,257,device="mps"),))
+    assert not result.supported
+    assert marker.exists()

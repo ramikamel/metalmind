@@ -58,8 +58,18 @@ def _scalar(value):
     return (type(value).__name__, value)
 
 
+def _attribute_signature(value):
+    if isinstance(value,types.ModuleType): return ("module",id(value))
+    if isinstance(value,torch.dtype): return ("dtype",str(value))
+    if callable(value):
+        defaults = tuple(_scalar(v) for v in (getattr(value,"__defaults__",None) or ()))
+        keywords = tuple(sorted((k,_scalar(v)) for k,v in (getattr(value,"__kwdefaults__",None) or {}).items()))
+        return ("callable",id(value),id(getattr(value,"__code__",None)),defaults,keywords)
+    return _scalar(value)
+
+
 class ModuleGuard:
-    def __init__(self, module, inputs, *, scalar_names, callees, methods):
+    def __init__(self, module, inputs, *, scalar_names, callees, methods, attributes):
         self.original = module
         self.input_specs = tuple(tensor_spec(t) for t in inputs)
         self.input_keys = tuple(tensor_key(t) for t in inputs)
@@ -71,12 +81,15 @@ class ModuleGuard:
         self.globals = tuple(sorted(i.argval for i in dis.get_instructions(self.fn) if i.opname == "LOAD_GLOBAL"))
         self.callees = tuple(callees)
         self.methods = tuple(methods)
+        self.attributes = tuple(sorted(attributes))
         self.state = self._state()
         self.env = tuple(os.environ.get(k) for k in FLAGS)
         self.default_dtype = torch.get_default_dtype()
 
     def _state(self):
         m = self.original
+        if any(n in vars(m) for n in ("forward","_call_impl","_slow_forward")) or getattr(m,"_compiled_call_impl",None) is not None:
+            raise ValueError("Instance invocation overrides and compiled module calls are unsupported")
         if m._modules or hooks_present(m) or m.training:
             raise ValueError("Child modules, hooks, and training mode are unsupported")
         fn = forward_function(m)
@@ -92,12 +105,13 @@ class ModuleGuard:
                 globals_state.append((name, id(value)))
             else:
                 globals_state.append((name, _scalar(value)))
-        calls = tuple((alias, path, id(self._resolve(alias, path))) for alias, path in self.callees)
+        calls = tuple((alias, path, _attribute_signature(self._resolve(alias, path))) for alias, path in self.callees)
         methods = tuple((name, id(getattr(torch.Tensor, name))) for name in self.methods)
-        invocation = tuple(id(getattr(type(m),name)) for name in ("__call__","__getattribute__","__getattr__","_call_impl"))
+        invocation = tuple(id(getattr(type(m),name)) for name in ("__call__","__getattribute__","__getattr__","_call_impl","_slow_forward","_compiled_call_impl"))
         names = set(self.scalar_names) | set(m._parameters) | set(m._buffers)
         descriptors = tuple((name,_descriptor(type(m),name)) for name in sorted(names))
-        return tensors, scalars, tuple(globals_state), calls, methods, invocation, descriptors
+        attributes = tuple((alias,path,_attribute_signature(self._resolve(alias,path))) for alias,path in self.attributes)
+        return tensors, scalars, tuple(globals_state), calls, methods, invocation, descriptors, attributes
 
     def _resolve(self, alias, path):
         value = self.fn.__globals__[alias]
@@ -109,6 +123,7 @@ class ModuleGuard:
         try:
             if tuple(os.environ.get(k) for k in FLAGS) != self.env or torch.get_default_dtype() != self.default_dtype:
                 return False
+            if torch.jit.is_tracing(): return False
             if torch.is_autocast_enabled("mps") or torch.is_autocast_enabled("cpu"):
                 return False
             if tuple(tensor_key(t) for t in inputs) != self.input_keys or self._state() != self.state:
