@@ -1,0 +1,627 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MetalMind — no_win</title><style>
+    :root{color-scheme:light;font-family:system-ui,-apple-system,sans-serif;color:#172b31;background:#f3f6f4}
+    body{max-width:1160px;margin:3rem auto;padding:0 1.5rem;line-height:1.55}
+    h1{font-size:3.5rem;line-height:1.1;letter-spacing:-.06em;margin:.5rem 0 1rem}
+    h2{font-size:1.25rem;letter-spacing:-.02em}.eyebrow{font-size:.75rem;letter-spacing:.15em;color:#356654}
+    header{max-width:850px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;margin:2rem 0}
+    .card,section{background:#fff;border:1px solid #dbe4de;border-radius:12px;padding:1.25rem}
+    .card span{display:block;color:#5c6f68;font-size:.85rem}.card strong{display:block;font-size:1.5rem;margin-top:.35rem}
+    section{margin:1rem 0}.notice{border-left:3px solid #448a6f;padding:.5rem 1rem;color:#3a574c}
+    .table{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{text-align:left;padding:.75rem;border-bottom:1px solid #e4eae6;white-space:nowrap}
+    th{color:#52675d;font-weight:600}pre{font-size:.8rem;background:#f6f8f7;border:1px solid #e5ebe7;padding:1rem;border-radius:7px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+    details{margin:1rem 0}summary{cursor:pointer;color:#275e49}code{font-size:.85em}
+    @media(max-width:600px){body{margin:1.5rem auto;padding:0 1rem}h1{font-size:2.5rem}}
+    </style></head><body><main><header><p class="eyebrow">METALMIND / RUN EVIDENCE</p><h1>no_win</h1><p>Search did not establish the minimum 1.05x public-wrapper gain</p></header><div class="cards"><div class="card"><span>Outcome</span><strong>no_win</strong></div><div class="card"><span>Model requests</span><strong>2</strong></div><div class="card"><span>Output tokens</span><strong>3569</strong></div><div class="card"><span>Domain mode</span><strong>assume</strong></div></div><p class="notice">Speedups describe the recorded public-call boundary and domain mode. Search measurements are not confirmed promotion. Compilation and model time are outside warm timing.</p><section><h2>Workload and stages</h2><pre>{
+  &quot;workload&quot;: {
+    &quot;schema_version&quot;: 1,
+    &quot;workload_id&quot;: &quot;bias_gelu:small&quot;,
+    &quot;family&quot;: &quot;bias_gelu&quot;,
+    &quot;semantics_version&quot;: 1,
+    &quot;inputs&quot;: [
+      {
+        &quot;schema_version&quot;: 1,
+        &quot;shape&quot;: [
+          64,
+          257
+        ],
+        &quot;strides&quot;: [
+          257,
+          1
+        ],
+        &quot;dtype&quot;: &quot;float32&quot;,
+        &quot;device&quot;: &quot;mps&quot;,
+        &quot;storage_offset&quot;: 0
+      },
+      {
+        &quot;schema_version&quot;: 1,
+        &quot;shape&quot;: [
+          257
+        ],
+        &quot;strides&quot;: [
+          1
+        ],
+        &quot;dtype&quot;: &quot;float32&quot;,
+        &quot;device&quot;: &quot;mps&quot;,
+        &quot;storage_offset&quot;: 0
+      }
+    ],
+    &quot;output&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;shape&quot;: [
+        64,
+        257
+      ],
+      &quot;strides&quot;: [
+        257,
+        1
+      ],
+      &quot;dtype&quot;: &quot;float32&quot;,
+      &quot;device&quot;: &quot;mps&quot;,
+      &quot;storage_offset&quot;: 0
+    },
+    &quot;epsilon&quot;: 0.0,
+    &quot;accumulation_dtype&quot;: &quot;float32&quot;,
+    &quot;reference_id&quot;: &quot;bias_gelu&quot;,
+    &quot;reference_hash&quot;: &quot;c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777&quot;,
+    &quot;policy_version&quot;: 1
+  },
+  &quot;stages&quot;: {
+    &quot;numerically_valid&quot;: true,
+    &quot;search_fast&quot;: false,
+    &quot;final_verified&quot;: false,
+    &quot;confirmation_sessions&quot;: 0,
+    &quot;promoted&quot;: false
+  },
+  &quot;candidate_counts&quot;: {
+    &quot;valid&quot;: 2
+  }
+}</pre></section><section><h2>Confirmation sessions</h2><p>No valid timing comparisons were saved for this stage.</p><details><summary>Private numerical verification</summary><pre>null</pre></details></section><section><h2>Search evaluations</h2><div class="table"><table><thead><tr><th>Session / candidate</th><th>Baseline</th><th>Median speedup</th><th>95% interval</th><th>Pairs</th></tr></thead><tbody><tr><td>9b7cd7857cf2</td><td>original_eager</td><td>0.923×</td><td>0.885–0.938×</td><td>10</td></tr><tr><td>9b7cd7857cf2</td><td>torch_compile_inductor_fullgraph</td><td>2.064×</td><td>2.025–2.077×</td><td>10</td></tr><tr><td>91f857b6bb26</td><td>original_eager</td><td>0.797×</td><td>0.785–0.847×</td><td>10</td></tr><tr><td>91f857b6bb26</td><td>torch_compile_inductor_fullgraph</td><td>1.913×</td><td>1.877–1.955×</td><td>10</td></tr></tbody></table></div><p><code>9b7cd7857cf2</code> · valid · See raw evidence for numerical and timing details</p><p><code>91f857b6bb26</code> · valid · See raw evidence for numerical and timing details</p></section><section><h2>Candidate source</h2><details><summary>91f857b6bb26b0ee2ffbf2753941b75cbe30db1af2de939f72aff7a5839ee671</summary><pre>#include &lt;metal_stdlib&gt;
+using namespace metal;
+kernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint2 gid [[thread_position_in_grid]]) {
+    (void)epsilon;
+    if (gid.x &gt;= D || gid.y &gt;= 16u) {
+        return;
+    }
+    float bias = parameter[gid.x];
+    for (uint row = gid.y; row &lt; B; row += 16u) {
+        uint idx = row * D + gid.x;
+        float z = x[idx] + bias;
+        float cube = z * z * z;
+        float inner = 0.7978845608028654f * (z + 0.044715f * cube);
+        out[idx] = 0.5f * z * (1.0f + tanh(inner));
+    }
+}
+</pre></details><details><summary>9b7cd7857cf2fa0b6f0ea8af4118c783e174c81f5921aa774ff4d5645eaefbfd</summary><pre>#include &lt;metal_stdlib&gt;
+using namespace metal;
+kernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint2 gid [[thread_position_in_grid]]) {
+    (void)epsilon;
+    if (gid.x &gt;= D || gid.y &gt;= B) {
+        return;
+    }
+    uint idx = gid.y * D + gid.x;
+    float z = x[idx] + parameter[gid.x];
+    float z2 = z * z;
+    float cube = z2 * z;
+    float inner = 0.7978845608028654f * (z + 0.044715f * cube);
+    float y = 0.5f * z * (1.0f + tanh(inner));
+    out[idx] = y;
+}
+</pre></details></section><section><details><summary>Complete raw evidence and configuration</summary><pre>{
+  &quot;manifest&quot;: {
+    &quot;schema_version&quot;: 1,
+    &quot;phase&quot;: &quot;terminal&quot;,
+    &quot;workload&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;workload_id&quot;: &quot;bias_gelu:small&quot;,
+      &quot;family&quot;: &quot;bias_gelu&quot;,
+      &quot;semantics_version&quot;: 1,
+      &quot;inputs&quot;: [
+        {
+          &quot;schema_version&quot;: 1,
+          &quot;shape&quot;: [
+            64,
+            257
+          ],
+          &quot;strides&quot;: [
+            257,
+            1
+          ],
+          &quot;dtype&quot;: &quot;float32&quot;,
+          &quot;device&quot;: &quot;mps&quot;,
+          &quot;storage_offset&quot;: 0
+        },
+        {
+          &quot;schema_version&quot;: 1,
+          &quot;shape&quot;: [
+            257
+          ],
+          &quot;strides&quot;: [
+            1
+          ],
+          &quot;dtype&quot;: &quot;float32&quot;,
+          &quot;device&quot;: &quot;mps&quot;,
+          &quot;storage_offset&quot;: 0
+        }
+      ],
+      &quot;output&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;shape&quot;: [
+          64,
+          257
+        ],
+        &quot;strides&quot;: [
+          257,
+          1
+        ],
+        &quot;dtype&quot;: &quot;float32&quot;,
+        &quot;device&quot;: &quot;mps&quot;,
+        &quot;storage_offset&quot;: 0
+      },
+      &quot;epsilon&quot;: 0.0,
+      &quot;accumulation_dtype&quot;: &quot;float32&quot;,
+      &quot;reference_id&quot;: &quot;bias_gelu&quot;,
+      &quot;reference_hash&quot;: &quot;c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777&quot;,
+      &quot;policy_version&quot;: 1
+    },
+    &quot;config&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;model&quot;: &quot;muse-wonder-1.0&quot;,
+      &quot;reasoning_effort&quot;: &quot;low&quot;,
+      &quot;domain_mode&quot;: &quot;assume&quot;,
+      &quot;max_candidates&quot;: 2,
+      &quot;max_requests&quot;: 2,
+      &quot;wall_seconds&quot;: 1800.0,
+      &quot;finalization_reserve_seconds&quot;: 300.0,
+      &quot;max_output_tokens&quot;: 4096,
+      &quot;total_output_tokens&quot;: 120000,
+      &quot;request_timeout_seconds&quot;: 120.0,
+      &quot;compile_timeout_seconds&quot;: 60.0,
+      &quot;execution_timeout_seconds&quot;: 120.0,
+      &quot;stagnation_limit&quot;: 10,
+      &quot;seed&quot;: 42,
+      &quot;runs_dir&quot;: &quot;runs&quot;,
+      &quot;artifacts_dir&quot;: &quot;artifacts&quot;,
+      &quot;warmups&quot;: 25,
+      &quot;search_pairs&quot;: 10,
+      &quot;confirmation_pairs&quot;: 30,
+      &quot;bootstrap_resamples&quot;: 10000,
+      &quot;confirmation_cooldown_seconds&quot;: 60.0
+    },
+    &quot;environment&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;python_version&quot;: &quot;3.14.6&quot;,
+      &quot;torch_version&quot;: &quot;2.15.0&quot;,
+      &quot;os_version&quot;: &quot;27.2&quot;,
+      &quot;architecture&quot;: &quot;arm64&quot;,
+      &quot;capabilities&quot;: {
+        &quot;mps_built&quot;: true,
+        &quot;mps_available&quot;: true,
+        &quot;compile_shader&quot;: true,
+        &quot;timed_events&quot;: true
+      },
+      &quot;unavailable_reason&quot;: null
+    },
+    &quot;requests&quot;: 2,
+    &quot;evaluated&quot;: 2,
+    &quot;output_tokens&quot;: 3569,
+    &quot;elapsed_seconds&quot;: 56.332092666998506,
+    &quot;wall_deadline_utc&quot;: 1793657989.404334,
+    &quot;seen&quot;: [
+      &quot;91f857b6bb26b0ee2ffbf2753941b75cbe30db1af2de939f72aff7a5839ee671&quot;,
+      &quot;9b7cd7857cf2fa0b6f0ea8af4118c783e174c81f5921aa774ff4d5645eaefbfd&quot;
+    ],
+    &quot;archive&quot;: [
+      {
+        &quot;score&quot;: 0.9229913286994496,
+        &quot;candidate&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;candidate_id&quot;: &quot;9b7cd7857cf2fa0b6f0ea8af4118c783e174c81f5921aa774ff4d5645eaefbfd&quot;,
+          &quot;workload_hash&quot;: &quot;0c4845e365a8a11f642bbb1582f91373eba2829de2ef745bf5f99e253d8e70e9&quot;,
+          &quot;proposal&quot;: {
+            &quot;schema_version&quot;: 1,
+            &quot;entry_point&quot;: &quot;metalmind_kernel&quot;,
+            &quot;source&quot;: &quot;#include &lt;metal_stdlib&gt;\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    if (gid.x &gt;= D || gid.y &gt;= B) {\n        return;\n    }\n    uint idx = gid.y * D + gid.x;\n    float z = x[idx] + parameter[gid.x];\n    float z2 = z * z;\n    float cube = z2 * z;\n    float inner = 0.7978845608028654f * (z + 0.044715f * cube);\n    float y = 0.5f * z * (1.0f + tanh(inner));\n    out[idx] = y;\n}\n&quot;,
+            &quot;threads&quot;: [
+              257,
+              64,
+              1
+            ],
+            &quot;group_size&quot;: [
+              64,
+              4,
+              1
+            ],
+            &quot;hypothesis&quot;: &quot;A single fused 2D scalar kernel avoids modulo indexing and repeated launches; column-contiguous threads coalesce x/out accesses while the small bias vector stays cached.&quot;
+          },
+          &quot;parent_id&quot;: null,
+          &quot;model&quot;: &quot;muse-wonder-1.0&quot;
+        }
+      },
+      {
+        &quot;score&quot;: 0.7972874265861978,
+        &quot;candidate&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;candidate_id&quot;: &quot;91f857b6bb26b0ee2ffbf2753941b75cbe30db1af2de939f72aff7a5839ee671&quot;,
+          &quot;workload_hash&quot;: &quot;0c4845e365a8a11f642bbb1582f91373eba2829de2ef745bf5f99e253d8e70e9&quot;,
+          &quot;proposal&quot;: {
+            &quot;schema_version&quot;: 1,
+            &quot;entry_point&quot;: &quot;metalmind_kernel&quot;,
+            &quot;source&quot;: &quot;#include &lt;metal_stdlib&gt;\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    if (gid.x &gt;= D || gid.y &gt;= 16u) {\n        return;\n    }\n    float bias = parameter[gid.x];\n    for (uint row = gid.y; row &lt; B; row += 16u) {\n        uint idx = row * D + gid.x;\n        float z = x[idx] + bias;\n        float cube = z * z * z;\n        float inner = 0.7978845608028654f * (z + 0.044715f * cube);\n        out[idx] = 0.5f * z * (1.0f + tanh(inner));\n    }\n}\n&quot;,
+            &quot;threads&quot;: [
+              257,
+              16,
+              1
+            ],
+            &quot;group_size&quot;: [
+              64,
+              4,
+              1
+            ],
+            &quot;hypothesis&quot;: &quot;Reusing each loaded bias value across four rows cuts bias loads and thread scheduling fourfold while retaining 4112 threads for the tiny 64x257 workload.&quot;
+          },
+          &quot;parent_id&quot;: &quot;9b7cd7857cf2fa0b6f0ea8af4118c783e174c81f5921aa774ff4d5645eaefbfd&quot;,
+          &quot;model&quot;: &quot;muse-wonder-1.0&quot;
+        }
+      }
+    ],
+    &quot;outcome&quot;: &quot;no_win&quot;
+  },
+  &quot;result&quot;: {
+    &quot;outcome&quot;: &quot;no_win&quot;,
+    &quot;reason&quot;: &quot;Search did not establish the minimum 1.05x public-wrapper gain&quot;,
+    &quot;artifact_path&quot;: null
+  },
+  &quot;stages&quot;: {
+    &quot;numerically_valid&quot;: true,
+    &quot;search_fast&quot;: false,
+    &quot;final_verified&quot;: false,
+    &quot;confirmation_sessions&quot;: 0,
+    &quot;promoted&quot;: false
+  },
+  &quot;candidate_counts&quot;: {
+    &quot;valid&quot;: 2
+  },
+  &quot;final_evidence&quot;: {
+    &quot;private_verification&quot;: null,
+    &quot;confirmations&quot;: []
+  },
+  &quot;events&quot;: [
+    {
+      &quot;event&quot;: &quot;request_reserved&quot;,
+      &quot;requests&quot;: 2,
+      &quot;output_tokens&quot;: 8192
+    },
+    {
+      &quot;event&quot;: &quot;model_response&quot;,
+      &quot;model&quot;: &quot;muse-wonder-1.0&quot;,
+      &quot;usage&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;input_tokens&quot;: 487,
+        &quot;output_tokens&quot;: 1235,
+        &quot;reasoning_tokens&quot;: 943
+      },
+      &quot;requests&quot;: 1,
+      &quot;error&quot;: null
+    },
+    {
+      &quot;event&quot;: &quot;evaluation&quot;,
+      &quot;candidate_id&quot;: &quot;9b7cd7857cf2fa0b6f0ea8af4118c783e174c81f5921aa774ff4d5645eaefbfd&quot;,
+      &quot;result&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;status&quot;: &quot;valid&quot;,
+        &quot;verification&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;passed&quot;: true,
+          &quot;cases&quot;: 10,
+          &quot;max_absolute_error&quot;: 4.76837158203125e-07,
+          &quot;max_relative_error&quot;: 0.2982268085816031,
+          &quot;rmse&quot;: 6.322248772529977e-08,
+          &quot;mismatches&quot;: 0,
+          &quot;reason&quot;: null
+        },
+        &quot;elapsed_ms&quot;: [
+          0.011772774999553804,
+          0.011562641699856612,
+          0.012093770800856874,
+          0.012158549999003298,
+          0.01207658749917755,
+          0.01191503330046544,
+          0.011602266700356268,
+          0.012021795799955725,
+          0.012099966700770893,
+          0.012272304100042675
+        ],
+        &quot;reason&quot;: null,
+        &quot;device_fault&quot;: false,
+        &quot;timing&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;seed&quot;: 42,
+          &quot;bootstrap_resamples&quot;: 10000,
+          &quot;comparisons&quot;: [
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;original_eager&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.010423045900824945,
+                  0.010865816699515562,
+                  0.010587366699473933,
+                  0.01052712920063641,
+                  0.011015691699867602,
+                  0.011102662498888093,
+                  0.01077186670008814,
+                  0.011279666700283996,
+                  0.01135592079954222,
+                  0.011260512500302865
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.011772774999553804,
+                  0.011562641699856612,
+                  0.012093770800856874,
+                  0.012158549999003298,
+                  0.01207658749917755,
+                  0.01191503330046544,
+                  0.011602266700356268,
+                  0.012021795799955725,
+                  0.012099966700770893,
+                  0.012272304100042675
+                ],
+                &quot;repetitions&quot;: 10000,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 0.9229913286994496,
+                &quot;lower&quot;: 0.8853516610331876,
+                &quot;upper&quot;: 0.9382680331606978,
+                &quot;pairs&quot;: 10
+              }
+            },
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;torch_compile_inductor_fullgraph&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.026837982177951858,
+                  0.025714859008374447,
+                  0.025022781372285863,
+                  0.024803100586723303,
+                  0.024431294800564274,
+                  0.024608312010343525,
+                  0.025218170167207177,
+                  0.024748840331767497,
+                  0.024701736450083445,
+                  0.02477089440944269
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.012304285766262524,
+                  0.012327885986707088,
+                  0.012201477050055587,
+                  0.011944335938096629,
+                  0.011836110473950612,
+                  0.011921732543385133,
+                  0.012202209472178538,
+                  0.012388473511038,
+                  0.012252919557198538,
+                  0.012233820557483455
+                ],
+                &quot;repetitions&quot;: 8192,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 2.0641438603086844,
+                &quot;lower&quot;: 2.024788110390444,
+                &quot;upper&quot;: 2.0765575177447464,
+                &quot;pairs&quot;: 10
+              }
+            }
+          ],
+          &quot;unavailable&quot;: [],
+          &quot;boundary&quot;: &quot;amortized synchronized public function latency&quot;,
+          &quot;domain_mode&quot;: &quot;assume&quot;
+        }
+      }
+    },
+    {
+      &quot;event&quot;: &quot;request_reserved&quot;,
+      &quot;requests&quot;: 1,
+      &quot;output_tokens&quot;: 4096
+    },
+    {
+      &quot;event&quot;: &quot;model_response&quot;,
+      &quot;model&quot;: &quot;muse-wonder-1.0&quot;,
+      &quot;usage&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;input_tokens&quot;: 1329,
+        &quot;output_tokens&quot;: 2334,
+        &quot;reasoning_tokens&quot;: 2040
+      },
+      &quot;requests&quot;: 1,
+      &quot;error&quot;: null
+    },
+    {
+      &quot;event&quot;: &quot;evaluation&quot;,
+      &quot;candidate_id&quot;: &quot;91f857b6bb26b0ee2ffbf2753941b75cbe30db1af2de939f72aff7a5839ee671&quot;,
+      &quot;result&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;status&quot;: &quot;valid&quot;,
+        &quot;verification&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;passed&quot;: true,
+          &quot;cases&quot;: 10,
+          &quot;max_absolute_error&quot;: 4.76837158203125e-07,
+          &quot;max_relative_error&quot;: 0.2982268085816031,
+          &quot;rmse&quot;: 6.322248772529977e-08,
+          &quot;mismatches&quot;: 0,
+          &quot;reason&quot;: null
+        },
+        &quot;elapsed_ms&quot;: [
+          0.01232273749919841,
+          0.01214538329950301,
+          0.012743987499561626,
+          0.01417604169982951,
+          0.012518608299433253,
+          0.012573883299774024,
+          0.012499879200186114,
+          0.012840249999135267,
+          0.012816199999360834,
+          0.013247012499778065
+        ],
+        &quot;reason&quot;: null,
+        &quot;device_fault&quot;: false,
+        &quot;timing&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;seed&quot;: 42,
+          &quot;bootstrap_resamples&quot;: 10000,
+          &quot;comparisons&quot;: [
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;original_eager&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.010685620899312197,
+                  0.010264249998726882,
+                  0.010830175000592135,
+                  0.011077975000080186,
+                  0.009937408300174866,
+                  0.010025749998749233,
+                  0.009965249999368098,
+                  0.010880508300033398,
+                  0.010062962501251604,
+                  0.010127804199873936
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.01232273749919841,
+                  0.01214538329950301,
+                  0.012743987499561626,
+                  0.01417604169982951,
+                  0.012518608299433253,
+                  0.012573883299774024,
+                  0.012499879200186114,
+                  0.012840249999135267,
+                  0.012816199999360834,
+                  0.013247012499778065
+                ],
+                &quot;repetitions&quot;: 10000,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 0.7972874265861978,
+                &quot;lower&quot;: 0.785175208076767,
+                &quot;upper&quot;: 0.8473751134725688,
+                &quot;pairs&quot;: 10
+              }
+            },
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;torch_compile_inductor_fullgraph&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.02522969567841926,
+                  0.024470479248250854,
+                  0.024286519408889262,
+                  0.024600173949451687,
+                  0.025082285523225778,
+                  0.02501638793894756,
+                  0.024688893676128032,
+                  0.024658442260516722,
+                  0.02484425866633444,
+                  0.024694778442579945
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.012661020873494522,
+                  0.013059488891187243,
+                  0.012917510986198977,
+                  0.013080434083434511,
+                  0.01386604809638925,
+                  0.013016504881946389,
+                  0.012963328002157937,
+                  0.012407714843121198,
+                  0.012936213257930262,
+                  0.01280206811493656
+                ],
+                &quot;repetitions&quot;: 8192,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 1.9125191751601682,
+                &quot;lower&quot;: 1.877227443620343,
+                &quot;upper&quot;: 1.9546225381105211,
+                &quot;pairs&quot;: 10
+              }
+            }
+          ],
+          &quot;unavailable&quot;: [],
+          &quot;boundary&quot;: &quot;amortized synchronized public function latency&quot;,
+          &quot;domain_mode&quot;: &quot;assume&quot;
+        }
+      }
+    },
+    {
+      &quot;event&quot;: &quot;finalized&quot;,
+      &quot;outcome&quot;: &quot;no_win&quot;,
+      &quot;reason&quot;: &quot;Search did not establish the minimum 1.05x public-wrapper gain&quot;
+    }
+  ],
+  &quot;candidates&quot;: [
+    {
+      &quot;candidate_id&quot;: &quot;91f857b6bb26b0ee2ffbf2753941b75cbe30db1af2de939f72aff7a5839ee671&quot;,
+      &quot;source&quot;: &quot;#include &lt;metal_stdlib&gt;\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    if (gid.x &gt;= D || gid.y &gt;= 16u) {\n        return;\n    }\n    float bias = parameter[gid.x];\n    for (uint row = gid.y; row &lt; B; row += 16u) {\n        uint idx = row * D + gid.x;\n        float z = x[idx] + bias;\n        float cube = z * z * z;\n        float inner = 0.7978845608028654f * (z + 0.044715f * cube);\n        out[idx] = 0.5f * z * (1.0f + tanh(inner));\n    }\n}\n&quot;
+    },
+    {
+      &quot;candidate_id&quot;: &quot;9b7cd7857cf2fa0b6f0ea8af4118c783e174c81f5921aa774ff4d5645eaefbfd&quot;,
+      &quot;source&quot;: &quot;#include &lt;metal_stdlib&gt;\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    if (gid.x &gt;= D || gid.y &gt;= B) {\n        return;\n    }\n    uint idx = gid.y * D + gid.x;\n    float z = x[idx] + parameter[gid.x];\n    float z2 = z * z;\n    float cube = z2 * z;\n    float inner = 0.7978845608028654f * (z + 0.044715f * cube);\n    float y = 0.5f * z * (1.0f + tanh(inner));\n    out[idx] = y;\n}\n&quot;
+    }
+  ]
+}</pre></details></section></main></body></html>

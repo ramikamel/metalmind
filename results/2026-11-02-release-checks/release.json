@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "checkpoint": "function-level development release",
+  "date": "2026-11-02",
+  "version": "0.1.0",
+  "implementation_commit": "13e3af6f5c2e0a7c3e04fa808db84deb7797964e",
+  "source_tree_sha256": "1433ad113cc286dc6d7792ffbb764290bf82768896fff7c7a7171f095e9a34d7",
+  "hardware": {
+    "model": "Apple M3 Pro",
+    "cores": "14",
+    "metal_family": "spdisplays_metal4",
+    "recommended_working_set": 14302248960
+  },
+  "runtime": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null,
+    "shader_health_passed": true
+  },
+  "verification": {
+    "complete_suite": "88 passed in 8.54s; no skips",
+    "unit_suite": "65 passed",
+    "real_metal_health": true,
+    "wheel_and_sdist_built": true,
+    "fresh_wheel_install": "clean-install.json",
+    "credential_scan": "exact local key absent from staged publication; .env remains ignored",
+    "html_report_visual_preview": "not performed; browser policy blocks local file URLs",
+    "html_report_content_checks": "passing automated content/escaping regressions"
+  },
+  "generation": {
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "max_output_tokens_per_request": 4096,
+    "pilot_requests": 18,
+    "session_generation_requests": 25,
+    "approved_total": 30
+  },
+  "pilot": {
+    "campaign_id": "4ba23d2ada20e97c974af64e800f924d46679de8d0bfe53935b46f26bd0e16e8",
+    "jobs": 9,
+    "promoted": 2,
+    "no_win": 7,
+    "failed": 0,
+    "domain_mode": "assume",
+    "evidence": "../2026-11-02-fp32-pilot"
+  },
+  "current_full_campaign_preview_id": "7d30475a1bd18e22368ee2e775603a3f1e7fd6b0020459fa26ebff4be16ea15a",
+  "unexecuted": [
+    "108-job multi-strategy campaign",
+    "FP16 performance campaign",
+    "cross-chip comparison",
+    "graph Tasks 16\u201317",
+    "event eligibility review and submission recording"
+  ],
+  "artifacts": [
+    {
+      "path": "results/2026-11-02-revalidation/artifact",
+      "artifact_id": "0fadc5d75491f265155619d741bf48cdc72d11904b4b7c965e60dc63e0177364",
+      "source_hash": "d85210504e151885cf15114c8b14746c401ea07cc6367d96ec7a12b1d5dc05a1",
+      "evidence_hash": "5275972eaafca3616112ca0bb7b4a27e4e2da13dcd1d194bbfbe9ba3f1d7c4d8"
+    },
+    {
+      "path": "results/2026-11-02-fp32-pilot/artifacts/db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87",
+      "artifact_id": "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87",
+      "source_hash": "4a6da691021af4135e241e39cc032a27b5a49ecb874e406af7b013bc91150758",
+      "evidence_hash": "b427e11608f1bbba8bff5b0cf4ace35416ede7079350a9e7ff74aa77897f91ba"
+    },
+    {
+      "path": "results/2026-11-02-fp32-pilot/artifacts/4af22062f87308dc937c666cd7194c500d612ceb59510b75d46db74dc768807e",
+      "artifact_id": "4af22062f87308dc937c666cd7194c500d612ceb59510b75d46db74dc768807e",
+      "source_hash": "cdff502221bed6f037868320d3fe1f2cc01c125ad371e6e3dd63aded13f9d9ae",
+      "evidence_hash": "8ef3dc8c2eff96e5e11bdb1c02ec6262f639f0437f60f30bf41dd8caad7634fc"
+    },
+    {
+      "path": "results/2026-10-29-development-rehearsals/artifact",
+      "artifact_id": "2436c234d4823aa4a9ff3ba5958a538fa7ec7b2e66ece90ed89ff7d3b3936ee6",
+      "source_hash": "d85210504e151885cf15114c8b14746c401ea07cc6367d96ec7a12b1d5dc05a1",
+      "evidence_hash": "7e602c32f10d34182e5157149e1712053fac8b98d89e022d648fd1d63c2f5a06"
+    }
+  ],
+  "dependency_lock_sha256": "01b7824ac71c130e677c91160da73c30ede42773638ad13bae12ab9e9917d1fb",
+  "wheel_sha256": "14c799b8274d4dcc0bc5640144493529509db0d8b4e73f6f93c35534aa11a898"
+}

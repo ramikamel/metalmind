@@ -402,7 +402,7 @@ If the final private gate fails, do not send its failure details back into the s
 | Provider spend | Explicit configurable cap | Use recorded current pricing or a request/token cap when cost metadata is unavailable |
 | Model request timeout | 120 seconds | At most two transient retries with bounded backoff |
 | Compile wall timeout | 60 seconds | Worker deadline includes compilation separately |
-| Execution/evaluation timeout | 30 seconds per stage | Abort the worker and test GPU health after an overrun |
+| Execution/evaluation timeout | 120 seconds per evaluation | Absolute worker deadline covers lock/startup/compile/execute; require a successful GPU health probe after an overrun |
 | Candidate source limit | 64 KiB | Sufficient for initial single-entry kernels |
 
 Timeout values are initial settings to calibrate, not claims that the operating system can instantly preempt a stuck GPU kernel. Any GPU fault suspends further evaluations until a known-good health probe succeeds; otherwise the run stops with recovery instructions.

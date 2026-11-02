@@ -1,0 +1,46 @@
+[
+  {
+    "run_id": "0572fe9deb18434eaa59b375a961b0f3",
+    "family": "bias_gelu",
+    "shape": [
+      256,
+      1024
+    ],
+    "domain_mode": "checked",
+    "requests": 2,
+    "outcome": "no_win"
+  },
+  {
+    "run_id": "d8edc62912f04a99942fd78e59598c26",
+    "family": "bias_gelu",
+    "shape": [
+      512,
+      4096
+    ],
+    "domain_mode": "assume",
+    "requests": 2,
+    "outcome": "promoted"
+  },
+  {
+    "run_id": "82b257b0f4dc47b7b77b6442f6aaab52",
+    "family": "rmsnorm",
+    "shape": [
+      64,
+      257
+    ],
+    "domain_mode": "assume",
+    "requests": 1,
+    "outcome": "no_win"
+  },
+  {
+    "run_id": "4dd890e919b744369a891b4f78fe6c18",
+    "family": "softmax",
+    "shape": [
+      64,
+      257
+    ],
+    "domain_mode": "assume",
+    "requests": 1,
+    "outcome": "no_win"
+  }
+]

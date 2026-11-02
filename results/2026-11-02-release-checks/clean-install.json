@@ -1,0 +1,24 @@
+{
+  "package_isolated": true,
+  "python_version": "3.14.6",
+  "wheel_sha256": "14c799b8274d4dcc0bc5640144493529509db0d8b4e73f6f93c35534aa11a898",
+  "doctor": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null,
+    "shader_health_passed": true
+  },
+  "campaign_preview_jobs": 108,
+  "campaign_preview_id": "7d30475a1bd18e22368ee2e775603a3f1e7fd6b0020459fa26ebff4be16ea15a",
+  "model_key_absent": true,
+  "working_directory_outside_repo": true
+}

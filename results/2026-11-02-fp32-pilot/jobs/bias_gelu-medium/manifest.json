@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:medium",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          1024
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "assume",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 120000,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 42,
+    "runs_dir": "runs",
+    "artifacts_dir": "artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 4168,
+  "elapsed_seconds": 69.59367320800084,
+  "wall_deadline_utc": 1793658045.738434,
+  "seen": [
+    "72f91794b724aae434b1de71c17e5b619f9152699f64b229d9f2de6dceac2549",
+    "e053fd365e81f8889da77835914d0736882d380252194632f68754865320690b"
+  ],
+  "archive": [
+    {
+      "score": 1.549365325123166,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "72f91794b724aae434b1de71c17e5b619f9152699f64b229d9f2de6dceac2549",
+        "workload_hash": "524c5a2e7965ab8d49096975fed8eea2c6c060c8512f339e1d4710ab36a46d7d",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint gid [[thread_position_in_grid]], uint grid_size [[threads_per_grid]]) {\n    (void)epsilon;\n    uint total = B * D;\n    if ((D & 3u) == 0u) {\n        uint total4 = total >> 2u;\n        uint D4 = D >> 2u;\n        for (uint idx = gid; idx < total4; idx += grid_size) {\n            uint row = idx / D4;\n            uint col = idx - row * D4;\n            float4 xv = reinterpret_cast<device const float4*>(x)[idx];\n            float4 pv = reinterpret_cast<device const float4*>(parameter)[col];\n            float4 z = xv + pv;\n            float4 z2 = z * z;\n            float4 inner = 0.7978845608f * (z + 0.044715f * z2 * z);\n            float4 y = 0.5f * z * (1.0f + tanh(inner));\n            reinterpret_cast<device float4*>(out)[idx] = y;\n        }\n    } else {\n        for (uint idx = gid; idx < total; idx += grid_size) {\n            uint col = (D == 0u) ? 0u : (idx % D);\n            float z = x[idx] + parameter[col];\n            float inner = 0.7978845608f * (z + 0.044715f * z * z * z);\n            out[idx] = 0.5f * z * (1.0f + tanh(inner));\n        }\n    }\n}\n",
+          "threads": [
+            65536,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "float4 vectorized grid-stride loads cover 256x1024 with one vector per thread, reducing memory instructions while preserving exact FP32 tanh GELU."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "promoted"
+}

@@ -1,0 +1,628 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MetalMind — no_win</title><style>
+    :root{color-scheme:light;font-family:system-ui,-apple-system,sans-serif;color:#172b31;background:#f3f6f4}
+    body{max-width:1160px;margin:3rem auto;padding:0 1.5rem;line-height:1.55}
+    h1{font-size:3.5rem;line-height:1.1;letter-spacing:-.06em;margin:.5rem 0 1rem}
+    h2{font-size:1.25rem;letter-spacing:-.02em}.eyebrow{font-size:.75rem;letter-spacing:.15em;color:#356654}
+    header{max-width:850px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;margin:2rem 0}
+    .card,section{background:#fff;border:1px solid #dbe4de;border-radius:12px;padding:1.25rem}
+    .card span{display:block;color:#5c6f68;font-size:.85rem}.card strong{display:block;font-size:1.5rem;margin-top:.35rem}
+    section{margin:1rem 0}.notice{border-left:3px solid #448a6f;padding:.5rem 1rem;color:#3a574c}
+    .table{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{text-align:left;padding:.75rem;border-bottom:1px solid #e4eae6;white-space:nowrap}
+    th{color:#52675d;font-weight:600}pre{font-size:.8rem;background:#f6f8f7;border:1px solid #e5ebe7;padding:1rem;border-radius:7px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+    details{margin:1rem 0}summary{cursor:pointer;color:#275e49}code{font-size:.85em}
+    @media(max-width:600px){body{margin:1.5rem auto;padding:0 1rem}h1{font-size:2.5rem}}
+    </style></head><body><main><header><p class="eyebrow">METALMIND / RUN EVIDENCE</p><h1>no_win</h1><p>Search did not establish the minimum 1.05x public-wrapper gain</p></header><div class="cards"><div class="card"><span>Outcome</span><strong>no_win</strong></div><div class="card"><span>Model requests</span><strong>2</strong></div><div class="card"><span>Output tokens</span><strong>3454</strong></div><div class="card"><span>Domain mode</span><strong>assume</strong></div></div><p class="notice">Speedups describe the recorded public-call boundary and domain mode. Search measurements are not confirmed promotion. Compilation and model time are outside warm timing.</p><section><h2>Workload and stages</h2><pre>{
+  &quot;workload&quot;: {
+    &quot;schema_version&quot;: 1,
+    &quot;workload_id&quot;: &quot;softmax:small&quot;,
+    &quot;family&quot;: &quot;softmax&quot;,
+    &quot;semantics_version&quot;: 1,
+    &quot;inputs&quot;: [
+      {
+        &quot;schema_version&quot;: 1,
+        &quot;shape&quot;: [
+          64,
+          257
+        ],
+        &quot;strides&quot;: [
+          257,
+          1
+        ],
+        &quot;dtype&quot;: &quot;float32&quot;,
+        &quot;device&quot;: &quot;mps&quot;,
+        &quot;storage_offset&quot;: 0
+      }
+    ],
+    &quot;output&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;shape&quot;: [
+        64,
+        257
+      ],
+      &quot;strides&quot;: [
+        257,
+        1
+      ],
+      &quot;dtype&quot;: &quot;float32&quot;,
+      &quot;device&quot;: &quot;mps&quot;,
+      &quot;storage_offset&quot;: 0
+    },
+    &quot;epsilon&quot;: 0.0,
+    &quot;accumulation_dtype&quot;: &quot;float32&quot;,
+    &quot;reference_id&quot;: &quot;softmax&quot;,
+    &quot;reference_hash&quot;: &quot;616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef&quot;,
+    &quot;policy_version&quot;: 1
+  },
+  &quot;stages&quot;: {
+    &quot;numerically_valid&quot;: true,
+    &quot;search_fast&quot;: false,
+    &quot;final_verified&quot;: false,
+    &quot;confirmation_sessions&quot;: 0,
+    &quot;promoted&quot;: false
+  },
+  &quot;candidate_counts&quot;: {
+    &quot;valid&quot;: 2
+  }
+}</pre></section><section><h2>Confirmation sessions</h2><p>No valid timing comparisons were saved for this stage.</p><details><summary>Private numerical verification</summary><pre>null</pre></details></section><section><h2>Search evaluations</h2><div class="table"><table><thead><tr><th>Session / candidate</th><th>Baseline</th><th>Median speedup</th><th>95% interval</th><th>Pairs</th></tr></thead><tbody><tr><td>afe8b778eaea</td><td>original_eager</td><td>0.495×</td><td>0.470–0.509×</td><td>10</td></tr><tr><td>afe8b778eaea</td><td>torch_compile_inductor_fullgraph</td><td>2.055×</td><td>1.892–2.108×</td><td>10</td></tr><tr><td>9db1f51abe70</td><td>original_eager</td><td>0.074×</td><td>0.069–0.074×</td><td>10</td></tr><tr><td>9db1f51abe70</td><td>torch_compile_inductor_fullgraph</td><td>0.308×</td><td>0.302–0.314×</td><td>10</td></tr></tbody></table></div><p><code>afe8b778eaea</code> · valid · See raw evidence for numerical and timing details</p><p><code>9db1f51abe70</code> · valid · See raw evidence for numerical and timing details</p></section><section><h2>Candidate source</h2><details><summary>9db1f51abe70ee8c71b2bab43ca0d9575b22721021d9f87c124b0bcc7130a99f</summary><pre>#include &lt;metal_stdlib&gt;
+using namespace metal;
+kernel void metalmind_kernel(device const float* x, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint3 gid [[thread_position_in_grid]], uint3 tg [[thread_position_in_threadgroup]], uint3 tpg [[threads_per_threadgroup]]) {
+  uint row = gid.x;
+  if (row &gt;= B) { return; }
+  uint base = row * D;
+  float row_max = -3.4028235e38f;
+  for (uint i = 0; i &lt; D; ++i) {
+    row_max = max(row_max, x[base + i]);
+  }
+  float sum = 0.0f;
+  for (uint i = 0; i &lt; D; ++i) {
+    sum += exp(x[base + i] - row_max);
+  }
+  float inv_sum = 1.0f / sum;
+  for (uint i = 0; i &lt; D; ++i) {
+    out[base + i] = exp(x[base + i] - row_max) * inv_sum;
+  }
+}
+</pre></details><details><summary>afe8b778eaea7d563cbc9fd68f8d26b9e596362ba6ed58db0d2ae9a12a40a4fc</summary><pre>#include &lt;metal_stdlib&gt;
+using namespace metal;
+kernel void metalmind_kernel(device const float* x, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint3 gid [[thread_position_in_grid]], uint3 tg [[thread_position_in_threadgroup]], uint3 tpg [[threads_per_threadgroup]]) {
+  uint row = gid.y;
+  if (row &gt;= B) { return; }
+  uint lane = tg.x;
+  uint nt = tpg.x;
+  threadgroup float buf[256];
+  uint base = row * D;
+  float local_max = -3.4028235e38f;
+  for (uint i = lane; i &lt; D; i += nt) {
+    local_max = max(local_max, x[base + i]);
+  }
+  buf[lane] = local_max;
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  for (uint stride = nt / 2; stride &gt; 0; stride &gt;&gt;= 1) {
+    if (lane &lt; stride) { buf[lane] = max(buf[lane], buf[lane + stride]); }
+    threadgroup_barrier(mem_flags::mem_threadgroup);
+  }
+  float row_max = buf[0];
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  float local_sum = 0.0f;
+  for (uint i = lane; i &lt; D; i += nt) {
+    local_sum += exp(x[base + i] - row_max);
+  }
+  buf[lane] = local_sum;
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+  for (uint stride = nt / 2; stride &gt; 0; stride &gt;&gt;= 1) {
+    if (lane &lt; stride) { buf[lane] += buf[lane + stride]; }
+    threadgroup_barrier(mem_flags::mem_threadgroup);
+  }
+  float inv_sum = 1.0f / buf[0];
+  for (uint i = lane; i &lt; D; i += nt) {
+    float v = exp(x[base + i] - row_max) * inv_sum;
+    out[base + i] = v;
+  }
+}
+</pre></details></section><section><details><summary>Complete raw evidence and configuration</summary><pre>{
+  &quot;manifest&quot;: {
+    &quot;schema_version&quot;: 1,
+    &quot;phase&quot;: &quot;terminal&quot;,
+    &quot;workload&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;workload_id&quot;: &quot;softmax:small&quot;,
+      &quot;family&quot;: &quot;softmax&quot;,
+      &quot;semantics_version&quot;: 1,
+      &quot;inputs&quot;: [
+        {
+          &quot;schema_version&quot;: 1,
+          &quot;shape&quot;: [
+            64,
+            257
+          ],
+          &quot;strides&quot;: [
+            257,
+            1
+          ],
+          &quot;dtype&quot;: &quot;float32&quot;,
+          &quot;device&quot;: &quot;mps&quot;,
+          &quot;storage_offset&quot;: 0
+        }
+      ],
+      &quot;output&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;shape&quot;: [
+          64,
+          257
+        ],
+        &quot;strides&quot;: [
+          257,
+          1
+        ],
+        &quot;dtype&quot;: &quot;float32&quot;,
+        &quot;device&quot;: &quot;mps&quot;,
+        &quot;storage_offset&quot;: 0
+      },
+      &quot;epsilon&quot;: 0.0,
+      &quot;accumulation_dtype&quot;: &quot;float32&quot;,
+      &quot;reference_id&quot;: &quot;softmax&quot;,
+      &quot;reference_hash&quot;: &quot;616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef&quot;,
+      &quot;policy_version&quot;: 1
+    },
+    &quot;config&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;model&quot;: &quot;muse-wonder-1.0&quot;,
+      &quot;reasoning_effort&quot;: &quot;low&quot;,
+      &quot;domain_mode&quot;: &quot;assume&quot;,
+      &quot;max_candidates&quot;: 2,
+      &quot;max_requests&quot;: 2,
+      &quot;wall_seconds&quot;: 1800.0,
+      &quot;finalization_reserve_seconds&quot;: 300.0,
+      &quot;max_output_tokens&quot;: 4096,
+      &quot;total_output_tokens&quot;: 120000,
+      &quot;request_timeout_seconds&quot;: 120.0,
+      &quot;compile_timeout_seconds&quot;: 60.0,
+      &quot;execution_timeout_seconds&quot;: 120.0,
+      &quot;stagnation_limit&quot;: 10,
+      &quot;seed&quot;: 42,
+      &quot;runs_dir&quot;: &quot;runs&quot;,
+      &quot;artifacts_dir&quot;: &quot;artifacts&quot;,
+      &quot;warmups&quot;: 25,
+      &quot;search_pairs&quot;: 10,
+      &quot;confirmation_pairs&quot;: 30,
+      &quot;bootstrap_resamples&quot;: 10000,
+      &quot;confirmation_cooldown_seconds&quot;: 60.0
+    },
+    &quot;environment&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;python_version&quot;: &quot;3.14.6&quot;,
+      &quot;torch_version&quot;: &quot;2.15.0&quot;,
+      &quot;os_version&quot;: &quot;27.2&quot;,
+      &quot;architecture&quot;: &quot;arm64&quot;,
+      &quot;capabilities&quot;: {
+        &quot;mps_built&quot;: true,
+        &quot;mps_available&quot;: true,
+        &quot;compile_shader&quot;: true,
+        &quot;timed_events&quot;: true
+      },
+      &quot;unavailable_reason&quot;: null
+    },
+    &quot;requests&quot;: 2,
+    &quot;evaluated&quot;: 2,
+    &quot;output_tokens&quot;: 3454,
+    &quot;elapsed_seconds&quot;: 57.37093154199829,
+    &quot;wall_deadline_utc&quot;: 1793657451.373985,
+    &quot;seen&quot;: [
+      &quot;9db1f51abe70ee8c71b2bab43ca0d9575b22721021d9f87c124b0bcc7130a99f&quot;,
+      &quot;afe8b778eaea7d563cbc9fd68f8d26b9e596362ba6ed58db0d2ae9a12a40a4fc&quot;
+    ],
+    &quot;archive&quot;: [
+      {
+        &quot;score&quot;: 0.49486243171748956,
+        &quot;candidate&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;candidate_id&quot;: &quot;afe8b778eaea7d563cbc9fd68f8d26b9e596362ba6ed58db0d2ae9a12a40a4fc&quot;,
+          &quot;workload_hash&quot;: &quot;0e7ae7dc642d04bc5c667a89eb7573e955053ad72fb5472d4a8ced2ecbb8c4be&quot;,
+          &quot;proposal&quot;: {
+            &quot;schema_version&quot;: 1,
+            &quot;entry_point&quot;: &quot;metalmind_kernel&quot;,
+            &quot;source&quot;: &quot;#include &lt;metal_stdlib&gt;\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint3 gid [[thread_position_in_grid]], uint3 tg [[thread_position_in_threadgroup]], uint3 tpg [[threads_per_threadgroup]]) {\n  uint row = gid.y;\n  if (row &gt;= B) { return; }\n  uint lane = tg.x;\n  uint nt = tpg.x;\n  threadgroup float buf[256];\n  uint base = row * D;\n  float local_max = -3.4028235e38f;\n  for (uint i = lane; i &lt; D; i += nt) {\n    local_max = max(local_max, x[base + i]);\n  }\n  buf[lane] = local_max;\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  for (uint stride = nt / 2; stride &gt; 0; stride &gt;&gt;= 1) {\n    if (lane &lt; stride) { buf[lane] = max(buf[lane], buf[lane + stride]); }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n  }\n  float row_max = buf[0];\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  float local_sum = 0.0f;\n  for (uint i = lane; i &lt; D; i += nt) {\n    local_sum += exp(x[base + i] - row_max);\n  }\n  buf[lane] = local_sum;\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  for (uint stride = nt / 2; stride &gt; 0; stride &gt;&gt;= 1) {\n    if (lane &lt; stride) { buf[lane] += buf[lane + stride]; }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n  }\n  float inv_sum = 1.0f / buf[0];\n  for (uint i = lane; i &lt; D; i += nt) {\n    float v = exp(x[base + i] - row_max) * inv_sum;\n    out[base + i] = v;\n  }\n}\n&quot;,
+            &quot;threads&quot;: [
+              256,
+              64,
+              1
+            ],
+            &quot;group_size&quot;: [
+              256,
+              1,
+              1
+            ],
+            &quot;hypothesis&quot;: &quot;One 256-thread threadgroup per row with threadgroup max/sum reductions minimizes global traffic for 64x257 softmax and should be fast while remaining simple and correct.&quot;
+          },
+          &quot;parent_id&quot;: null,
+          &quot;model&quot;: &quot;muse-wonder-1.0&quot;
+        }
+      },
+      {
+        &quot;score&quot;: 0.07404065885964826,
+        &quot;candidate&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;candidate_id&quot;: &quot;9db1f51abe70ee8c71b2bab43ca0d9575b22721021d9f87c124b0bcc7130a99f&quot;,
+          &quot;workload_hash&quot;: &quot;0e7ae7dc642d04bc5c667a89eb7573e955053ad72fb5472d4a8ced2ecbb8c4be&quot;,
+          &quot;proposal&quot;: {
+            &quot;schema_version&quot;: 1,
+            &quot;entry_point&quot;: &quot;metalmind_kernel&quot;,
+            &quot;source&quot;: &quot;#include &lt;metal_stdlib&gt;\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint3 gid [[thread_position_in_grid]], uint3 tg [[thread_position_in_threadgroup]], uint3 tpg [[threads_per_threadgroup]]) {\n  uint row = gid.x;\n  if (row &gt;= B) { return; }\n  uint base = row * D;\n  float row_max = -3.4028235e38f;\n  for (uint i = 0; i &lt; D; ++i) {\n    row_max = max(row_max, x[base + i]);\n  }\n  float sum = 0.0f;\n  for (uint i = 0; i &lt; D; ++i) {\n    sum += exp(x[base + i] - row_max);\n  }\n  float inv_sum = 1.0f / sum;\n  for (uint i = 0; i &lt; D; ++i) {\n    out[base + i] = exp(x[base + i] - row_max) * inv_sum;\n  }\n}\n&quot;,
+            &quot;threads&quot;: [
+              64,
+              1,
+              1
+            ],
+            &quot;group_size&quot;: [
+              64,
+              1,
+              1
+            ],
+            &quot;hypothesis&quot;: &quot;One thread per row with register-only max/sum and no threadgroup barriers will beat the incumbent reduction on 64x257 by eliminating synchronization and excess threads.&quot;
+          },
+          &quot;parent_id&quot;: &quot;afe8b778eaea7d563cbc9fd68f8d26b9e596362ba6ed58db0d2ae9a12a40a4fc&quot;,
+          &quot;model&quot;: &quot;muse-wonder-1.0&quot;
+        }
+      }
+    ],
+    &quot;outcome&quot;: &quot;no_win&quot;
+  },
+  &quot;result&quot;: {
+    &quot;outcome&quot;: &quot;no_win&quot;,
+    &quot;reason&quot;: &quot;Search did not establish the minimum 1.05x public-wrapper gain&quot;,
+    &quot;artifact_path&quot;: null
+  },
+  &quot;stages&quot;: {
+    &quot;numerically_valid&quot;: true,
+    &quot;search_fast&quot;: false,
+    &quot;final_verified&quot;: false,
+    &quot;confirmation_sessions&quot;: 0,
+    &quot;promoted&quot;: false
+  },
+  &quot;candidate_counts&quot;: {
+    &quot;valid&quot;: 2
+  },
+  &quot;final_evidence&quot;: {
+    &quot;private_verification&quot;: null,
+    &quot;confirmations&quot;: []
+  },
+  &quot;events&quot;: [
+    {
+      &quot;event&quot;: &quot;request_reserved&quot;,
+      &quot;requests&quot;: 2,
+      &quot;output_tokens&quot;: 8192
+    },
+    {
+      &quot;event&quot;: &quot;model_response&quot;,
+      &quot;model&quot;: &quot;muse-wonder-1.0&quot;,
+      &quot;usage&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;input_tokens&quot;: 424,
+        &quot;output_tokens&quot;: 1749,
+        &quot;reasoning_tokens&quot;: 1155
+      },
+      &quot;requests&quot;: 1,
+      &quot;error&quot;: null
+    },
+    {
+      &quot;event&quot;: &quot;evaluation&quot;,
+      &quot;candidate_id&quot;: &quot;afe8b778eaea7d563cbc9fd68f8d26b9e596362ba6ed58db0d2ae9a12a40a4fc&quot;,
+      &quot;result&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;status&quot;: &quot;valid&quot;,
+        &quot;verification&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;passed&quot;: true,
+          &quot;cases&quot;: 10,
+          &quot;max_absolute_error&quot;: 7.450580596923828e-09,
+          &quot;max_relative_error&quot;: 4.211388098785688e-07,
+          &quot;rmse&quot;: 7.378737138522167e-10,
+          &quot;mismatches&quot;: 0,
+          &quot;reason&quot;: null
+        },
+        &quot;elapsed_ms&quot;: [
+          0.011874504201114178,
+          0.012185758299892768,
+          0.011914920799608809,
+          0.011989583300601226,
+          0.012246641599631403,
+          0.011822116699477192,
+          0.011992329100030475,
+          0.0123046875,
+          0.012019662499369588,
+          0.012225387500075157
+        ],
+        &quot;reason&quot;: null,
+        &quot;device_fault&quot;: false,
+        &quot;timing&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;seed&quot;: 42,
+          &quot;bootstrap_resamples&quot;: 10000,
+          &quot;comparisons&quot;: [
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;original_eager&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.00556358750036452,
+                  0.006164241599617526,
+                  0.005855224998958875,
+                  0.006129149999469519,
+                  0.006102566600020509,
+                  0.006109500001184642,
+                  0.005694479199883062,
+                  0.005783395799517166,
+                  0.005555479100439698,
+                  0.006192770801135339
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.011874504201114178,
+                  0.012185758299892768,
+                  0.011914920799608809,
+                  0.011989583300601226,
+                  0.012246641599631403,
+                  0.011822116699477192,
+                  0.011992329100030475,
+                  0.0123046875,
+                  0.012019662499369588,
+                  0.012225387500075157
+                ],
+                &quot;repetitions&quot;: 10000,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 0.49486243171748956,
+                &quot;lower&quot;: 0.47001565862742684,
+                &quot;upper&quot;: 0.5085312370859201,
+                &quot;pairs&quot;: 10
+              }
+            },
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;torch_compile_inductor_fullgraph&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.024699154100380837,
+                  0.02566580840066308,
+                  0.024317425000481306,
+                  0.024147970801277552,
+                  0.024549679200572428,
+                  0.02632776670070598,
+                  0.025809279199165758,
+                  0.0263650291992235,
+                  0.02576973750110483,
+                  0.026052766700740904
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.012082008300058077,
+                  0.012330199999269098,
+                  0.012265274999663234,
+                  0.013402741600293666,
+                  0.013777341700915713,
+                  0.012748516601277515,
+                  0.012091650000365916,
+                  0.01341379999939818,
+                  0.012347270800091792,
+                  0.01207126669905847
+                ],
+                &quot;repetitions&quot;: 10000,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 2.054727624134916,
+                &quot;lower&quot;: 1.8921712274975588,
+                &quot;upper&quot;: 2.108005779121508,
+                &quot;pairs&quot;: 10
+              }
+            }
+          ],
+          &quot;unavailable&quot;: [],
+          &quot;boundary&quot;: &quot;amortized synchronized public function latency&quot;,
+          &quot;domain_mode&quot;: &quot;assume&quot;
+        }
+      }
+    },
+    {
+      &quot;event&quot;: &quot;request_reserved&quot;,
+      &quot;requests&quot;: 1,
+      &quot;output_tokens&quot;: 4096
+    },
+    {
+      &quot;event&quot;: &quot;model_response&quot;,
+      &quot;model&quot;: &quot;muse-wonder-1.0&quot;,
+      &quot;usage&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;input_tokens&quot;: 1538,
+        &quot;output_tokens&quot;: 1705,
+        &quot;reasoning_tokens&quot;: 1347
+      },
+      &quot;requests&quot;: 1,
+      &quot;error&quot;: null
+    },
+    {
+      &quot;event&quot;: &quot;evaluation&quot;,
+      &quot;candidate_id&quot;: &quot;9db1f51abe70ee8c71b2bab43ca0d9575b22721021d9f87c124b0bcc7130a99f&quot;,
+      &quot;result&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;status&quot;: &quot;valid&quot;,
+        &quot;verification&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;passed&quot;: true,
+          &quot;cases&quot;: 10,
+          &quot;max_absolute_error&quot;: 2.2351741790771484e-08,
+          &quot;max_relative_error&quot;: 1.3177417332820052e-06,
+          &quot;rmse&quot;: 4.816788887310667e-09,
+          &quot;mismatches&quot;: 0,
+          &quot;reason&quot;: null
+        },
+        &quot;elapsed_ms&quot;: [
+          0.08256980839942116,
+          0.08026667920057662,
+          0.08018707500013988,
+          0.08007130000041798,
+          0.08019217499968363,
+          0.0801536541999667,
+          0.0802630207996117,
+          0.08040195000066888,
+          0.08081587079941528,
+          0.08015246669965563
+        ],
+        &quot;reason&quot;: null,
+        &quot;device_fault&quot;: false,
+        &quot;timing&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;seed&quot;: 42,
+          &quot;bootstrap_resamples&quot;: 10000,
+          &quot;comparisons&quot;: [
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;original_eager&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.005414495799050201,
+                  0.0059781584001029845,
+                  0.005917591699108016,
+                  0.006007583400059957,
+                  0.005412733399134595,
+                  0.005954133400518913,
+                  0.005978445800428745,
+                  0.005976037499203812,
+                  0.005706991700571961,
+                  0.005539587499515619
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.08256980839942116,
+                  0.08026667920057662,
+                  0.08018707500013988,
+                  0.08007130000041798,
+                  0.08019217499968363,
+                  0.0801536541999667,
+                  0.0802630207996117,
+                  0.08040195000066888,
+                  0.08081587079941528,
+                  0.08015246669965563
+                ],
+                &quot;repetitions&quot;: 10000,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 0.07404065885964826,
+                &quot;lower&quot;: 0.06905712084467183,
+                &quot;upper&quot;: 0.07447870597915603,
+                &quot;pairs&quot;: 10
+              }
+            },
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;torch_compile_inductor_fullgraph&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.024401194092860123,
+                  0.02446940088063343,
+                  0.024724609374970896,
+                  0.025275360105325717,
+                  0.02553037524677393,
+                  0.03707411694264806,
+                  0.025107767822163396,
+                  0.024897257571154796,
+                  0.024217274901872088,
+                  0.02434043383914286
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.08055316162369763,
+                  0.08064480590874723,
+                  0.08047837328817309,
+                  0.0805188090815534,
+                  0.08069813012667737,
+                  0.08134605932497152,
+                  0.08083135986325374,
+                  0.08085707592897506,
+                  0.08129049682636946,
+                  0.08110570263752948
+                ],
+                &quot;repetitions&quot;: 4096,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 0.3075687044382831,
+                &quot;lower&quot;: 0.3017647298081162,
+                &quot;upper&quot;: 0.31390628343404325,
+                &quot;pairs&quot;: 10
+              }
+            }
+          ],
+          &quot;unavailable&quot;: [],
+          &quot;boundary&quot;: &quot;amortized synchronized public function latency&quot;,
+          &quot;domain_mode&quot;: &quot;assume&quot;
+        }
+      }
+    },
+    {
+      &quot;event&quot;: &quot;finalized&quot;,
+      &quot;outcome&quot;: &quot;no_win&quot;,
+      &quot;reason&quot;: &quot;Search did not establish the minimum 1.05x public-wrapper gain&quot;
+    }
+  ],
+  &quot;candidates&quot;: [
+    {
+      &quot;candidate_id&quot;: &quot;9db1f51abe70ee8c71b2bab43ca0d9575b22721021d9f87c124b0bcc7130a99f&quot;,
+      &quot;source&quot;: &quot;#include &lt;metal_stdlib&gt;\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint3 gid [[thread_position_in_grid]], uint3 tg [[thread_position_in_threadgroup]], uint3 tpg [[threads_per_threadgroup]]) {\n  uint row = gid.x;\n  if (row &gt;= B) { return; }\n  uint base = row * D;\n  float row_max = -3.4028235e38f;\n  for (uint i = 0; i &lt; D; ++i) {\n    row_max = max(row_max, x[base + i]);\n  }\n  float sum = 0.0f;\n  for (uint i = 0; i &lt; D; ++i) {\n    sum += exp(x[base + i] - row_max);\n  }\n  float inv_sum = 1.0f / sum;\n  for (uint i = 0; i &lt; D; ++i) {\n    out[base + i] = exp(x[base + i] - row_max) * inv_sum;\n  }\n}\n&quot;
+    },
+    {
+      &quot;candidate_id&quot;: &quot;afe8b778eaea7d563cbc9fd68f8d26b9e596362ba6ed58db0d2ae9a12a40a4fc&quot;,
+      &quot;source&quot;: &quot;#include &lt;metal_stdlib&gt;\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint3 gid [[thread_position_in_grid]], uint3 tg [[thread_position_in_threadgroup]], uint3 tpg [[threads_per_threadgroup]]) {\n  uint row = gid.y;\n  if (row &gt;= B) { return; }\n  uint lane = tg.x;\n  uint nt = tpg.x;\n  threadgroup float buf[256];\n  uint base = row * D;\n  float local_max = -3.4028235e38f;\n  for (uint i = lane; i &lt; D; i += nt) {\n    local_max = max(local_max, x[base + i]);\n  }\n  buf[lane] = local_max;\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  for (uint stride = nt / 2; stride &gt; 0; stride &gt;&gt;= 1) {\n    if (lane &lt; stride) { buf[lane] = max(buf[lane], buf[lane + stride]); }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n  }\n  float row_max = buf[0];\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  float local_sum = 0.0f;\n  for (uint i = lane; i &lt; D; i += nt) {\n    local_sum += exp(x[base + i] - row_max);\n  }\n  buf[lane] = local_sum;\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  for (uint stride = nt / 2; stride &gt; 0; stride &gt;&gt;= 1) {\n    if (lane &lt; stride) { buf[lane] += buf[lane + stride]; }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n  }\n  float inv_sum = 1.0f / buf[0];\n  for (uint i = lane; i &lt; D; i += nt) {\n    float v = exp(x[base + i] - row_max) * inv_sum;\n    out[base + i] = v;\n  }\n}\n&quot;
+    }
+  ]
+}</pre></details></section></main></body></html>

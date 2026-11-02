@@ -1,0 +1,47 @@
+{
+  "campaign_id": "4ba23d2ada20e97c974af64e800f924d46679de8d0bfe53935b46f26bd0e16e8",
+  "config": {
+    "schema_version": 1,
+    "families": [
+      "bias_gelu",
+      "rmsnorm",
+      "softmax"
+    ],
+    "cases": [
+      "small",
+      "medium",
+      "large"
+    ],
+    "strategies": [
+      "feedback"
+    ],
+    "trials": 1,
+    "dtype": "float32",
+    "domain_mode": "assume",
+    "run_config": {
+      "schema_version": 1,
+      "model": "muse-wonder-1.0",
+      "reasoning_effort": "low",
+      "domain_mode": "assume",
+      "max_candidates": 2,
+      "max_requests": 2,
+      "wall_seconds": 1800.0,
+      "finalization_reserve_seconds": 300.0,
+      "max_output_tokens": 4096,
+      "total_output_tokens": 120000,
+      "request_timeout_seconds": 120.0,
+      "compile_timeout_seconds": 60.0,
+      "execution_timeout_seconds": 120.0,
+      "stagnation_limit": 10,
+      "seed": 42,
+      "runs_dir": "runs",
+      "artifacts_dir": "artifacts",
+      "warmups": 25,
+      "search_pairs": 10,
+      "confirmation_pairs": 30,
+      "bootstrap_resamples": 10000,
+      "confirmation_cooldown_seconds": 60.0
+    }
+  },
+  "jobs": 9
+}

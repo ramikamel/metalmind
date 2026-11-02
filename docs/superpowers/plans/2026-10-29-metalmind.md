@@ -1,6 +1,6 @@
 # MetalMind Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. This is a planning deliverable, not authorization to start implementation.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Implementation was subsequently authorized in the conversation. See [current progress](../../progress.md) for executed work, evidence, and deviations.
 
 **Goal:** Build a local autonomous agent that turns supported PyTorch functions into numerically verified Metal implementations, promotes only confirmed performance wins, and exports guarded reusable callables.
 
@@ -10,7 +10,7 @@
 
 **Spec:** [MetalMind end-to-end system design](../specs/2026-10-29-metalmind-design.md). Read both documents before implementation; the design defines policy and this document defines work order.
 
-**Planning status:** Proposed, October 29, 2026. No application code, package installation, model API call, or GPU benchmark has been performed as part of writing these documents. All commands below are future implementation/acceptance commands.
+**Planning baseline:** Written October 29, 2026 before implementation. Implementation is now underway; unchecked items below preserve the original acceptance checklist and are not a current completion report. [Current progress](../../progress.md) distinguishes working code, verified acceptance, and remaining research work.
 
 ## Global Constraints
 

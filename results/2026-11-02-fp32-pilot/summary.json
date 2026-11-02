@@ -1,0 +1,98 @@
+{
+  "attempted": 9,
+  "promoted": 2,
+  "failed": 0,
+  "geometric_mean_speedup": 1.0600988389861292,
+  "rows": [
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/9a1d930ffb6c4ed283350419393488ab",
+      "requests": 2
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/362f5d0aba09458a813648750f4519b9",
+      "requests": 2
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/7b4afa4d75d941ea8db87d49fe0cd2ec",
+      "requests": 2
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/69eb2b02fc8e4dcca10760fe36356abf",
+      "requests": 2
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/d18efdee367f4164bccaefa1f618ebb7",
+      "requests": 2
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "promoted",
+      "speedup": 1.0930563819553747,
+      "run_path": "runs/5c86d932910b43ffb0b4a6a5c21792e5",
+      "requests": 2
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/47d429c839cc4c368a07bf88f6ccc27b",
+      "requests": 2
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/4e69ff49c7c44bdf87315f724bb061da",
+      "requests": 2
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "promoted",
+      "speedup": 1.5469442608743058,
+      "run_path": "runs/6bfcb318365540c48519cb8f4c5fbe94",
+      "requests": 2
+    }
+  ]
+}
