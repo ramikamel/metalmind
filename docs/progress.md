@@ -4,7 +4,9 @@ Updated November 2, 2026. Plan: [ordered implementation tasks](superpowers/plans
 
 ## Current state
 
-The initial function-level optimizer is implemented on `feat/optimizer-core`.
+The initial function-level optimizer is published on `main` (`cdb8ec1`). Remote
+CPU CI passed: https://github.com/ramikamel/metalmind/actions/runs/41533494733.
+Module follow-on work is now on `feat/module-optimizer`.
 Tasks 1–12 have working code and targeted CPU/GPU verification. Tasks 13–14
 have the campaign runner, CLI, reports, and examples; their end-to-end acceptance
 is being exercised. Task 15 release verification is in progress. The full
@@ -119,3 +121,36 @@ not identified. Follow-on graph profiling/replacement and a recorded submission
 video remain future work. No whole-model optimizer or general kernel support
 is claimed. Browser visual preview of the HTML report was blocked by the local
 file URL policy; automated report-content and escaping checks passed.
+
+
+## Module continuation — November 2, 2026
+
+Executing original Tasks 16–17 through the concrete module plan. API usage remains
+25/30: no new generation is needed; reuse the promoted pilot artifacts.
+Ruling: begin with flat pure eval-mode FP32 modules — this makes source admission,
+live parameter guards and graph boundaries reviewable; unsupported module forms
+fall back, so coverage is deliberately narrower than arbitrary PyTorch modules.
+Ruling: module optimization consumes promoted artifacts and emits extracted
+registered workload specs for the existing function optimizer — avoids a second
+kernel evaluator and any unapproved aggregate API spending; unseen signatures
+remain fallback-only until separately optimized.
+
+
+Module Tasks A/B: capture, exact partition, live guards and standalone profiling
+implemented. Task C: promoted-artifact rewrite, eight private whole-output cases,
+source snapshots and two integrated confirmation gates implemented. Task D CLI
+and cached example implemented; final review/evidence/publication pending.
+Full suite: 108 passed in 12.44s, no skips. New tests first reproduced missing
+interfaces, output/annotated mutation, dtype metadata extraction, invocation and
+operator changes, CPU fault classification, keyword fallback and assumed-mode
+example-domain validation; each is now green.
+
+First integrated development run `e27a0232849b4431a838f4d417f2c360`:
+private cases passed, first whole-module session 1.026×, below 1.05×; no-win and
+original fallback retained. Profiling found repeated Pydantic model construction,
+module traversal and descriptor inspection in the call guard. Direct metadata
+comparison preserves guards and is being measured in a new immutable run.
+Ruling: module timing uses the original eager whole module as its explicitly
+labeled baseline — function artifacts already beat the verified compiled local
+baseline, but no compiled whole-module improvement is claimed; strongest whole-
+module compiler comparisons remain a separate research acceptance item.

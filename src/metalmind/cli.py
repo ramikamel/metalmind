@@ -39,6 +39,14 @@ def main(argv=None):
         cmd=commands.add_parser(name);cmd.add_argument("--artifact",type=Path,required=True)
         cmd.add_argument("--function",required=name=="revalidate")
         if name=="revalidate": cmd.add_argument("--assume-domain",action="store_true")
+    module_analysis=commands.add_parser("analyze-module",help="Analyze a trusted flat pure inference module")
+    module_analysis.add_argument("--factory",required=True,help="Trusted module:factory returning (module, example_inputs)")
+    module_analysis.add_argument("--measure",action="store_true",help="Measure synchronized standalone latencies on MPS")
+    module_opt=commands.add_parser("optimize-module",help="Reuse promoted artifacts; makes no model requests")
+    module_opt.add_argument("--factory",required=True,help="Trusted module:factory returning (module, example_inputs)")
+    module_opt.add_argument("--artifact",action="append",type=Path,default=[])
+    module_opt.add_argument("--assume-domain",action="store_true",help="Explicit guarantee for every replaced region's input domain")
+    module_opt.add_argument("--output-dir",type=Path,default=Path("runs/modules"))
     campaign=commands.add_parser("evaluate")
     campaign.add_argument("--suite",type=Path,required=True)
     campaign.add_argument("--execute",action="store_true",help="Run the full configured campaign, including billable model requests")
@@ -80,6 +88,18 @@ def _run(args):
     from metalmind.workloads.registry import get_workload
     from metalmind.artifacts.export import finalize_run,verify_artifact_evidence
     from metalmind.artifacts.store import atomic_json
+    if args.command in ("analyze-module","optimize-module"):
+        factory=_function(args.factory)
+        if not callable(factory): raise ValueError("Factory must be callable")
+        module,inputs=factory()
+        if args.command=="analyze-module":
+            from metalmind.api import analyze_module
+            result=analyze_module(module,inputs,measure=args.measure)
+            print(result.model_dump_json(indent=2));return 0 if result.supported else 1
+        from metalmind.graph.rewrite import ModuleOptimizationConfig,optimize_module
+        result=optimize_module(module,inputs,config=ModuleOptimizationConfig(artifact_paths=tuple(args.artifact),
+            domain_mode="assume" if args.assume_domain else "checked",output_dir=args.output_dir))
+        print(json.dumps(result.report(),indent=2));return 1 if result.outcome=="failed" else 0
     if args.command in ("analyze","optimize"):
         workload=get_workload(args.workload,args.case,args.dtype)
         if args.function:

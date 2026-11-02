@@ -22,3 +22,13 @@ def optimize(workload,*,config=None):
 def analyze(fn,example_inputs):
     from metalmind.analysis import analyze as analyze_function
     return analyze_function(fn,example_inputs)
+
+
+def analyze_module(module, example_inputs, *, measure=False):
+    from metalmind.graph.profile import analyze_module as analyze
+    return analyze(module, example_inputs, measure=measure)
+
+
+def optimize_module(module, example_inputs, *, config=None):
+    from metalmind.graph.rewrite import optimize_module as optimize
+    return optimize(module, example_inputs, config=config)

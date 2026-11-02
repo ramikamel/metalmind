@@ -41,3 +41,15 @@ def test_analyze_bundled_workload_and_campaign_preview(capsys):
     assert main(["evaluate","--suite","configs/evaluation.yaml"])==0
     campaign=json.loads(capsys.readouterr().out)
     assert campaign['jobs']==108
+
+
+def test_module_commands_are_offline_and_keep_no_artifact_fallback(capsys, tmp_path, monkeypatch):
+    from metalmind.agent.meta import MetaProvider
+    def forbidden(*args): raise AssertionError("Module reuse must not make model requests")
+    monkeypatch.setattr(MetaProvider,"propose",forbidden)
+    assert main(["analyze-module","--factory","examples.module_workloads:make_cpu_demo"]) == 0
+    analysis = json.loads(capsys.readouterr().out)
+    assert analysis["supported"] and analysis["regions"]
+    assert main(["optimize-module","--factory","examples.module_workloads:make_cpu_demo","--output-dir",str(tmp_path)]) == 0
+    result = json.loads(capsys.readouterr().out)
+    assert result["outcome"] == "no_artifact" and result["model_requests"] == 0
