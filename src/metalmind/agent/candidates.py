@@ -9,10 +9,11 @@ def validate_proposal(raw):
     if text.startswith("```json") and text.endswith("```"): text=text[7:-3].strip()
     proposal=CandidateProposal.model_validate_json(text)
     if len(proposal.source.encode())>65536: raise ValueError("source byte budget exceeded")
-    includes=re.findall(r'\s*#\s*include\s*[<"]([^>"]+)',proposal.source)
-    if any(s!="metal_stdlib" for s in includes): raise ValueError("only metal_stdlib may be included")
-    if re.search(r"#\s*(?:define|import|include_next)\b",proposal.source):
-        raise ValueError("preprocessor macros/imports are outside initial source policy")
+    if chr(92) in proposal.source or '??' in proposal.source:
+        raise ValueError("source continuations/trigraphs are outside initial policy")
+    for line in proposal.source.splitlines():
+        if '#' in line and re.fullmatch(r'\s*#\s*include\s*<metal_stdlib>\s*',line) is None:
+            raise ValueError("only a direct metal_stdlib include is allowed")
     return proposal
 
 def make_candidate(proposal,workload,*,parent_id=None,model="manual"):

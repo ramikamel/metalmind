@@ -1,0 +1,13 @@
+# Development pilot, separate from the frozen 108-job campaign.
+# Nine FP32 signatures, one feedback trial each, at most 18 generation requests.
+families: [bias_gelu, rmsnorm, softmax]
+cases: [small, medium, large]
+strategies: [feedback]
+trials: 1
+dtype: float32
+domain_mode: assume
+run_config:
+  max_requests: 2
+  max_candidates: 2
+  max_output_tokens: 4096
+  domain_mode: assume

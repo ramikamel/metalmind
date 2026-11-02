@@ -1,0 +1,7 @@
+# Frozen campaign design. Run a rehearsal before explicitly executing a full paid campaign.
+families: [bias_gelu, rmsnorm, softmax]
+cases: [small, medium, large]
+strategies: [feedback, one_shot, independent, template]
+trials: 3
+dtype: float32
+domain_mode: checked

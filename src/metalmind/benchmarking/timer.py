@@ -19,14 +19,15 @@ def _calibrate(fn,target_ms):
     while _block(fn,n)*n<target_ms and n<10000: n=min(10000,n*2)
     return n
 
-def measure_pair(baseline,candidate,*,pairs=10,target_ms=100,seed=42):
+def measure_pair(baseline,candidate,*,pairs=10,target_ms=100,seed=42,warmups=25):
     with torch.inference_mode():
-        for _ in range(25): baseline();candidate()
+        for _ in range(warmups): baseline();candidate()
         n=max(_calibrate(baseline,target_ms),_calibrate(candidate,target_ms))
-        for attempt in range(8):
+        max_attempts=1+(200-warmups)//25
+        for attempt in range(max_attempts):
             pilot=[_block(baseline,n) for _ in range(5)]
             if abs(statistics.median(pilot[:2])/statistics.median(pilot[-2:])-1)<=.1: break
-            if attempt==7: raise BenchmarkUnstable("baseline warmup remained unstable")
+            if attempt==max_attempts-1: raise BenchmarkUnstable("baseline warmup remained unstable")
             for _ in range(25): baseline();candidate()
         control=statistics.median(pilot)
         a=[];b=[];order=[];rng=random.Random(seed)
@@ -50,9 +51,9 @@ def evaluate_performance(request,backend,kernel,verification):
     comparisons=[]
     for name,fn in baselines:
         series=measure_pair(lambda:fn(*inputs),lambda:candidate(*inputs),
-            pairs=30 if request.mode=="confirm" else 10,seed=request.seed)
+            pairs=request.confirmation_pairs if request.mode=="confirm" else request.search_pairs,seed=request.seed,warmups=request.warmups)
         comparisons.append(BaselineTiming(name=name,series=series,
-            summary=summarize_pairs(series.baseline_ms,series.candidate_ms,seed=request.seed)))
-    timing=TimingReport(comparisons=tuple(comparisons),unavailable=unavailable,domain_mode=request.domain_mode)
+            summary=summarize_pairs(series.baseline_ms,series.candidate_ms,seed=request.seed,resamples=request.bootstrap_resamples)))
+    timing=TimingReport(seed=request.seed,bootstrap_resamples=request.bootstrap_resamples,comparisons=tuple(comparisons),unavailable=unavailable,domain_mode=request.domain_mode)
     return EvaluationResult(status="valid",verification=verification,timing=timing,
         elapsed_ms=comparisons[0].series.candidate_ms)

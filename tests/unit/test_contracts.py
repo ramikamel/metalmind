@@ -37,3 +37,11 @@ def test_config_redaction_and_budget_validation(tmp_path):
     assert "api_key" not in RunConfig().model_dump_json()
     for patch in ({"wall_seconds": 20}, {"epsilon": float('nan')}, {"max_requests": 0}):
         with pytest.raises(ValidationError): RunConfig(**patch)
+
+
+def test_uint32_element_count_cannot_overflow():
+    from metalmind.contracts import TensorSpec
+    tensor=TensorSpec(shape=(65536,65536),strides=(65536,1))
+    parameter=TensorSpec(shape=(65536,),strides=(1,))
+    with pytest.raises(ValidationError):
+        WorkloadSpec(workload_id='oversized',family='bias_gelu',inputs=(tensor,parameter),output=tensor)

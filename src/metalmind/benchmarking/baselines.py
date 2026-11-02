@@ -11,6 +11,8 @@ from metalmind.verification.policy import policy_for
 def collect_baselines(workload,environment=None):
     if os.environ.get("PYTORCH_ENABLE_MPS_FALLBACK")=="1":
         raise ValueError("Disable PYTORCH_ENABLE_MPS_FALLBACK for GPU comparisons")
+    if os.environ.get("MTL_SHADER_VALIDATION") not in (None,"0"):
+        raise ValueError("Disable Shader Validation for performance measurement")
     reference=resolve_reference(workload.reference_id)
     options=[("original_eager",reference)]
     if workload.family=="rmsnorm":
@@ -31,6 +33,8 @@ def collect_baselines(workload,environment=None):
                 for fixture in fixtures:
                     inputs=tuple(t.to("mps") for t in fixture.inputs)
                     actual=fn(*inputs);torch.mps.synchronize()
+                    if not isinstance(actual,torch.Tensor) or actual.device.type!="mps":
+                        raise ValueError("reference output must remain on MPS")
                     if not compare_outputs(actual,reference(*fixture.inputs),policy_for(workload)).passed:
                         raise ValueError("baseline disagrees with numerical contract")
             valid.append((name,fn))

@@ -11,9 +11,9 @@ class ProposalContext(Contract):
     timeout_seconds: float = Field(default=120,gt=0)
 
 class UsageRecord(Contract):
-    input_tokens: int | None = None
-    output_tokens: int | None = None
-    reasoning_tokens: int | None = None
+    input_tokens: int | None = Field(default=None,ge=0)
+    output_tokens: int | None = Field(default=None,ge=0)
+    reasoning_tokens: int | None = Field(default=None,ge=0)
 
 class ProposalResponse(Contract):
     proposal: CandidateProposal | None = None

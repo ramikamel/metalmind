@@ -24,3 +24,10 @@ def test_auth_error_is_not_retried(sample_workload):
     with pytest.raises(ProviderError):
         MetaProvider(RunConfig(),transport=transport).propose(ProposalContext(workload=sample_workload))
     assert len(calls)==1
+
+
+@pytest.mark.parametrize("source",['#include /* comment */ "/private/file"\nkernel void metalmind_kernel() {}', '#include <metal_stdlib>\n#pragma clang diagnostic ignored "x"'])
+def test_obfuscated_or_extra_preprocessor_directives_are_rejected(source):
+    from metalmind.agent.candidates import validate_proposal
+    with pytest.raises(ValueError):
+        validate_proposal(json.dumps({'source':source,'threads':[6,1,1],'group_size':[2,1,1],'hypothesis':'test'}))

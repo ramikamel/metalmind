@@ -1,6 +1,10 @@
 """Trusted references and their exact supported signature matrix."""
 import hashlib
 import inspect
+import importlib
+import json
+import dis
+from pathlib import Path
 from metalmind.contracts import TensorSpec, WorkloadSpec
 from metalmind.workloads import bias_gelu, rmsnorm, softmax
 
@@ -24,8 +28,23 @@ def workload_for_shape(family,shape,*,dtype="float32",case_id="custom"):
         reference_hash=reference_hash(family))
 
 def resolve_reference(reference_id):
+    if reference_id.startswith("python:"):
+        _,module,name=reference_id.split(":")
+        return getattr(importlib.import_module(module),name)
     try: return _MODULES[reference_id].reference
     except KeyError: raise ValueError("Unregistered reference identifier") from None
 
 def resolve_oracle(family):
     return _MODULES[family].oracle
+
+
+def fingerprint_reference(reference_id):
+    if not reference_id.startswith("python:"): return reference_hash(reference_id)
+    fn=resolve_reference(reference_id)
+    from metalmind.workloads.capture import describe_reference
+    describe_reference(fn)
+    module=importlib.import_module(fn.__module__)
+    scalars={name:fn.__globals__.get(name) for name in {i.argval for i in dis.get_instructions(fn) if i.opname=='LOAD_GLOBAL'}
+        if isinstance(fn.__globals__.get(name),(str,int,float,bool))}
+    identity=Path(module.__file__).read_bytes()+json.dumps([fn.__defaults__,scalars],sort_keys=True).encode()
+    return hashlib.sha256(identity).hexdigest()

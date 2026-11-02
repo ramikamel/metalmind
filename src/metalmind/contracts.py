@@ -55,7 +55,7 @@ class WorkloadSpec(Contract):
     inputs: tuple[TensorSpec, ...]
     output: TensorSpec
     epsilon: float = Field(default=0.0, ge=0)
-    accumulation_dtype: Literal["float32", "float64"] = "float32"
+    accumulation_dtype: Literal["float32"] = "float32"
     reference_id: str = ""
     reference_hash: str = ""
     policy_version: int = 1
@@ -67,6 +67,8 @@ class WorkloadSpec(Contract):
             raise ValueError("unsupported input count or rank")
         if any(d==0 or d>=2**32 for d in self.inputs[0].shape):
             raise ValueError("optimized shapes must be positive uint32 dimensions")
+        if self.inputs[0].shape[0]*self.inputs[0].shape[1]>=2**32:
+            raise ValueError("element count exceeds uint32 ABI")
         if len(self.inputs)>1 and self.inputs[1].shape!=(self.inputs[0].shape[-1],):
             raise ValueError("parameter must match final dimension")
         if self.output.shape!=self.inputs[0].shape:
@@ -123,6 +125,8 @@ class BaselineTiming(Contract):
     summary: ConfirmationResult
 
 class TimingReport(Contract):
+    seed: int = 42
+    bootstrap_resamples: int = Field(default=10000,ge=1000)
     comparisons: tuple[BaselineTiming,...]
     unavailable: tuple[str,...] = ()
     boundary: str = "amortized synchronized public function latency"
@@ -137,6 +141,7 @@ class EvaluationResult(Contract):
     verification: VerificationSummary | None = None
     elapsed_ms: tuple[float,...] = ()
     reason: str | None = None
+    device_fault: bool = False
     timing: TimingReport | None = None
 
     @model_validator(mode="after")
@@ -149,6 +154,11 @@ class EvaluationResult(Contract):
 
 
 class EvaluationRequest(Contract):
+    total_timeout_seconds: float | None = Field(default=None,gt=0)
+    warmups: int = Field(default=25,ge=25,le=200)
+    search_pairs: int = Field(default=10,ge=2)
+    confirmation_pairs: int = Field(default=30,ge=30)
+    bootstrap_resamples: int = Field(default=10000,ge=1000)
     candidate: CandidateSpec
     workload: WorkloadSpec
     mode: Literal["search","final_verify","confirm"] = "search"

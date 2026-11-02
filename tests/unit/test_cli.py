@@ -32,3 +32,12 @@ def test_doctor_rejects_missing_shader_api(monkeypatch, capsys):
     report = json.loads(capsys.readouterr().out)
     assert report["capabilities"]["compile_shader"] is False
     assert report["unavailable_reason"]
+
+
+def test_analyze_bundled_workload_and_campaign_preview(capsys):
+    assert main(["analyze","--workload","bias_gelu","--case","small","--json"])==0
+    report=json.loads(capsys.readouterr().out)
+    assert report['workload']['family']=='bias_gelu'
+    assert main(["evaluate","--suite","configs/evaluation.yaml"])==0
+    campaign=json.loads(capsys.readouterr().out)
+    assert campaign['jobs']==108
