@@ -1,0 +1,146 @@
+{
+  "phase": "terminal",
+  "config": {
+    "schema_version": 1,
+    "artifact_paths": [
+      "results/2026-11-02-fp32-pilot/artifacts/db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87"
+    ],
+    "domain_mode": "assume",
+    "output_dir": "runs/modules",
+    "private_cases": 8,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0,
+    "wall_seconds": 600.0
+  },
+  "analysis": {
+    "schema_version": 1,
+    "supported": true,
+    "reason": null,
+    "graph_hash": "9e1962e252273e23e98515446ed6e65463c7d20f7a1d1661108f3b2ecedfa958",
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "regions": [
+      {
+        "schema_version": 1,
+        "region_id": "e9afc5aeedc03f00a4b09d56484a27d07d0909a9c260deb61447dee55588ad9f",
+        "family": "bias_gelu",
+        "output_name": "gelu",
+        "node_names": [
+          "add",
+          "gelu"
+        ],
+        "input_names": [
+          "x",
+          "bias"
+        ],
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              1024
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "workload": {
+          "schema_version": 1,
+          "workload_id": "bias_gelu:medium",
+          "family": "bias_gelu",
+          "semantics_version": 1,
+          "inputs": [
+            {
+              "schema_version": 1,
+              "shape": [
+                256,
+                1024
+              ],
+              "strides": [
+                1024,
+                1
+              ],
+              "dtype": "float32",
+              "device": "mps",
+              "storage_offset": 0
+            },
+            {
+              "schema_version": 1,
+              "shape": [
+                1024
+              ],
+              "strides": [
+                1
+              ],
+              "dtype": "float32",
+              "device": "mps",
+              "storage_offset": 0
+            }
+          ],
+          "output": {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          "epsilon": 0.0,
+          "accumulation_dtype": "float32",
+          "reference_id": "bias_gelu",
+          "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+          "policy_version": 1
+        },
+        "estimated_input_bytes": 1052672,
+        "reason": null,
+        "latency": null
+      }
+    ],
+    "exclusions": [],
+    "whole_latency": null,
+    "ranking_basis": "estimated input bytes; no timing attribution",
+    "constraints": [
+      "flat pure eval-mode FP32 modules",
+      "standalone times must not be summed"
+    ]
+  },
+  "model_requests": 0
+}

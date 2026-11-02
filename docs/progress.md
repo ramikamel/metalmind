@@ -4,14 +4,12 @@ Updated November 2, 2026. Plan: [ordered implementation tasks](superpowers/plans
 
 ## Current state
 
-The initial function-level optimizer is published on `main` (`cdb8ec1`). Remote
-CPU CI passed: https://github.com/ramikamel/metalmind/actions/runs/41533494733.
-Module follow-on work is now on `feat/module-optimizer`.
-Tasks 1–12 have working code and targeted CPU/GPU verification. Tasks 13–14
-have the campaign runner, CLI, reports, and examples; their end-to-end acceptance
-is being exercised. Task 15 release verification is in progress. The full
-108-job comparison campaign and follow-on graph Tasks 16–17 have not run.
-Do not equate implemented infrastructure with all research acceptance criteria.
+The function-level release is published on `main` (`cdb8ec1`); its CPU CI passed.
+Module continuation is implemented on `feat/module-optimizer` (core `e34a32f`).
+Original Tasks 16–17 now have tested code and measured acceptance for flat pure
+FP32 inference modules, not arbitrary nested models. Tasks 13–15 still have
+broader research/submission items: the full 108-job campaign, compiled whole-
+module comparison, and authenticated final submission/recording.
 
 The authorized nine-case FP32 development pilot is complete: **2 promoted,
 7 no-win, 0 failed jobs**, using 18 additional generation requests. Including
@@ -35,6 +33,8 @@ for this release checkpoint. The access probe is separate.
   timing, raw samples, bootstrap intervals, and two-session promotion.
 - Content-bound artifact export and offline loading; mismatches use the original
   function. Explicit numerical audit and full performance revalidation are separate.
+- Flat pure FP32 module capture, exact region extraction, standalone profiling and
+  guarded artifact rewrites with a separate private/whole-module confirmation gate.
 - Frozen sequential campaign configuration, all-job denominators, escaped HTML reports,
   developer CLI, CPU-only CI configuration, and package builds.
 
@@ -57,7 +57,7 @@ that feedback outperforms other search strategies. Derived artifact:
 
 ## Verification and review
 
-Final local suite: **88 passed in 8.54 seconds**, including all real GPU tests,
+Function-level checkpoint: **88 passed in 8.54 seconds**, including all real GPU tests,
 with no skips. Metal shader health passed. Wheel and source distribution built.
 The final wheel's isolated install passed, including shader health and a no-key
 108-job campaign preview. [Release records](../results/2026-11-02-release-checks/README.md)
@@ -85,7 +85,7 @@ After a GPU fault, new model/evaluation work is blocked until a successful
 - Keep argparse and environment-report dataclasses; use frozen Pydantic optimizer
   contracts. This limits new dependencies but differs from the original stack sketch.
 - Define future-only contracts when their owning subsystem exists. Graph interfaces
-  remain planned, rather than shipping empty implementations.
+  were added when the module subsystem was implemented, rather than as empty stubs.
 - Treat unstable timing windows as rejections; deterministic unit tests verify
   synchronization order separately. A skipped unstable GPU timing test proves no win.
 - Raise controller evaluation timeout from 30 to 120 seconds after real timing
@@ -115,11 +115,10 @@ gradient checks passed without a key. A separate unchanged matmul plus medium
 activation measured 1.153× (95% interval 1.142–1.160×) in one 30-pair session.
 This is descriptive whole-workflow evidence, not two-session model confirmation.
 
-The full campaign remains outside the current request allowance. Event-specific
-model eligibility and submission rules remain unverified because the event was
-not identified. Follow-on graph profiling/replacement and a recorded submission
-video remain future work. No whole-model optimizer or general kernel support
-is claimed. Browser visual preview of the HTML report was blocked by the local
+The full campaign remains outside the current request allowance. The event was
+subsequently identified and its public rules verified; see docs/hackathon.md.
+A recorded submission video and authenticated portal steps remain unfinished.
+No arbitrary-model optimizer or general kernel support is claimed. Browser visual preview of the HTML report was blocked by the local
 file URL policy; automated report-content and escaping checks passed.
 
 
@@ -182,3 +181,32 @@ RED→GREEN evidence. The pre-review host-guard optimization rehearsal
 `1c9ec52e17a34243be460c2f6462d730` passed eight private cases, two eager whole-module
 sessions (1.207× / 1.219×), and post-run value/parameter/shape/gradient checks.
 It is retained as development evidence; final guard fixes are remeasured next.
+
+
+## Final module acceptance
+
+Final run `76212a7153ad4109bd11441f1d6dbb18` passed eight fresh whole-output cases
+(max absolute error 1.192e-7), then two original-eager whole-module sessions:
+1.220× (lower95% 1.208×) and 1.218× (lower95% 1.204×), 30 pairs each, 60-second
+cooldown. Shape is (256,1024), FP32, assumed-domain, 14-core M3 Pro. New values,
+live parameter-value updates, changed-shape fallback and gradients passed.
+It ran outside the checkout without a key or .env and used zero model requests.
+All three development module runs, including the initial no-win and superseded
+pre-review promotion, are retained. Candidate identities and bootstrap summaries
+were recomputed before curation. Standalone profiling records the same original
+graph identity and does not claim additive/exclusive attribution.
+
+The user identified the Meta Global AI Developer Hackathon. Its event page
+explicitly lists Muse Wonder and its public Official Rules / Waiver was read.
+The submission portal requires sign-in; exact field/video-length requirements
+were not visible and no login, terms acceptance or submission was performed.
+Prepared copy and evidence mappings are in docs/hackathon.md and
+docs/submission-draft.md. Event deadline shown: Nov 4, 2026 9 PM Eastern / 8 PM Chicago.
+
+
+Final module package checks: wheel and sdist built; fresh wheel installation
+outside the checkout passed Metal health, CPU module extraction and no-artifact
+fallback through the installed console entry point, with no key/.env and zero
+model requests. `results/2026-11-02-module-optimizer/release.json` records source,
+wheel/dependency hashes, exact baseline/domain, current hardware and all limits.
+Code tree is unchanged from the 113-test review-fix verification.

@@ -1,0 +1,384 @@
+{
+  "enabled": true,
+  "outcome": "promoted",
+  "reason": "Private whole-module outputs and both integrated timing sessions passed",
+  "analysis": {
+    "schema_version": 1,
+    "supported": true,
+    "reason": null,
+    "graph_hash": "9e1962e252273e23e98515446ed6e65463c7d20f7a1d1661108f3b2ecedfa958",
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "regions": [
+      {
+        "schema_version": 1,
+        "region_id": "e9afc5aeedc03f00a4b09d56484a27d07d0909a9c260deb61447dee55588ad9f",
+        "family": "bias_gelu",
+        "output_name": "gelu",
+        "node_names": [
+          "add",
+          "gelu"
+        ],
+        "input_names": [
+          "x",
+          "bias"
+        ],
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              1024
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "workload": {
+          "schema_version": 1,
+          "workload_id": "bias_gelu:medium",
+          "family": "bias_gelu",
+          "semantics_version": 1,
+          "inputs": [
+            {
+              "schema_version": 1,
+              "shape": [
+                256,
+                1024
+              ],
+              "strides": [
+                1024,
+                1
+              ],
+              "dtype": "float32",
+              "device": "mps",
+              "storage_offset": 0
+            },
+            {
+              "schema_version": 1,
+              "shape": [
+                1024
+              ],
+              "strides": [
+                1
+              ],
+              "dtype": "float32",
+              "device": "mps",
+              "storage_offset": 0
+            }
+          ],
+          "output": {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          "epsilon": 0.0,
+          "accumulation_dtype": "float32",
+          "reference_id": "bias_gelu",
+          "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+          "policy_version": 1
+        },
+        "estimated_input_bytes": 1052672,
+        "reason": null,
+        "latency": null
+      }
+    ],
+    "exclusions": [],
+    "whole_latency": null,
+    "ranking_basis": "estimated input bytes; no timing attribution",
+    "constraints": [
+      "flat pure eval-mode FP32 modules",
+      "standalone times must not be summed"
+    ]
+  },
+  "run_path": "/Users/rami/github/metalmind/runs/modules/76212a7153ad4109bd11441f1d6dbb18",
+  "artifact_ids": [
+    "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87"
+  ],
+  "private_verification": {
+    "passed": true,
+    "cases": 8,
+    "atol": 1e-05,
+    "rtol": 0.0001,
+    "max_absolute_error": 1.1920928955078125e-07,
+    "input_distribution": "CPU seeded normal*0.25, clipped to [-1,1]",
+    "parameters": "live current values; independent parameter-value testing belongs to the artifact gate"
+  },
+  "confirmations": [
+    {
+      "session": 1,
+      "status": "valid",
+      "baseline": "original_eager_whole_module",
+      "boundary": "guarded whole module, including all unchanged operations",
+      "domain_mode": "assume",
+      "seed": 71,
+      "bootstrap_resamples": 10000,
+      "series": {
+        "schema_version": 1,
+        "baseline_ms": [
+          0.06589876269913475,
+          0.06368701171766133,
+          0.06591151904444814,
+          0.06345945264030206,
+          0.06643725586030769,
+          0.06818581103829047,
+          0.06840445947631224,
+          0.06775744628839675,
+          0.06744909667588672,
+          0.0678410239203231,
+          0.06835896825663212,
+          0.06836022949130438,
+          0.06845288085344237,
+          0.06551741552129897,
+          0.06704370117205372,
+          0.067804972168517,
+          0.0678485312448629,
+          0.06398999023105034,
+          0.06711208105514288,
+          0.06818430615140869,
+          0.06785292529087883,
+          0.0680325112298874,
+          0.0673202104479742,
+          0.06818963623089758,
+          0.06616674804860168,
+          0.06799702978810274,
+          0.06842372656734597,
+          0.06565291308646692,
+          0.06819974804983531,
+          0.06737225341879594
+        ],
+        "candidate_ms": [
+          0.05629423046826787,
+          0.05445963574146617,
+          0.054017130366901256,
+          0.05285085058659433,
+          0.055967081543428776,
+          0.05533577490268726,
+          0.05527441406627531,
+          0.05426379394890546,
+          0.05514036084264262,
+          0.053579528810132615,
+          0.0553325805654481,
+          0.05629187011635395,
+          0.05609482861501647,
+          0.05526975488834296,
+          0.05494718457299541,
+          0.05508610009741233,
+          0.05548636865171375,
+          0.05654919434050498,
+          0.05545404052753611,
+          0.05483378076576173,
+          0.055454833983503704,
+          0.055660156249359716,
+          0.05582281494298513,
+          0.0541133017577522,
+          0.05535483789032014,
+          0.05581376171903685,
+          0.05652852392756813,
+          0.056743692866234596,
+          0.05565415429487075,
+          0.05628784180089497
+        ],
+        "repetitions": 2048,
+        "order": [
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "baseline_first"
+        ]
+      },
+      "summary": {
+        "schema_version": 1,
+        "speedup": 1.220172336786451,
+        "lower": 1.2075581031278717,
+        "upper": 1.223398248555017,
+        "pairs": 30
+      }
+    },
+    {
+      "session": 2,
+      "status": "valid",
+      "baseline": "original_eager_whole_module",
+      "boundary": "guarded whole module, including all unchanged operations",
+      "domain_mode": "assume",
+      "seed": 72,
+      "bootstrap_resamples": 10000,
+      "series": {
+        "schema_version": 1,
+        "baseline_ms": [
+          0.06372715283475827,
+          0.06709033203122772,
+          0.06816526269659562,
+          0.06841058350204321,
+          0.06835021972761979,
+          0.06826863622677593,
+          0.06850832129146056,
+          0.06824938964911098,
+          0.06546116113526068,
+          0.06824851465125903,
+          0.06681882715042775,
+          0.06668937157883192,
+          0.06850189208762458,
+          0.06628096484462276,
+          0.06553505419759631,
+          0.06755609130948415,
+          0.06500120068153592,
+          0.06852301024906637,
+          0.06852870703255576,
+          0.06870847558815285,
+          0.0686029052729964,
+          0.06774391699337912,
+          0.06764681005932971,
+          0.06814668749655084,
+          0.06405114745433593,
+          0.06607126855584511,
+          0.06818121337914818,
+          0.06617218017623827,
+          0.06451216650305014,
+          0.06659641503858893
+        ],
+        "candidate_ms": [
+          0.056296528804011814,
+          0.05588201904060952,
+          0.05583111572349253,
+          0.05621482373641129,
+          0.05509077978871346,
+          0.05601570605762163,
+          0.05496716308783789,
+          0.05600880908218642,
+          0.05627156542686862,
+          0.05602821826045101,
+          0.054441324706999694,
+          0.05624959277383823,
+          0.054082580568604044,
+          0.05360361718942386,
+          0.054231445318464466,
+          0.05508675146614905,
+          0.05545109033278095,
+          0.056018900878029854,
+          0.05467218017685127,
+          0.05652349852880434,
+          0.055715799803124355,
+          0.05641955566915158,
+          0.05486293505896356,
+          0.056432800292327556,
+          0.05642834472752156,
+          0.05520487451349254,
+          0.054316040035473634,
+          0.05438989257555704,
+          0.054946533204258685,
+          0.055798848627830466
+        ],
+        "repetitions": 2048,
+        "order": [
+          "candidate_first",
+          "baseline_first",
+          "candidate_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "candidate_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "candidate_first",
+          "baseline_first",
+          "candidate_first",
+          "baseline_first",
+          "baseline_first",
+          "candidate_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first"
+        ]
+      },
+      "summary": {
+        "schema_version": 1,
+        "speedup": 1.2175294254283267,
+        "lower": 1.2041446360052044,
+        "upper": 1.2247852824263497,
+        "pairs": 30
+      }
+    }
+  ],
+  "candidate_id": "fed12063127c3fd040b7c3b6b0d75b8ce7695dad13c21306d10c370dd66c715d",
+  "model_requests": 0,
+  "baseline": "original eager whole module; no compiled whole-module comparison"
+}

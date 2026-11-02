@@ -1,0 +1,3 @@
+{
+  "source": "\n\n\ndef forward(self, x):\n    bias = self.bias\n    add = x + bias;  bias = None\n    gelu = torch._C._nn.gelu(add, approximate = 'tanh');  add = None\n    mul = x * 0.25;  x = None\n    add_1 = gelu + mul;  gelu = mul = None\n    return add_1\n    "
+}

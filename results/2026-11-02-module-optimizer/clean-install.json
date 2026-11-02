@@ -1,0 +1,28 @@
+{
+  "package_isolated": true,
+  "python_version": "3.14.6",
+  "implementation_commit": "e34a32fadde56bb22b799cdbf36a0a1c22470406",
+  "wheel_sha256": "6b44a3fb6df736ea88ab95b6b4550cac72f47ac85ad7242d5af4a08311e83cc1",
+  "doctor": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null,
+    "shader_health_passed": true
+  },
+  "module_analysis_supported": true,
+  "extracted_family": "bias_gelu",
+  "no_artifact_outcome": "no_artifact",
+  "model_requests": 0,
+  "model_key_absent": true,
+  "local_env_file_absent": true,
+  "working_directory_outside_checkout": true
+}

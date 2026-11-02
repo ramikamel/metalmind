@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "cases": 8,
+  "atol": 1e-05,
+  "rtol": 0.0001,
+  "max_absolute_error": 1.1920928955078125e-07,
+  "input_distribution": "CPU seeded normal*0.25, clipped to [-1,1]",
+  "parameters": "live current values; independent parameter-value testing belongs to the artifact gate"
+}

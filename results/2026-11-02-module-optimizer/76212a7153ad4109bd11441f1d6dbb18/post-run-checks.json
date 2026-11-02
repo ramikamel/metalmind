@@ -1,0 +1,7 @@
+{
+  "new_values_match": true,
+  "updated_parameter_values_match": true,
+  "changed_shape_fallback": true,
+  "gradient_fallback": true,
+  "optimized_enabled": true
+}

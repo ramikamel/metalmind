@@ -1,0 +1,9 @@
+{
+  "original_graph": "9e1962e252273e23e98515446ed6e65463c7d20f7a1d1661108f3b2ecedfa958",
+  "artifact_ids": [
+    "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87"
+  ],
+  "domain_mode": "assume",
+  "rewritten_graph": "\n\n\ndef forward(self, x):\n    bias = self.bias\n    _metalmind_region_0 = self._metalmind_region_0(x, bias);  bias = None\n    mul = x * 0.25;  x = None\n    add_1 = _metalmind_region_0 + mul;  _metalmind_region_0 = mul = None\n    return add_1\n    ",
+  "guard_policy_version": 1
+}

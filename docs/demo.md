@@ -12,8 +12,10 @@
 Have a recorded search and a saved report ready for network or timing instability.
 Clearly label live, recorded, and cached stages. Never display the local .env.
 
-Eligibility under event-specific Meta model rules remains unverified; resolve it
-before presenting a submission as eligible.
+The public event page lists Muse Wonder; public rules have been checked.
+See [event alignment](hackathon.md) for sources and remaining authenticated
+portal steps. The script duration here is a proposed presentation length,
+not a verified event video limit.
 
 
 ## Saved development demonstration
@@ -32,3 +34,19 @@ environment; another Mac needs explicit revalidation. The integrated command
 measures an unchanged matmul plus the guarded activation, checks complete output,
 and prints all pairs even when the whole-workflow effect is small or negative.
 Do not substitute local GELU gains for the whole-workflow measurement.
+
+
+## Module extension in the demonstration
+
+1. Show `examples/module_workloads.py`: bias/tanh-GELU followed by unchanged residual math.
+2. Run `metalmind analyze-module --factory examples.module_workloads:make_demo`.
+3. Show the saved final module run's original/candidate FX graphs and the selected function artifact ID.
+4. Explain eight fresh private whole-output cases and the two 30-pair confirmations.
+5. Show **1.220× / 1.218× against the original eager whole module**, and the rejected 1.026× draft.
+6. Show post-run new-value, live-parameter, shape and gradient checks. State that this replay uses a cached Meta-generated kernel and makes no model requests.
+
+Use the [module evidence](../results/2026-11-02-module-optimizer/README.md) for exact
+bounds and source snapshots. Do not label this a compiled whole-model comparison.
+A fresh `python -m examples.optimize_module ...` run performs new verification and
+both timing sessions; allow its 60-second cooldown, or show the saved result as
+explicitly cached evidence during a short presentation.

@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-02",
+  "implementation_commit": "e34a32fadde56bb22b799cdbf36a0a1c22470406",
+  "tests": "113 passed in 13.62s; no skips",
+  "review": "one fresh independent review; two Important guard gaps reproduced and fixed RED->GREEN; no deferred minors",
+  "hardware": {
+    "model": "Apple M3 Pro",
+    "cores": "14",
+    "metal_family": "spdisplays_metal4",
+    "recommended_working_set": 14302248960
+  },
+  "runtime": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null,
+    "shader_health_passed": true
+  },
+  "wheel_sha256": "6b44a3fb6df736ea88ab95b6b4550cac72f47ac85ad7242d5af4a08311e83cc1",
+  "dependency_lock_sha256": "01b7824ac71c130e677c91160da73c30ede42773638ad13bae12ab9e9917d1fb",
+  "candidate_id": "fed12063127c3fd040b7c3b6b0d75b8ce7695dad13c21306d10c370dd66c715d",
+  "artifact_ids": [
+    "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87"
+  ],
+  "primary_run": "76212a7153ad4109bd11441f1d6dbb18",
+  "domain_mode": "assume",
+  "baseline": "original_eager_whole_module",
+  "compiled_whole_module_comparison": false,
+  "model_requests_this_continuation": 0,
+  "session_generation_requests": 25,
+  "approved_generation_limit": 30,
+  "full_campaign_executed": false,
+  "event_rules_sources": [
+    "https://cerebralvalley.ai/e/meta-ai-developer-hackathon",
+    "https://cerebralvalley.ai/e/meta-ai-developer-hackathon/waiver"
+  ],
+  "submission_portal_status": "sign-in required; no login, acceptance or submission performed"
+}

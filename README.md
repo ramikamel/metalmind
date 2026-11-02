@@ -41,6 +41,8 @@ count at two. No API calls occur during ordinary tests or campaign preview.
   unwritten/tail detection, repeated execution, and private final verification.
 - Eager, equivalent functional, and compiled framework comparisons, paired timing,
   raw samples, bootstrap intervals, and two-session promotion.
+- Conservative flat FP32 module-region analysis, standalone profiling, and guarded
+  artifact replacement with a separate whole-module gate.
 - Offline guarded artifact loading, fallback, numerical audit, explicit revalidation,
   complete run reports, and a frozen sequential campaign runner.
 
@@ -66,6 +68,25 @@ are preserved. A separate unchanged matmul-plus-activation example measured
 1.153× whole-workflow gain in one session. This is not whole-model confirmation.
 The full 108-job comparison and feedback ablation remain unexecuted.
 
+## Module workflow
+
+The module path reuses confirmed function artifacts and makes no model requests.
+It supports a conservative set of flat, pure FP32 inference modules; child modules
+and unsupported behavior retain the original callable.
+
+```sh
+metalmind analyze-module --factory examples.module_workloads:make_demo --measure
+```
+
+The residual-activation example passed eight private whole-output cases and two
+whole-module sessions at **1.220× / 1.218× versus original eager PyTorch**, including
+all guards and unchanged operations. An earlier 1.026× draft was rejected. This
+is assumed-domain performance on one M3 Pro signature; a compiled whole-module
+comparison has not been performed.
+
+[Usage and guards](docs/module-optimization.md) ·
+[All module development outcomes and raw evidence](results/2026-11-02-module-optimizer/README.md)
+
 ## Numerical domain and performance boundaries
 
 Checked mode is the public default. It verifies finite, bounded, nonsubnormal
@@ -79,8 +100,8 @@ inputs by 100 and weights by 10; softmax inputs by 80. Zero is allowed.
 
 Initial artifacts specialize exact shapes, dtype, strides, scalar constants, and
 runtime environment. Training calls, mismatching shapes/layouts, and incompatible
-environments use the original function. Arbitrary models, general graph
-replacement, backward generation, and cross-chip portability are future work.
+environments use the original function. Arbitrary or nested models, general graph
+replacement, backward generation, and cross-chip portability remain future work.
 
 The local evaluator is a fault-containment boundary, not a secure sandbox for
 hostile GPU programs. After a GPU fault, further evaluations stop until a
@@ -95,8 +116,10 @@ successful `metalmind doctor --smoke` health check.
 - [Environment](docs/environment.md)
 - [Measurement methodology](docs/benchmarking.md)
 - [Demo script](docs/demo.md)
+- [Hackathon rules alignment and prepared submission](docs/hackathon.md)
 
 PyTorch is pinned to 2.15.0. GPU checks skip explicitly when MPS is unavailable.
-Use `requirements-dev.lock` for the tested dependency snapshot. Event-specific
-model eligibility and a full evaluation campaign must be verified before a
-hackathon submission makes broader claims.
+Use `requirements-dev.lock` for the tested dependency snapshot. The event lists
+Muse Wonder among its models; [rule alignment](docs/hackathon.md) distinguishes
+confirmed public requirements from the authenticated submission steps. The full
+comparison campaign remains unexecuted.

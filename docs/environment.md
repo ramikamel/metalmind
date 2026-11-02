@@ -56,3 +56,10 @@ see [evidence](../results/2026-11-02-revalidation/README.md).
 are separate tests. Shader Validation and CPU fallback are rejected during
 performance measurement. Controller evaluation deadlines are 120 seconds after
 calibration, under the absolute worker and whole-job budgets.
+
+
+Module continuation: the complete local suite now passes **113 tests**, no skips.
+The updated wheel also passed isolated installation, real shader health,
+`analyze-module` extraction and `optimize-module` no-artifact fallback outside
+the checkout with no credentials. Exact module release identities and all three
+development outcomes are in [module evidence](../results/2026-11-02-module-optimizer/README.md).

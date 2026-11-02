@@ -1,0 +1,7 @@
+{
+  "model_key_absent": true,
+  "local_env_file_absent": true,
+  "working_directory_outside_checkout": true,
+  "implementation_commit": "e34a32fadde56bb22b799cdbf36a0a1c22470406",
+  "model_requests": 0
+}

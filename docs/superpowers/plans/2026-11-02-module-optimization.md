@@ -30,32 +30,32 @@
 ## Task A — Capture, partition, and guard metadata
 
 Files: `graph/capture.py`, `graph/regions.py`, `graph/guards.py`, `graph/contracts.py`, unit tests.
-- [ ] Write failing tests for exact region extraction, shared intermediates/boundaries, mutable/control-flow rejection before tracing, parameter identity/content changes and output structure.
-- [ ] Admit source and graph purity; snapshot function/global/scalar/module/parameter metadata.
-- [ ] Match existing normalized reference patterns and extract callable regions with runtime boundary inputs.
-- [ ] Unit suite green; commit capture/partition deliverable.
+- [x] Write failing tests for exact region extraction, shared intermediates/boundaries, mutable/control-flow rejection before tracing, parameter identity/content changes and output structure.
+- [x] Admit source and graph purity; snapshot function/global/scalar/module/parameter metadata.
+- [x] Match existing normalized reference patterns and extract callable regions with runtime boundary inputs.
+- [x] Unit suite green; commit capture/partition deliverable.
 
 ## Task B — Useful module analysis and profiling
 
 Files: `graph/profile.py`, public API, unit/GPU tests.
-- [ ] Test CPU metadata analysis and unavailable measurement labels; GPU-test complete module and extracted-region agreement.
-- [ ] Measure whole original module and standalone regions under the GPU lock, with synchronization, warmup, raw samples and drift rejection.
-- [ ] Rank by measured standalone latency when available, otherwise estimated bytes. Preserve exclusions and graph identity.
-- [ ] Expose `analyze_module(module, example_inputs, measure=False)` and JSON-ready `ModuleAnalysis`.
+- [x] Test CPU metadata analysis and unavailable measurement labels; GPU-test complete module and extracted-region agreement.
+- [x] Measure whole original module and standalone regions under the GPU lock, with synchronization, warmup, raw samples and drift rejection.
+- [x] Rank by measured standalone latency when available, otherwise estimated bytes. Preserve exclusions and graph identity.
+- [x] Expose `analyze_module(module, example_inputs, measure=False)` and JSON-ready `ModuleAnalysis`.
 
 ## Task C — Guarded artifact rewrite and integrated gate
 
 Files: `graph/rewrite.py`, unit/GPU tests.
-- [ ] Test no-artifact fallback, opt-in domain mode, incompatible artifacts, shared uses, changed code/state/input/gradient modes and no integrated win.
-- [ ] Rewrite only matched promoted artifacts using existing `load_artifact`; preserve runtime parameters and all other operations.
-- [ ] Verify complete outputs for eight private new-value cases and input/state integrity. Check region domains even for assumed-mode private tests.
-- [ ] Use existing paired statistics for two integrated confirmation sessions; no enabled rewrite on an unstable/no-win window.
-- [ ] Persist analysis, artifact IDs, raw confirmations, numerical outcomes, no-win reasons and immutable graph/guard identity.
+- [x] Test no-artifact fallback, opt-in domain mode, incompatible artifacts, shared uses, changed code/state/input/gradient modes and no integrated win.
+- [x] Rewrite only matched promoted artifacts using existing `load_artifact`; preserve runtime parameters and all other operations.
+- [x] Verify complete outputs for eight private new-value cases and input/state integrity. Check region domains even for assumed-mode private tests.
+- [x] Use existing paired statistics for two integrated confirmation sessions; no enabled rewrite on an unstable/no-win window.
+- [x] Persist analysis, artifact IDs, raw confirmations, numerical outcomes, no-win reasons and immutable graph/guard identity.
 
 ## Task D — CLI, example, evidence and release
 
 Files: CLI, `examples/module_workloads.py`, `examples/optimize_module.py`, docs and curated results.
-- [ ] Add explicit trusted factory-based analysis/reuse commands; offline by default, no hidden generation.
-- [ ] Run real cached-artifact module journey, new values, parameter changes, shapes and gradient fallback.
-- [ ] Run full CPU/GPU suite and package checks; one fresh whole-branch review, one tested fix pass.
-- [ ] Publish all integrated outcomes, including a legitimate no-win result, without a whole-model/general-module claim.
+- [x] Add explicit trusted factory-based analysis/reuse commands; offline by default, no hidden generation.
+- [x] Run real cached-artifact module journey, new values, parameter changes, shapes and gradient fallback.
+- [x] Run full CPU/GPU suite and package checks; one fresh whole-branch review, one tested fix pass.
+- [x] Publish all integrated outcomes, including a legitimate no-win result, without a whole-model/general-module claim.

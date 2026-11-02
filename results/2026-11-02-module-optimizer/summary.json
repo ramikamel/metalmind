@@ -1,0 +1,98 @@
+{
+  "scope": "one FP32 residual-activation module/signature, development runs",
+  "baseline": "original eager whole module",
+  "domain_mode": "assume",
+  "model_requests_this_continuation": 0,
+  "session_generation_requests": 25,
+  "experiments": [
+    {
+      "run_id": "e27a0232849b4431a838f4d417f2c360",
+      "stage": "initial guard draft",
+      "outcome": "no_win",
+      "candidate_id": null,
+      "private_verification": {
+        "passed": true,
+        "cases": 8,
+        "atol": 1e-05,
+        "rtol": 0.0001,
+        "max_absolute_error": 1.1920928955078125e-07,
+        "input_distribution": "CPU seeded normal*0.25, clipped to [-1,1]",
+        "parameters": "live current values; independent parameter-value testing belongs to the artifact gate"
+      },
+      "confirmations": [
+        {
+          "schema_version": 1,
+          "speedup": 1.0255863536698666,
+          "lower": 1.0126625072212652,
+          "upper": 1.0322999049499464,
+          "pairs": 30
+        }
+      ],
+      "primary": false
+    },
+    {
+      "run_id": "1c9ec52e17a34243be460c2f6462d730",
+      "stage": "profiled guard before review fixes",
+      "outcome": "promoted",
+      "candidate_id": "29bf6bdb0e6d9b61454f311b19a479a35616edda682d4da1db2270ddf20e98b0",
+      "private_verification": {
+        "passed": true,
+        "cases": 8,
+        "atol": 1e-05,
+        "rtol": 0.0001,
+        "max_absolute_error": 1.1920928955078125e-07,
+        "input_distribution": "CPU seeded normal*0.25, clipped to [-1,1]",
+        "parameters": "live current values; independent parameter-value testing belongs to the artifact gate"
+      },
+      "confirmations": [
+        {
+          "schema_version": 1,
+          "speedup": 1.2073734737518342,
+          "lower": 1.195235000229219,
+          "upper": 1.224506844410609,
+          "pairs": 30
+        },
+        {
+          "schema_version": 1,
+          "speedup": 1.2191120500572148,
+          "lower": 1.198193127389838,
+          "upper": 1.2430150340207256,
+          "pairs": 30
+        }
+      ],
+      "primary": false
+    },
+    {
+      "run_id": "76212a7153ad4109bd11441f1d6dbb18",
+      "stage": "final reviewed guards",
+      "outcome": "promoted",
+      "candidate_id": "fed12063127c3fd040b7c3b6b0d75b8ce7695dad13c21306d10c370dd66c715d",
+      "private_verification": {
+        "passed": true,
+        "cases": 8,
+        "atol": 1e-05,
+        "rtol": 0.0001,
+        "max_absolute_error": 1.1920928955078125e-07,
+        "input_distribution": "CPU seeded normal*0.25, clipped to [-1,1]",
+        "parameters": "live current values; independent parameter-value testing belongs to the artifact gate"
+      },
+      "confirmations": [
+        {
+          "schema_version": 1,
+          "speedup": 1.220172336786451,
+          "lower": 1.2075581031278717,
+          "upper": 1.223398248555017,
+          "pairs": 30
+        },
+        {
+          "schema_version": 1,
+          "speedup": 1.2175294254283267,
+          "lower": 1.2041446360052044,
+          "upper": 1.2247852824263497,
+          "pairs": 30
+        }
+      ],
+      "primary": true
+    }
+  ]
+}

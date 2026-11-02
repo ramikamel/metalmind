@@ -1,0 +1,267 @@
+{
+  "enabled": false,
+  "outcome": "no_win",
+  "reason": "Local kernels did not establish the required whole-module gain; original module retained",
+  "analysis": {
+    "schema_version": 1,
+    "supported": true,
+    "reason": null,
+    "graph_hash": "9e1962e252273e23e98515446ed6e65463c7d20f7a1d1661108f3b2ecedfa958",
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "regions": [
+      {
+        "schema_version": 1,
+        "region_id": "e9afc5aeedc03f00a4b09d56484a27d07d0909a9c260deb61447dee55588ad9f",
+        "family": "bias_gelu",
+        "output_name": "gelu",
+        "node_names": [
+          "add",
+          "gelu"
+        ],
+        "input_names": [
+          "x",
+          "bias"
+        ],
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              1024
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "workload": {
+          "schema_version": 1,
+          "workload_id": "bias_gelu:medium",
+          "family": "bias_gelu",
+          "semantics_version": 1,
+          "inputs": [
+            {
+              "schema_version": 1,
+              "shape": [
+                256,
+                1024
+              ],
+              "strides": [
+                1024,
+                1
+              ],
+              "dtype": "float32",
+              "device": "mps",
+              "storage_offset": 0
+            },
+            {
+              "schema_version": 1,
+              "shape": [
+                1024
+              ],
+              "strides": [
+                1
+              ],
+              "dtype": "float32",
+              "device": "mps",
+              "storage_offset": 0
+            }
+          ],
+          "output": {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          "epsilon": 0.0,
+          "accumulation_dtype": "float32",
+          "reference_id": "bias_gelu",
+          "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+          "policy_version": 1
+        },
+        "estimated_input_bytes": 1052672,
+        "reason": null,
+        "latency": null
+      }
+    ],
+    "exclusions": [],
+    "whole_latency": null,
+    "ranking_basis": "estimated input bytes; no timing attribution",
+    "constraints": [
+      "flat pure eval-mode FP32 modules",
+      "standalone times must not be summed"
+    ]
+  },
+  "run_path": "runs/modules/e27a0232849b4431a838f4d417f2c360",
+  "artifact_ids": [
+    "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87"
+  ],
+  "private_verification": {
+    "passed": true,
+    "cases": 8,
+    "atol": 1e-05,
+    "rtol": 0.0001,
+    "max_absolute_error": 1.1920928955078125e-07,
+    "input_distribution": "CPU seeded normal*0.25, clipped to [-1,1]",
+    "parameters": "live current values; independent parameter-value testing belongs to the artifact gate"
+  },
+  "confirmations": [
+    {
+      "session": 1,
+      "status": "valid",
+      "baseline": "original_eager_whole_module",
+      "boundary": "guarded whole module, including all unchanged operations",
+      "domain_mode": "assume",
+      "seed": 71,
+      "bootstrap_resamples": 10000,
+      "series": {
+        "schema_version": 1,
+        "baseline_ms": [
+          0.06552168798634739,
+          0.06722698974215291,
+          0.06848388671443217,
+          0.0687364501956722,
+          0.06296211767420345,
+          0.06597526073903737,
+          0.06878428173706652,
+          0.06867368554708264,
+          0.0656331582078451,
+          0.0679338178741773,
+          0.06896423339952662,
+          0.066359110839187,
+          0.06831929541561976,
+          0.06871905517868981,
+          0.06659342480475061,
+          0.06464839697173375,
+          0.06749820946794216,
+          0.06865559863200588,
+          0.06836775683893848,
+          0.06509486913586215,
+          0.0660056357375538,
+          0.06874076318297284,
+          0.06890873194009828,
+          0.06855655907855862,
+          0.06846335839583162,
+          0.06886979149811623,
+          0.06836824511680106,
+          0.06865783691978322,
+          0.06899737548593521,
+          0.06789412402241624
+        ],
+        "candidate_ms": [
+          0.06140698242518283,
+          0.06261226415915644,
+          0.07714093017341384,
+          0.0626079101593291,
+          0.06520924902275738,
+          0.06518556688916988,
+          0.06389078808410886,
+          0.06620200634444018,
+          0.0651593217781965,
+          0.06626684570676389,
+          0.06536067676421453,
+          0.06895267724615906,
+          0.06765079785253647,
+          0.06973722314285169,
+          0.06507446289560903,
+          0.06380200195366115,
+          0.06533911133033143,
+          0.06811873339529484,
+          0.06601820899021504,
+          0.06680411767234773,
+          0.06514503954946349,
+          0.06903072118547016,
+          0.06716137695406132,
+          0.06645941162020108,
+          0.06592905663893589,
+          0.06691365527444759,
+          0.06683673095864151,
+          0.06684269189349834,
+          0.06700378417434649,
+          0.06411366796754692
+        ],
+        "repetitions": 2048,
+        "order": [
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "baseline_first",
+          "candidate_first",
+          "candidate_first",
+          "baseline_first",
+          "baseline_first"
+        ]
+      },
+      "summary": {
+        "schema_version": 1,
+        "speedup": 1.0255863536698666,
+        "lower": 1.0126625072212652,
+        "upper": 1.0322999049499464,
+        "pairs": 30
+      }
+    }
+  ],
+  "model_requests": 0,
+  "baseline": "original eager whole module; no compiled whole-module comparison"
+}

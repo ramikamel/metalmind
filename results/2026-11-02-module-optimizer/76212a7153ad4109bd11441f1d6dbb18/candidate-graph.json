@@ -1,0 +1,3 @@
+{
+  "source": "\n\n\ndef forward(self, x):\n    bias = self.bias\n    _metalmind_region_0 = self._metalmind_region_0(x, bias);  bias = None\n    mul = x * 0.25;  x = None\n    add_1 = _metalmind_region_0 + mul;  _metalmind_region_0 = mul = None\n    return add_1\n    "
+}
