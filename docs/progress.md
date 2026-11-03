@@ -23,7 +23,7 @@ for this release checkpoint. The access probe is separate.
 - Immutable workload, candidate, evaluation, configuration, and artifact contracts;
   exact shape/stride/dtype/ABI guards and runtime tensor parameters.
 - Bias plus tanh GELU, RMSNorm, stable row softmax; registered FP16 variants
-  explicitly compute intermediates in FP32. Custom function capture is FP32 only.
+  explicitly compute intermediates in FP32. Custom FP16 capture preserves that cast order.
 - Restricted trusted importable function capture. Static admission precedes FX
   tracing, rejecting side effects, mutation, unsupported calls, and device transfers.
 - Spawned GPU workers, exclusive GPU lock, absolute deadlines, memory preflight,
@@ -320,3 +320,23 @@ input tokens and 29,728 output tokens. The live and archived offline
 analyses matched. The remaining jobs were resumed in bounded batches from
 the same source and GPU environment. The local continuation stops on an
 evaluator fault or a batch containing a newly failed job.
+
+## Explicit FP16 function capture and offline load cost — November 3, 2026
+
+Task 12 capture now checks explicit FP32 intermediate casts for all three
+registered FP16 patterns, and the worker repeats the same admission check.
+Negative cases cover early FP16 rounding, a missing final cast, mixed input
+dtypes, strings passed as cast targets, invalid call arguments, and discarded
+operations that can fail in eager execution. The M3 Pro passed correctness
+for all three captured FP16 functions and confirmed FP32 input fallback.
+Full local suite: 166 passed. Separate FP16 performance and promotion remain open.
+
+The running FP32 campaign stayed on its original checkout and source. A
+large softmax template exhausted its worker deadline, recorded a failed job
+with zero Meta requests, and paused. The Metal smoke test passed, and the
+campaign resumed from the next job under its original source fingerprint.
+
+Five offline process-level artifact loads measured median total load of
+199.63 ms and median Metal compile call of 1.12 ms. At the archived median
+workflow saving, the estimated reuse break-even is 6,863 calls for that
+measured load. See results/2026-11-03-workflow-amortization.

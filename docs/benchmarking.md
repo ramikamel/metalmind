@@ -68,5 +68,6 @@ keys.
 The [workflow amortization report](../results/2026-11-03-workflow-amortization/README.md)
 uses the original 30 timing pairs and the recorded search plus confirmation
 cooldown. The 4.45-million-call estimate covers that partial setup cost at
-the observed 29.1 µs median paired saving. First-load compilation time and
-the remaining finalization time are unavailable in the saved run.
+the observed 29.1 µs median paired saving. Five separate loads of the existing
+artifact measured a median 199.63 ms, or about 6,863 workflow calls to offset
+that load. Other finalization time remains unavailable in the original run.

@@ -33,11 +33,12 @@ def describe_reference(fn):
     return f"python:{fn.__module__}:{fn.__qualname__}"
 
 
-def _validate_source_before_trace(fn):
+def _validate_source_before_trace(fn, *, input_count):
+    inspect.signature(fn).bind(*([None] * input_count))
     tree=ast.parse(textwrap.dedent(inspect.getsource(fn)))
     forbidden=(ast.If,ast.For,ast.While,ast.With,ast.Try,ast.Raise,ast.Await,ast.Yield,ast.Lambda,
         ast.AsyncFunctionDef,ast.Global,ast.Nonlocal,ast.AugAssign,ast.Delete,ast.Import,ast.ImportFrom)
-    methods={'float','to','square','mean','pow','softmax','gelu','rsqrt','add','mul','div','sqrt'}
+    methods={'float','half','to','square','mean','pow','softmax','gelu','rsqrt','add','mul','div','sqrt'}
     for node in ast.walk(tree):
         if isinstance(node,forbidden): raise ValueError('control flow, mutation, and Python side effects are unsupported')
         if isinstance(node,ast.Expr) and not (isinstance(node.value,ast.Constant) and isinstance(node.value.value,str)):
@@ -53,7 +54,8 @@ def _validate_source_before_trace(fn):
             else: raise ValueError('dynamic callable is unsupported')
 
 
-def normalize_graph(fn):
+def normalize_graph(fn, *, input_dtype="float32"):
+    preserve_casts = input_dtype == "float16"
     graph=torch.fx.symbolic_trace(fn).graph
     values={};count=0
     functions={operator.add:'add',operator.mul:'mul',operator.truediv:'div',operator.pow:'pow',
@@ -62,23 +64,41 @@ def normalize_graph(fn):
         if isinstance(x,torch.fx.Node): return values[x]
         if isinstance(x,(tuple,list)): return tuple(value(v) for v in x)
         if isinstance(x,dict): return tuple(sorted((k,value(v)) for k,v in x.items()))
-        if isinstance(x,torch.dtype): return str(x)
+        if isinstance(x,torch.dtype): return x
+        if preserve_casts and type(x) in (bool, int, float):
+            return (type(x).__name__, x)
         if isinstance(x,(int,float,str,bool,type(None))): return x
         raise ValueError("unsupported graph constant")
     for node in graph.nodes:
+        if preserve_casts and not node.users and node.op not in ("placeholder", "output"):
+            raise ValueError("Unused operations are unsupported in explicit FP16 functions")
         if node.op=='placeholder': values[node]=('input',count);count+=1
         elif node.op=='call_function' and node.target is builtins.getattr:
             if node.args[1]!='dtype': raise ValueError("unsupported tensor attribute")
-            values[node]=('dtype',)
-        elif node.op=='call_method' and node.target in ('float','to'):
-            if node.target=='float':
-                if len(node.args)!=1 or node.kwargs: raise ValueError("unsupported cast arguments")
+            if preserve_casts:
+                if value(node.args[0])[0] != "input":
+                    raise ValueError("FP16 dtype lookups must reference an input tensor")
+                values[node] = torch.float16
             else:
-                if len(node.args)>2 or set(node.kwargs)-{'dtype'} or (len(node.args)==2 and node.kwargs):
+                values[node] = ("dtype",)
+        elif node.op == "call_method" and node.target in ("float", "half", "to"):
+            if node.target == "to":
+                if len(node.args)>2 or set(node.kwargs)-{"dtype"} or (len(node.args)==2 and node.kwargs):
                     raise ValueError("device transfers and additional cast options are unsupported")
-                dtype=value(node.args[1]) if len(node.args)>1 else value(node.kwargs.get('dtype'))
-                if dtype not in (('dtype',),'torch.float32'): raise ValueError("unsupported dtype/device conversion")
-            values[node]=value(node.args[0])
+                dtype = value(node.args[1]) if len(node.args)>1 else value(node.kwargs.get("dtype"))
+            else:
+                if len(node.args)!=1 or node.kwargs:
+                    raise ValueError("unsupported cast arguments")
+                dtype = torch.float32 if node.target == "float" else torch.float16
+            source = value(node.args[0])
+            if preserve_casts:
+                if dtype not in (torch.float32, torch.float16):
+                    raise ValueError("unsupported dtype/device conversion")
+                values[node] = ("cast", dtype, source)
+            else:
+                if dtype not in (("dtype",), torch.float32):
+                    raise ValueError("unsupported dtype/device conversion")
+                values[node] = source
         elif node.op in ('call_function','call_method'):
             target=functions.get(node.target) if node.op=='call_function' else node.target
             if target not in ('add','mul','div','pow','rsqrt','softmax','gelu','square','mean'):
@@ -93,13 +113,20 @@ def normalize_graph(fn):
 def capture_function(fn,example_inputs):
     try:
         reference_id=describe_reference(fn)
-        _validate_source_before_trace(fn)
-        if not example_inputs or any(not isinstance(t,torch.Tensor) or t.dtype!=torch.float32 or not t.is_contiguous() or t.storage_offset()!=0 for t in example_inputs):
-            raise ValueError("Initial public capture requires contiguous zero-offset FP32 tensors")
-        graph=normalize_graph(fn)
-        for family,module in _MODULES.items():
-            if graph==normalize_graph(module.reference):
-                spec=workload_for_shape(family,tuple(example_inputs[0].shape))
+        _validate_source_before_trace(fn, input_count=len(example_inputs))
+        if not example_inputs or any(
+            not isinstance(t, torch.Tensor) or not t.is_contiguous() or t.storage_offset() != 0
+            for t in example_inputs
+        ):
+            raise ValueError("Capture requires contiguous zero-offset tensors")
+        input_dtype = example_inputs[0].dtype
+        if input_dtype not in (torch.float32, torch.float16) or any(t.dtype != input_dtype for t in example_inputs):
+            raise ValueError("Capture requires a uniform FP32 or FP16 input dtype")
+        dtype = "float16" if input_dtype == torch.float16 else "float32"
+        graph = normalize_graph(fn, input_dtype=dtype)
+        for family, module in _MODULES.items():
+            if graph == normalize_graph(module.reference, input_dtype=dtype):
+                spec = workload_for_shape(family, tuple(example_inputs[0].shape), dtype=dtype)
                 if len(example_inputs)!=len(spec.inputs) or any(tuple(t.shape)!=s.shape for t,s in zip(example_inputs,spec.inputs)):
                     raise ValueError("input metadata disagrees with supported broadcasting")
                 from metalmind.workloads.registry import fingerprint_reference

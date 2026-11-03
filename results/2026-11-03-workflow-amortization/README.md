@@ -16,8 +16,18 @@ time. Their separate durations were unavailable in the archived data. The
 estimate assumes the observed per-call saving persists and uses an eager
 whole-workflow baseline.
 
-An existing artifact can be reused without repeating search. Its first-load
-compilation cost needs a separate measurement to estimate that reuse case.
+## Reuse of an existing artifact
+
+Five fresh Python processes loaded the same promoted artifact offline on the
+same Mac. The median load was **199.63 ms**, including evidence checks,
+environment detection and the Metal compile call. The median Metal compile
+call itself took **1.12 ms**. At the earlier median saving of 29.1 µs, the
+measured load offsets after about **6,863 workflow calls**. This is a separate
+estimate for an existing artifact. Python startup and imports occur outside
+the timer, and the system shader-cache state was uncontrolled.
+
+[Raw first-load samples](first-load.jsonl) are separate from the historical
+search estimate in `report.json`.
 
 From the checkout, regenerate [report.json](report.json) using the original
 [FP32 pilot evidence](../2026-11-02-fp32-pilot/README.md):
@@ -34,3 +44,10 @@ python -m scripts.report_workflow_amortization \
 The report verifies the promoted artifact, matches its identity, shape and
 domain to the saved workflow, and derives the estimate directly from the
 archived timing pairs. Regeneration requires neither GPU access nor a model key.
+
+Run this once per fresh process to reproduce the first-load sample on the
+matching Mac:
+
+```sh
+python -m scripts.probe_artifact_first_load --artifact "$pilot/artifacts/$artifact"
+```

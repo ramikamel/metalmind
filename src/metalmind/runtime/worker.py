@@ -34,8 +34,10 @@ def _child(raw,connection):
             from metalmind.workloads.registry import resolve_reference,_MODULES
             from metalmind.workloads.capture import _validate_source_before_trace,normalize_graph
             original=resolve_reference(request.workload.reference_id)
-            _validate_source_before_trace(original)
-            if normalize_graph(original)!=normalize_graph(_MODULES[request.workload.family].reference):
+            _validate_source_before_trace(original, input_count=len(request.workload.inputs))
+            input_dtype = request.workload.inputs[0].dtype
+            registered = _MODULES[request.workload.family].reference
+            if normalize_graph(original, input_dtype=input_dtype) != normalize_graph(registered, input_dtype=input_dtype):
                 raise ValueError('user reference no longer matches supported semantics')
         from metalmind.agent.candidates import validate_proposal
         validate_proposal(request.candidate.proposal.model_dump_json())

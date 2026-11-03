@@ -34,7 +34,8 @@ count at two. No API calls occur during ordinary tests or campaign preview.
 
 - FP32 bias plus tanh GELU, RMSNorm, and stable final-axis softmax contracts.
 - Registered FP16 variants with explicitly FP32 intermediate arithmetic.
-- Restricted capture of trusted importable FP32 functions matching those exact patterns.
+- Restricted capture of trusted importable FP32 and explicitly cast FP16 functions.
+  See [FP16 examples](examples/fp16_workloads.py) for the accepted cast order.
 - Meta Responses API proposals, bounded feedback-driven search, source deduplication,
   cancellation boundaries, durable request accounting, and guarded resume.
 - Spawned GPU evaluation, full-output numerical comparison, input integrity,

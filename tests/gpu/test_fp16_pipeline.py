@@ -29,3 +29,50 @@ def test_all_fp16_template_families_verify(family):
     c=make_candidate(template_proposals(spec)[0].proposal,spec)
     result=evaluate(EvaluationRequest(candidate=c,workload=spec))
     assert result.status=="valid",result.reason or result.verification
+
+
+@pytest.mark.parametrize("family,name", [
+    ("bias_gelu", "bias_gelu"),
+    ("rmsnorm", "rmsnorm"),
+    ("softmax", "row_softmax"),
+])
+def test_captured_fp16_reference_reaches_gpu_verification(family, name):
+    from examples import fp16_workloads
+    from metalmind.evaluation import template_proposals
+    from metalmind.workloads.capture import capture_function
+    from metalmind.workloads.fixtures import make_public_fixtures
+
+    spec = workload_for_shape(family, (8, 17), dtype="float16")
+    fn = getattr(fp16_workloads, name)
+    captured = capture_function(fn, make_public_fixtures(spec)[0].inputs)
+    assert captured.reference_id == f"python:examples.fp16_workloads:{name}"
+    candidate = make_candidate(template_proposals(captured)[0].proposal, captured)
+    result = evaluate(EvaluationRequest(candidate=candidate, workload=captured))
+    assert result.status == "valid", result.reason or result.verification
+    assert result.verification.passed
+
+
+def test_captured_fp16_callable_falls_back_for_fp32_tensors():
+    from examples.fp16_workloads import bias_gelu
+    from metalmind.evaluation import template_proposals
+    from metalmind.runtime.execution import build_execution_callable
+    from metalmind.runtime.metal import MetalBackend
+    from metalmind.workloads.capture import capture_function
+
+    x = torch.full((8, 17), 0.5, dtype=torch.float16, device="mps")
+    bias = torch.full((17,), 0.25, dtype=torch.float16, device="mps")
+    spec = capture_function(bias_gelu, (x, bias))
+    proposal = template_proposals(spec)[0].proposal
+    kernel = MetalBackend().compile(proposal.source, entry_point=proposal.entry_point)
+    fallback_inputs = []
+
+    def fallback(*inputs):
+        fallback_inputs.append(tuple(t.dtype for t in inputs))
+        return bias_gelu(*inputs)
+
+    optimized = build_execution_callable(spec, kernel, fallback=fallback, domain_mode="checked")
+    optimized.proposal = proposal
+    torch.testing.assert_close(optimized(x, bias), bias_gelu(x, bias), atol=1e-3, rtol=1e-2)
+    assert fallback_inputs == []
+    torch.testing.assert_close(optimized(x.float(), bias.float()), bias_gelu(x.float(), bias.float()))
+    assert fallback_inputs == [(torch.float32, torch.float32)]
