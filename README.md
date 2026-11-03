@@ -78,14 +78,24 @@ and unsupported behavior retain the original callable.
 metalmind analyze-module --factory examples.module_workloads:make_demo --measure
 ```
 
-The residual-activation example passed eight private whole-output cases and two
-whole-module sessions at **1.220× / 1.218× versus original eager PyTorch**, including
-all guards and unchanged operations. An earlier 1.026× draft was rejected. This
-is assumed-domain performance on one M3 Pro signature; a compiled whole-module
-comparison has not been performed.
+The module gate now requires a gain against **every verified available baseline**,
+including compiled whole-module PyTorch. The residual example was faster than
+eager execution but slower than Inductor fullgraph, so its rewrite is disabled.
+This preserves the original callable and exposes the compiler result.
 
 [Usage and guards](docs/module-optimization.md) ·
-[All module development outcomes and raw evidence](results/2026-11-02-module-optimizer/README.md)
+[Compiler comparison and no-win decision](results/2026-11-02-module-baselines/README.md)
+
+## Offline demo
+
+```sh
+metalmind demo
+metalmind demo --gpu-check --output runs/demo.json
+```
+
+Replay verifies saved source identities and raw statistics, includes all nine
+pilot outcomes, and makes **zero model requests**. `--gpu-check` adds fresh
+correctness and fallback checks; performance numbers remain labeled recorded.
 
 ## Numerical domain and performance boundaries
 

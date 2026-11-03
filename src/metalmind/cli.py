@@ -47,6 +47,12 @@ def main(argv=None):
     module_opt.add_argument("--artifact",action="append",type=Path,default=[])
     module_opt.add_argument("--assume-domain",action="store_true",help="Explicit guarantee for every replaced region's input domain")
     module_opt.add_argument("--output-dir",type=Path,default=Path("runs/modules"))
+    demo=commands.add_parser("demo",help="Validate and replay curated evidence; makes no model requests")
+    demo.add_argument("--evidence-root",type=Path,default=Path("results"))
+    demo.add_argument("--gpu-check",action="store_true",help="Also execute a fresh offline correctness/fallback check")
+    demo.add_argument("--json",action="store_true")
+    demo.add_argument("--output",type=Path,help="Save the validated demo payload")
+    demo.add_argument("--pace",type=float,default=0,help="Seconds between presentation lines; not benchmark timing")
     campaign=commands.add_parser("evaluate")
     campaign.add_argument("--suite",type=Path,required=True)
     campaign.add_argument("--execute",action="store_true",help="Run the full configured campaign, including billable model requests")
@@ -84,6 +90,9 @@ def _doctor(args):
 
 
 def _run(args):
+    if args.command=="demo":
+        from metalmind.demonstration.cli import run_demo
+        return run_demo(args)
     from metalmind.config import RunConfig,load_config
     from metalmind.workloads.registry import get_workload
     from metalmind.artifacts.export import finalize_run,verify_artifact_evidence

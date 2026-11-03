@@ -1,0 +1,394 @@
+{
+  "enabled": false,
+  "outcome": "no_win",
+  "reason": "Local kernels did not establish the required whole-module gain; original module retained",
+  "analysis": {
+    "schema_version": 1,
+    "supported": true,
+    "reason": null,
+    "graph_hash": "9e1962e252273e23e98515446ed6e65463c7d20f7a1d1661108f3b2ecedfa958",
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "regions": [
+      {
+        "schema_version": 1,
+        "region_id": "e9afc5aeedc03f00a4b09d56484a27d07d0909a9c260deb61447dee55588ad9f",
+        "family": "bias_gelu",
+        "output_name": "gelu",
+        "node_names": [
+          "add",
+          "gelu"
+        ],
+        "input_names": [
+          "x",
+          "bias"
+        ],
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              1024
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "workload": {
+          "schema_version": 1,
+          "workload_id": "bias_gelu:medium",
+          "family": "bias_gelu",
+          "semantics_version": 1,
+          "inputs": [
+            {
+              "schema_version": 1,
+              "shape": [
+                256,
+                1024
+              ],
+              "strides": [
+                1024,
+                1
+              ],
+              "dtype": "float32",
+              "device": "mps",
+              "storage_offset": 0
+            },
+            {
+              "schema_version": 1,
+              "shape": [
+                1024
+              ],
+              "strides": [
+                1
+              ],
+              "dtype": "float32",
+              "device": "mps",
+              "storage_offset": 0
+            }
+          ],
+          "output": {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          "epsilon": 0.0,
+          "accumulation_dtype": "float32",
+          "reference_id": "bias_gelu",
+          "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+          "policy_version": 1
+        },
+        "estimated_input_bytes": 1052672,
+        "reason": null,
+        "latency": null
+      }
+    ],
+    "exclusions": [],
+    "whole_latency": null,
+    "ranking_basis": "estimated input bytes; no timing attribution",
+    "constraints": [
+      "flat pure eval-mode FP32 modules",
+      "standalone times must not be summed"
+    ]
+  },
+  "run_path": "runs/modules/b85f3e29cc1341cca1ed1f42384aa0a3",
+  "artifact_ids": [
+    "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87"
+  ],
+  "private_verification": {
+    "passed": true,
+    "cases": 8,
+    "atol": 1e-05,
+    "rtol": 0.0001,
+    "max_absolute_error": 1.1920928955078125e-07,
+    "input_distribution": "CPU seeded normal*0.25, clipped to [-1,1]",
+    "parameters": "live current values; independent parameter-value testing belongs to the artifact gate"
+  },
+  "confirmations": [
+    {
+      "session": 1,
+      "format_version": 2,
+      "comparisons": [
+        {
+          "baseline": "original_eager_whole_module",
+          "status": "valid",
+          "boundary": "guarded whole module, including all unchanged operations",
+          "domain_mode": "assume",
+          "seed": 71,
+          "bootstrap_resamples": 10000,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.0674173178722981,
+              0.06886173486009284,
+              0.0646953125027494,
+              0.06469468164027603,
+              0.0679002480481472,
+              0.06871887207182681,
+              0.06846944140903588,
+              0.06813026904950448,
+              0.0655035195364917,
+              0.06869984960644615,
+              0.06796995068469869,
+              0.06818511963047058,
+              0.06906776904713752,
+              0.0684559936559026,
+              0.06507019043056061,
+              0.06852048730365823,
+              0.06783300781165735,
+              0.06650950097508712,
+              0.06708508301045413,
+              0.06896382666354839,
+              0.06855861425236753,
+              0.06848048877117208,
+              0.06637646484364268,
+              0.06797717284712235,
+              0.06883489990627822,
+              0.06901851416074578,
+              0.0669060058555715,
+              0.06926273584184628,
+              0.06887567138846862,
+              0.0676698813464327
+            ],
+            "candidate_ms": [
+              0.06391857910159615,
+              0.06181211328026848,
+              0.057108520508108995,
+              0.0599676108379299,
+              0.05891662597434788,
+              0.062114054692585796,
+              0.062074157717972867,
+              0.05848974609534707,
+              0.05975299072957796,
+              0.06019083691199967,
+              0.061959126952615406,
+              0.06260837841409739,
+              0.0626023559604505,
+              0.0608569746063381,
+              0.06151041650781508,
+              0.061246215821597616,
+              0.06171567773094466,
+              0.06159718847698059,
+              0.05841151953234203,
+              0.05774766015775867,
+              0.06108656835834836,
+              0.05817777539363078,
+              0.06180483007511839,
+              0.060004537111524314,
+              0.061046203612136196,
+              0.0639522500023304,
+              0.060173726559753504,
+              0.06478849316948754,
+              0.061561198243964554,
+              0.05966326904172092
+            ],
+            "repetitions": 2048,
+            "order": [
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "candidate_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first"
+            ]
+          },
+          "summary": {
+            "schema_version": 1,
+            "speedup": 1.1129649514092121,
+            "lower": 1.0980669465643835,
+            "upper": 1.1275838268810758,
+            "pairs": 30
+          }
+        },
+        {
+          "baseline": "torch_compile_inductor_fullgraph_whole_module",
+          "status": "valid",
+          "boundary": "guarded whole module, including all unchanged operations",
+          "domain_mode": "assume",
+          "seed": 72,
+          "bootstrap_resamples": 10000,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.02435763549613057,
+              0.025127268553859494,
+              0.023925120117951337,
+              0.025724985839303827,
+              0.026297241213057987,
+              0.025927419191162926,
+              0.025396738770666616,
+              0.02554224658268822,
+              0.02533371997159861,
+              0.02583783984277943,
+              0.023868804930771148,
+              0.025275980714667412,
+              0.02414999389444006,
+              0.025380269285335544,
+              0.026432576415658104,
+              0.026361846924061183,
+              0.025620259766157005,
+              0.025662312744145765,
+              0.02740017700020303,
+              0.02495317578166123,
+              0.02562224316093875,
+              0.02595972705066174,
+              0.024446401123867645,
+              0.024620422362175987,
+              0.026273203612703355,
+              0.026256154299630907,
+              0.026133077149381734,
+              0.02550882959084788,
+              0.025974884032109458,
+              0.026027781252935256
+            ],
+            "candidate_ms": [
+              0.05726459741239864,
+              0.06052643847809236,
+              0.058432749511894144,
+              0.05930433154333059,
+              0.06165338134778153,
+              0.05978161621200684,
+              0.06015311694440584,
+              0.06084626269498017,
+              0.05798745727503274,
+              0.0606887714837967,
+              0.060754018068820415,
+              0.05883864331224231,
+              0.059553609375484484,
+              0.05769549560596943,
+              0.057973195310978554,
+              0.06060279345732056,
+              0.06063035083059276,
+              0.060382364992506155,
+              0.06079514550805243,
+              0.06086270141381078,
+              0.06009430932607529,
+              0.06157016991892306,
+              0.05917605590965991,
+              0.058020161866068065,
+              0.06046155810324194,
+              0.0601476540538215,
+              0.05930312084956313,
+              0.0602053933107527,
+              0.05956841015475334,
+              0.060308044432133556
+            ],
+            "repetitions": 4096,
+            "order": [
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "candidate_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          },
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.4260552727674968,
+            "lower": 0.42313083938114504,
+            "upper": 0.43374070894210404,
+            "pairs": 30
+          }
+        }
+      ]
+    }
+  ],
+  "candidate_id": "6ffa67eb2ac94703d2a3ac179342657c484a1012f78e29d8132a50abfb2707f7",
+  "model_requests": 0,
+  "baseline": "all verified available whole-module baselines",
+  "required_baselines": [
+    "original_eager_whole_module",
+    "torch_compile_inductor_fullgraph_whole_module"
+  ],
+  "unavailable_baselines": [],
+  "confirmation_format_version": 2
+}

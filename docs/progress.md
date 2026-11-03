@@ -8,8 +8,9 @@ The function-level release is published on `main` (`cdb8ec1`); its CPU CI passed
 Module continuation is implemented on `feat/module-optimizer` (core `e34a32f`).
 Original Tasks 16–17 now have tested code and measured acceptance for flat pure
 FP32 inference modules, not arbitrary nested models. Tasks 13–15 still have
-broader research/submission items: the full 108-job campaign, compiled whole-
-module comparison, and authenticated final submission/recording.
+broader research/submission items: the full 108-job campaign and authenticated
+submission. The later compiled whole-module comparison supersedes the earlier
+eager-only acceptance; details are recorded below.
 
 The authorized nine-case FP32 development pilot is complete: **2 promoted,
 7 no-win, 0 failed jobs**, using 18 additional generation requests. Including
@@ -210,3 +211,41 @@ fallback through the installed console entry point, with no key/.env and zero
 model requests. `results/2026-11-02-module-optimizer/release.json` records source,
 wheel/dependency hashes, exact baseline/domain, current hardware and all limits.
 Code tree is unchanged from the 113-test review-fix verification.
+
+
+## Recorded demo continuation — November 2, 2026
+
+Module release published on main at 646179d; CPU CI passed:
+https://github.com/ramikamel/metalmind/actions/runs/41544813530.
+Continuing original Task 15 with a reproducible recorded backup and a separate
+compiled whole-module diagnostic. API generation remains 25/30; no new model
+requests are authorized or needed for this work.
+Ruling: use a labeled saved-evidence walkthrough plus a real offline correctness
+check — reproducible without network/model calls; it cannot be presented as live
+kernel generation or a timing recording of the original search.
+
+
+Compiled whole-module diagnostic completed in two sessions with eight private
+cases and a live parameter-update check. Regional rewrite versus eager:
+1.123× / 1.112×; versus verified Inductor fullgraph whole module: 0.426× / 0.433×.
+This is not a strongest-baseline module win. The default module gate was upgraded
+to require every verified available whole-module baseline. Regression first failed
+on missing multi-baseline support, then passed; incorrect compiled outputs are
+excluded before timing with an explicit unavailable reason.
+The real corrected gate `b85f3e29cc1341cca1ed1f42384aa0a3` returned no-win and
+kept the original module (1.113× vs eager, 0.426× vs compiled). Earlier eager-only
+results remain immutable historical evidence, not current default promotion.
+
+Offline demo source/summary tampering, path confinement, complete denominators,
+terminal controls and no-generation CLI tests have passed. Optional GPU checks
+now reject custom reference imports (regression RED→GREEN). Rendering tools are
+optional extras, with exact versions in requirements-demo.lock.
+
+
+Release/demo source verification: 127 tests passed in 13.34s, no skips. The
+compiled-module diagnostic and actual stricter no-win gate are curated under
+results/2026-11-02-module-baselines. Earlier eager-only module results are marked
+historical; source and numerical records were preserved unchanged.
+Ruling: require all verified available whole-module baselines by default — actual
+measurements showed the compiler outperforming the regional rewrite; the cost is
+fewer enabled rewrites and compiler setup time, rather than a misleading module win.

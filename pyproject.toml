@@ -11,6 +11,7 @@ dependencies = ["torch==2.15.0", "numpy>=2", "pydantic>=2,<3", "PyYAML>=6", "pyt
 
 [project.optional-dependencies]
 dev = ["pytest>=9,<10", "build>=1"]
+demo = ["Pillow>=13,<14", "imageio-ffmpeg>=0.6,<1"]
 
 [project.scripts]
 metalmind = "metalmind.cli:main"

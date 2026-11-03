@@ -68,15 +68,20 @@ outputs, nested structures, input/parameter integrity, and region input domains
 are checked. Runtime parameter values remain live. This is additional evidence
 on top of each function artifact's 22-case final gate.
 
-Promotion then requires two whole-module sessions separated by 60 seconds, at
-least 30 balanced pairs per session, median gain at least 1.05× and bootstrap
-lower 95% bound above 1.00×. The benchmark includes graph dispatch, all guards,
-allocation, and unchanged operations. A slow or unstable integrated rewrite is
-disabled even if its local kernel was promoted.
+Promotion requires two whole-module sessions separated by 60 seconds, at least
+30 balanced pairs per available baseline per session, median gain at least 1.05×
+and bootstrap lower 95% bound above 1.00× for **every required baseline**. The
+original eager module and numerically verified `torch.compile(..., fullgraph=True)`
+module are included when usable. Incorrect/unavailable compiler paths are recorded.
+The benchmark includes graph dispatch, all guards, allocation and unchanged ops.
+Any failed required comparison disables the rewrite; a losing first session need
+not consume a second session.
 
-The whole-module baseline is **the original eager module**. A compiled whole-
-module comparison has not been performed; local function-vs-Inductor gains must
-not be presented as whole-model compiler gains.
+The [compiled comparison](../results/2026-11-02-module-baselines/README.md) found that
+the residual example's regional rewrite was slower than compiled whole-module
+PyTorch. Its new default gate returned no-win and retained the original callable.
+Earlier 1.220× / 1.218× gains were against eager only and remain archived historical
+evidence. They do not establish superiority to whole-graph compilation.
 
 Calls use the optimized path only when input signatures, module code, live
 parameter identity/metadata, scalar/global attribute dependencies, invocation
@@ -90,12 +95,11 @@ it is not an `nn.Module` replacement for training or serialization.
 
 Each saved run contains analysis, original/candidate FX source, function artifact
 IDs, immutable host-implementation snapshots, private seed descriptors, raw
-confirmation pairs, final enabled/no-win status and zero-request provenance.
+confirmation pairs (nested format v2 for all available baselines), final enabled/no-win status and zero-request provenance.
 Incomplete runs never return an enabled rewrite. Module runtime/capture faults
 latch GPU health; `doctor --smoke` must pass before more GPU evaluation.
 
 [Measured module development runs](../results/2026-11-02-module-optimizer/README.md)
 retain the initial no-win and the final reviewed result. These measurements cover
-one residual-activation module and signature on one chip. Broader graph coverage,
-compiled whole-module baselines, training, and the full strategy campaign remain
-research work.
+one residual-activation module and signature on one chip. Broader graph coverage, training, and the full strategy campaign remain research
+work. The compiler counterexample is now measured and enforced by the gate.

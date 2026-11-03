@@ -52,3 +52,14 @@ def test_example_domain_is_verified_even_with_assumed_mode(monkeypatch):
     result = optimize_module(module,inputs,config=ModuleOptimizationConfig(artifact_paths=(ARTIFACT,),domain_mode="assume"))
     assert result.outcome == "failed" and not result.enabled
     assert "Example" in result.reason
+
+
+def test_wrong_compiled_module_is_excluded_before_timing(monkeypatch):
+    from metalmind.graph.baselines import collect_module_baselines
+    module,inputs=make_demo()
+    before=module.bias._version
+    monkeypatch.setattr(torch,"compile",lambda *a,**kw:lambda x:torch.zeros_like(x))
+    baselines,unavailable=collect_module_baselines(module,inputs,tuple(range(8)))
+    assert [name for name,_ in baselines]==["original_eager_whole_module"]
+    assert unavailable and "torch_compile" in unavailable[0]
+    assert module.bias._version==before

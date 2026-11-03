@@ -1,5 +1,9 @@
 # Guarded module development evidence — November 2, 2026
 
+**Historical eager-only policy.** A later [compiled whole-module comparison](../2026-11-02-module-baselines/README.md)
+found the compiler faster; the current default gate disables this rewrite. The
+measurements below remain unchanged records of the earlier eager comparison.
+
 The final reviewed rewrite of `ResidualActivation`, FP32 input `(256, 1024)`,
 measured **1.220×** and **1.218×** versus the **original eager whole module**.
 Lower 95% bounds were **1.208×** and **1.204×**. Each session retained 30 raw pairs,

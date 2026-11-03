@@ -14,6 +14,8 @@ from metalmind.contracts import Contract
 from metalmind.graph.capture import capture_module, RecordingInterpreter
 from metalmind.graph.profile import analysis_from_capture, assert_measurement_ready
 from metalmind.graph.contracts import ModuleAnalysis
+from metalmind.graph.verification import _compare, _versions, make_private_inputs
+from metalmind.graph.baselines import collect_module_baselines
 from metalmind.artifacts.export import verify_artifact_evidence
 from metalmind.artifacts.loader import load_artifact
 from metalmind.artifacts.store import atomic_json
@@ -46,13 +48,17 @@ class OptimizedModuleResult:
     private_verification: dict | None = None
     confirmations: list = field(default_factory=list)
     candidate_id: str | None = None
+    required_baselines: tuple[str,...] = ()
+    unavailable_baselines: tuple[str,...] = ()
 
     def report(self):
         return {"enabled":self.enabled,"outcome":self.outcome,"reason":self.reason,
             "analysis":self.analysis.model_dump(mode="json"),"run_path":str(self.run_path) if self.run_path else None,
             "artifact_ids":self.artifact_ids,"private_verification":self.private_verification,
             "confirmations":self.confirmations,"candidate_id":self.candidate_id,"model_requests":0,
-            "baseline":"original eager whole module; no compiled whole-module comparison"}
+            "baseline":"all verified available whole-module baselines",
+            "required_baselines":self.required_baselines,"unavailable_baselines":self.unavailable_baselines,
+            "confirmation_format_version":2}
 
 class GuardedModule:
     """A callable wrapper avoids adding extra nn.Module hooks on fallback calls."""
@@ -120,37 +126,11 @@ def _select_artifacts(captured, config):
     return selected,tuple(identities),issues
 
 
-def _compare(actual, expected):
-    if isinstance(expected,torch.Tensor):
-        if not isinstance(actual,torch.Tensor) or not torch.isfinite(actual).all().item() or not torch.isfinite(expected).all().item():
-            raise ValueError("Whole-module outputs must be finite matching tensors")
-        torch.testing.assert_close(actual,expected,atol=1e-5,rtol=1e-4,equal_nan=False)
-        return (actual-expected).abs().max().item() if actual.numel() else 0.
-    if type(actual) is not type(expected): raise ValueError("Output structure changed")
-    if isinstance(expected,dict):
-        if list(actual) != list(expected): raise ValueError("Output keys changed")
-        return max((_compare(actual[k],v) for k,v in expected.items()),default=0.)
-    if isinstance(expected,(tuple,list)):
-        if len(actual) != len(expected): raise ValueError("Output length changed")
-        return max((_compare(a,b) for a,b in zip(actual,expected)),default=0.)
-    if actual != expected: raise ValueError("Non-tensor output changed")
-    return 0.
-
-
-def _versions(tensors):
-    values = []
-    for t in tensors:
-        try: values.append(t._version)
-        except RuntimeError: values.append(None)
-    return tuple(values)
-
-
 def _verify_private(captured, candidate, selected, config, seeds):
     maximum = 0.
     parameters = tuple(captured.original.parameters()) + tuple(captured.original.buffers())
     for seed in seeds:
-        rng = torch.Generator(device="cpu").manual_seed(seed)
-        inputs = tuple((torch.randn(tuple(t.shape),generator=rng)*.25).clamp_(-1,1).to(t.device) for t in captured.example_inputs)
+        inputs = make_private_inputs(captured.example_inputs,seed)
         before = _versions((*inputs,*parameters))
         with torch.inference_mode():
             original_graph = RecordingInterpreter(captured.graph);original_graph.run(*inputs)
@@ -169,29 +149,33 @@ def _verify_private(captured, candidate, selected, config, seeds):
         "parameters":"live current values; independent parameter-value testing belongs to the artifact gate"}
 
 
-def _confirm(original, candidate, config, *, save=None, deadline=None):
-    confirmations = []
+def _confirm(original, candidate, config, *, baselines=None, save=None, deadline=None):
+    baselines=baselines or [("original_eager_whole_module",original)]
+    confirmations=[]
     for session in range(2):
         if session:
-            if deadline is not None and time.monotonic()+config.confirmation_cooldown_seconds >= deadline:
+            if deadline is not None and time.monotonic()+config.confirmation_cooldown_seconds>=deadline:
                 return "budget_exhausted",confirmations
             time.sleep(config.confirmation_cooldown_seconds)
-        if deadline is not None and time.monotonic() >= deadline: return "budget_exhausted",confirmations
-        try:
-            series = measure_pair(original,candidate,pairs=config.confirmation_pairs,seed=71+session)
-        except BenchmarkUnstable as exc:
-            confirmations.append({"session":session+1,"status":"inconclusive","reason":str(exc)})
-            if save: save(session+1,confirmations[-1])
-            return "inconclusive",confirmations
-        summary = summarize_pairs(series.baseline_ms,series.candidate_ms,seed=71+session,resamples=config.bootstrap_resamples)
-        evidence = {"session":session+1,"status":"valid","baseline":"original_eager_whole_module",
-            "boundary":"guarded whole module, including all unchanged operations",
-            "domain_mode":config.domain_mode,"seed":71+session,"bootstrap_resamples":config.bootstrap_resamples,
-            "series":series.model_dump(mode="json"),"summary":summary.model_dump(mode="json")}
-        confirmations.append(evidence)
-        if save: save(session+1,evidence)
-        if deadline is not None and time.monotonic() >= deadline: return "budget_exhausted",confirmations
-        if summary.speedup < 1.05 or summary.lower <= 1.: return "no_win",confirmations
+        if deadline is not None and time.monotonic()>=deadline: return "budget_exhausted",confirmations
+        batch={"session":session+1,"format_version":2,"comparisons":[]}
+        confirmations.append(batch)
+        for index,(name,baseline) in enumerate(baselines):
+            seed=71+session*len(baselines)+index
+            try:
+                series=measure_pair(baseline,candidate,pairs=config.confirmation_pairs,seed=seed)
+            except BenchmarkUnstable as exc:
+                batch["comparisons"].append({"baseline":name,"status":"inconclusive","reason":str(exc)})
+                if save: save(session+1,batch)
+                return "inconclusive",confirmations
+            summary=summarize_pairs(series.baseline_ms,series.candidate_ms,seed=seed,resamples=config.bootstrap_resamples)
+            batch["comparisons"].append({"baseline":name,"status":"valid",
+                "boundary":"guarded whole module, including all unchanged operations",
+                "domain_mode":config.domain_mode,"seed":seed,"bootstrap_resamples":config.bootstrap_resamples,
+                "series":series.model_dump(mode="json"),"summary":summary.model_dump(mode="json")})
+            if save: save(session+1,batch)
+            if deadline is not None and time.monotonic()>=deadline: return "budget_exhausted",confirmations
+            if summary.speedup<1.05 or summary.lower<=1.: return "no_win",confirmations
     return "promoted",confirmations
 
 
@@ -202,13 +186,14 @@ def optimize_module(module, example_inputs, *, config=None):
         run = config.output_dir / uuid.uuid4().hex;run.mkdir(parents=True,exist_ok=False)
         atomic_json(run/"manifest.json",{"phase":"capturing","config":config.model_dump(mode="json"),"model_requests":0})
     private = None;confirmations = [];identities = ();candidate = None;candidate_id = None
+    required_baselines=();unavailable_baselines=()
     started = time.monotonic()
     def finish(outcome, reason):
         result = OptimizedModuleResult(candidate if outcome=="promoted" else module,outcome=="promoted",
-            outcome,reason,analysis,run,identities,private,confirmations,candidate_id)
+            outcome,reason,analysis,run,identities,private,confirmations,candidate_id,required_baselines,unavailable_baselines)
         if run:
             atomic_json(run/"result.json",result.report())
-            manifest = {"phase":"terminal","config":config.model_dump(mode="json"),"analysis":analysis.model_dump(mode="json"),"model_requests":0,"artifact_ids":identities,"candidate_id":candidate_id,"elapsed_seconds":time.monotonic()-started}
+            manifest = {"phase":"terminal","config":config.model_dump(mode="json"),"analysis":analysis.model_dump(mode="json"),"model_requests":0,"artifact_ids":identities,"candidate_id":candidate_id,"elapsed_seconds":time.monotonic()-started,"required_baselines":required_baselines,"unavailable_baselines":unavailable_baselines,"confirmation_format_version":2}
             atomic_json(run/"manifest.json",manifest)
         return result
     try:
@@ -227,9 +212,15 @@ def optimize_module(module, example_inputs, *, config=None):
                     raise ValueError("Example inputs leave an optimized region's declared numerical domain")
             rewritten = _rewrite_graph(captured,selected)
             candidate = GuardedModule(module,rewritten,captured.guard)
+            seeds=tuple(secrets.randbits(63) for _ in range(config.private_cases))
+            if run: atomic_json(run/"private-fixtures.json",{"seeds":seeds,"cases":config.private_cases})
+            baselines,unavailable_baselines=collect_module_baselines(module,captured.example_inputs,seeds)
+            required_baselines=tuple(name for name,_ in baselines)
+            if run: atomic_json(run/"baseline-verification.json",{"required":required_baselines,"unavailable":unavailable_baselines,"cases":len(seeds)})
             implementation = {p.name:p.read_text() for p in sorted(Path(__file__).parent.glob("*.py"))}
             identity = {"original_graph":captured.graph_hash,"artifact_ids":identities,"domain_mode":config.domain_mode,
-                "rewritten_graph":rewritten.code,"implementation":implementation,"guard_policy_version":1}
+                "rewritten_graph":rewritten.code,"implementation":implementation,"guard_policy_version":1,
+                "baseline_policy":"all_verified_available","required_baselines":required_baselines}
             candidate_id = hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest()
             if run:
                 snapshots = run/"implementation";snapshots.mkdir()
@@ -237,15 +228,13 @@ def optimize_module(module, example_inputs, *, config=None):
                 atomic_json(run/"candidate-identity.json",{k:v for k,v in identity.items() if k!="implementation"})
                 (run/"candidate-graph.py").write_text(rewritten.code)
                 atomic_json(run/"selected-artifacts.json",{"artifact_ids":identities,"regions":tuple(selected)})
-            seeds = tuple(secrets.randbits(63) for _ in range(config.private_cases))
-            if run: atomic_json(run/"private-fixtures.json",{"seeds":seeds,"cases":config.private_cases})
             private = _verify_private(captured,candidate,selected,config,seeds)
             if run: atomic_json(run/"private-verification.json",private)
             def save(session,evidence):
                 if run: atomic_json(run/f"confirmation-{session}.json",evidence)
             outcome,confirmations = _confirm(lambda:module(*captured.example_inputs),lambda:candidate(*captured.example_inputs),
-                config,save=save,deadline=started+config.wall_seconds)
-            reasons = {"promoted":"Private whole-module outputs and both integrated timing sessions passed",
+                config,baselines=[(name,lambda fn=fn:fn(*captured.example_inputs)) for name,fn in baselines],save=save,deadline=started+config.wall_seconds)
+            reasons = {"promoted":"Private outputs and both sessions passed every verified available whole-module baseline",
                 "no_win":"Local kernels did not establish the required whole-module gain; original module retained",
                 "inconclusive":"An integrated timing window was unstable; original module retained",
                 "budget_exhausted":"Integrated verification exceeded its budget; original module retained"}

@@ -169,3 +169,34 @@ def test_preexisting_instance_invocation_override_is_not_captured():
     module._call_impl = lambda *args,**kwargs: calls.append(1) or torch.zeros_like(args[0])
     assert not analyze_module(module,(torch.ones(2,3),)).supported
     assert not calls
+
+
+def test_compiled_whole_module_loss_blocks_promotion(monkeypatch):
+    import metalmind.graph.rewrite as rewrite
+    from metalmind.contracts import TimingSeries
+    ratios=iter([1.2,.43])
+    def measured(*args,**kwargs):
+        r=next(ratios)
+        return TimingSeries(baseline_ms=(r,)*30,candidate_ms=(1.,)*30,repetitions=1,order=("baseline_first",)*30)
+    monkeypatch.setattr(rewrite,"measure_pair",measured)
+    monkeypatch.setattr(rewrite.time,"sleep",lambda _: (_ for _ in ()).throw(AssertionError("A failed session must stop")))
+    baselines=[("original_eager_whole_module",lambda:None),("torch_compile_inductor_fullgraph_whole_module",lambda:None)]
+    outcome,sessions=rewrite._confirm(lambda:None,lambda:None,ModuleOptimizationConfig(),baselines=baselines)
+    assert outcome=="no_win" and len(sessions)==1
+    assert len(sessions[0]["comparisons"])==2
+    assert sessions[0]["comparisons"][1]["summary"]["speedup"] < 1
+
+
+def test_all_required_whole_module_baselines_repeat_in_both_sessions(monkeypatch):
+    import metalmind.graph.rewrite as rewrite
+    from metalmind.contracts import TimingSeries
+    calls=[]
+    def measured(*args,**kwargs):
+        calls.append(kwargs["seed"])
+        return TimingSeries(baseline_ms=(1.2,)*30,candidate_ms=(1.,)*30,repetitions=1,order=("baseline_first",)*30)
+    monkeypatch.setattr(rewrite,"measure_pair",measured)
+    monkeypatch.setattr(rewrite.time,"sleep",lambda _:None)
+    baselines=[("original_eager_whole_module",lambda:None),("torch_compile_inductor_fullgraph_whole_module",lambda:None)]
+    outcome,sessions=rewrite._confirm(lambda:None,lambda:None,ModuleOptimizationConfig(),baselines=baselines)
+    assert outcome=="promoted" and len(calls)==4
+    assert all(len(s["comparisons"])==2 for s in sessions)

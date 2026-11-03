@@ -32,9 +32,10 @@ and strongest available function-baseline comparisons. The nine-case FP32 pilot
 promoted 2 signatures and retained 7 no-win outcomes. Reuse a promoted artifact
 offline with new values, then demonstrate shape and gradient fallback. Finally
 show conservative module-region extraction: the final residual-activation module
-passed eight private cases and measured 1.220× / 1.218× versus its original eager
-module. Retain the initial 1.026× no-win draft as evidence that the gate rejects
-insufficient integrated improvements.
+passed eight private cases. Explain that an eager-only gain was superseded by
+a compiled whole-module comparison: the compiler won, and the stricter default
+gate now disables the regional rewrite. Show that no-win decision alongside the
+function-level wins to demonstrate baseline-aware acceptance.
 Clearly label any stored search as cached/recorded; do not imply live API activity.
 
 Use the exact figures and bounds in the linked results, including assumed-domain
