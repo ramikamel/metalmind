@@ -1,0 +1,198 @@
+[
+  {
+    "strategy": "independent",
+    "outcome": "no_win",
+    "proposal_slots": 2,
+    "model_requests": 2,
+    "input_tokens_reported": 974,
+    "output_tokens_reported": 3752,
+    "search_elapsed_seconds": 159.73788895799953,
+    "evaluation_statuses": {
+      "valid": 2
+    },
+    "candidates": [
+      {
+        "candidate_id": "1ad28da01d6224e1a9841c8e5be2dec65cfdf34c7e8011b9f49da50baa1df093",
+        "status": "valid",
+        "comparisons": [
+          {
+            "baseline": "original_eager",
+            "speedup": 0.028011263907042325,
+            "candidate_median_ms": 0.3931348541496845,
+            "baseline_median_ms": 0.010939358350151451,
+            "repetitions": 10000
+          },
+          {
+            "baseline": "torch_compile_inductor_fullgraph",
+            "speedup": 0.06408433110267606,
+            "candidate_median_ms": 0.39121161889710265,
+            "baseline_median_ms": 0.025232208374248444,
+            "repetitions": 4096
+          }
+        ]
+      },
+      {
+        "candidate_id": "1fa47b9389f7ce7c288ed35aae385abfd76072a6f0275d6f05624cfa1ad52923",
+        "status": "valid",
+        "comparisons": [
+          {
+            "baseline": "original_eager",
+            "speedup": 0.02844293105015966,
+            "candidate_median_ms": 0.39121437710055035,
+            "baseline_median_ms": 0.011227579200203763,
+            "repetitions": 10000
+          },
+          {
+            "baseline": "torch_compile_inductor_fullgraph",
+            "speedup": 0.0652304973033273,
+            "candidate_median_ms": 0.39248027551153086,
+            "baseline_median_ms": 0.02554526770026655,
+            "repetitions": 4096
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "strategy": "feedback",
+    "outcome": "no_win",
+    "proposal_slots": 2,
+    "model_requests": 2,
+    "input_tokens_reported": 1824,
+    "output_tokens_reported": 3724,
+    "search_elapsed_seconds": 157.11623691700515,
+    "evaluation_statuses": {
+      "valid": 2
+    },
+    "candidates": [
+      {
+        "candidate_id": "7a4863fd4eca344f669ff63b9898209edb2bb0d129804306363f5b1879d4cf36",
+        "status": "valid",
+        "comparisons": [
+          {
+            "baseline": "original_eager",
+            "speedup": 0.027817984159171763,
+            "candidate_median_ms": 0.393131787499442,
+            "baseline_median_ms": 0.010929829149972647,
+            "repetitions": 10000
+          },
+          {
+            "baseline": "torch_compile_inductor_fullgraph",
+            "speedup": 0.06392549824231208,
+            "candidate_median_ms": 0.3965688273925849,
+            "baseline_median_ms": 0.02568057751517472,
+            "repetitions": 4096
+          }
+        ]
+      },
+      {
+        "candidate_id": "65839244fb57458d9774f8ed76eb62198123584d5d8ae87e34da8ee0cfc1fe03",
+        "status": "valid",
+        "comparisons": [
+          {
+            "baseline": "original_eager",
+            "speedup": 0.027772310807866414,
+            "candidate_median_ms": 0.3974615020495548,
+            "baseline_median_ms": 0.011030604149709688,
+            "repetitions": 10000
+          },
+          {
+            "baseline": "torch_compile_inductor_fullgraph",
+            "speedup": 0.06636337832040481,
+            "candidate_median_ms": 0.3847829132084257,
+            "baseline_median_ms": 0.025378972290823754,
+            "repetitions": 4096
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "strategy": "one_shot",
+    "outcome": "no_win",
+    "proposal_slots": 1,
+    "model_requests": 1,
+    "input_tokens_reported": 487,
+    "output_tokens_reported": 1012,
+    "search_elapsed_seconds": 67.72940916600055,
+    "evaluation_statuses": {
+      "valid": 1
+    },
+    "candidates": [
+      {
+        "candidate_id": "f144cc63394a5646855847a94a163d412f69352d494de82c7eee0d309efc905c",
+        "status": "valid",
+        "comparisons": [
+          {
+            "baseline": "original_eager",
+            "speedup": 0.028644537140397282,
+            "candidate_median_ms": 0.3679332749998139,
+            "baseline_median_ms": 0.01058566459978465,
+            "repetitions": 10000
+          },
+          {
+            "baseline": "torch_compile_inductor_fullgraph",
+            "speedup": 0.0655418344451162,
+            "candidate_median_ms": 0.3928958232410906,
+            "baseline_median_ms": 0.02548814904912433,
+            "repetitions": 4096
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "strategy": "template",
+    "outcome": "no_win",
+    "proposal_slots": 2,
+    "model_requests": 0,
+    "input_tokens_reported": 0,
+    "output_tokens_reported": 0,
+    "search_elapsed_seconds": 120.33167966599285,
+    "evaluation_statuses": {
+      "valid": 2
+    },
+    "candidates": [
+      {
+        "candidate_id": "ef1dc4267ed5dd453a958172f9f5e104f6179fade84f02653b9251f0c17e0bbd",
+        "status": "valid",
+        "comparisons": [
+          {
+            "baseline": "original_eager",
+            "speedup": 0.02885278198133063,
+            "candidate_median_ms": 0.39088855624941066,
+            "baseline_median_ms": 0.011200018749514129,
+            "repetitions": 10000
+          },
+          {
+            "baseline": "torch_compile_inductor_fullgraph",
+            "speedup": 0.06855823212411709,
+            "candidate_median_ms": 0.3681004790045961,
+            "baseline_median_ms": 0.025335749144872466,
+            "repetitions": 4096
+          }
+        ]
+      },
+      {
+        "candidate_id": "99272c55a65d421e2b1efc8b830797bc64d21fcd95013a981a67b2a0abc82d47",
+        "status": "valid",
+        "comparisons": [
+          {
+            "baseline": "original_eager",
+            "speedup": 0.02976490795322005,
+            "candidate_median_ms": 0.36874444999994016,
+            "baseline_median_ms": 0.011004127100022743,
+            "repetitions": 10000
+          },
+          {
+            "baseline": "torch_compile_inductor_fullgraph",
+            "speedup": 0.06704723522605394,
+            "candidate_median_ms": 0.38280038452143117,
+            "baseline_median_ms": 0.025615239502840836,
+            "repetitions": 4096
+          }
+        ]
+      }
+    ]
+  }
+]

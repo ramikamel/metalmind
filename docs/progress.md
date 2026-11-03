@@ -1,6 +1,6 @@
 # Implementation progress
 
-Updated November 2, 2026. Plan: [ordered implementation tasks](superpowers/plans/2026-10-29-metalmind.md).
+Updated November 3, 2026. Plan: [ordered implementation tasks](superpowers/plans/2026-10-29-metalmind.md).
 
 ## Current state
 
@@ -293,3 +293,22 @@ Built wheel and sdist, then installed the wheel in a clean temporary
 environment without the video extras. The packaged replay verified all nine
 pilot jobs, and the Metal smoke check passed. The installed source fingerprint
 matched the recording commit. See demo/clean-install.json for package hashes.
+
+
+## Frozen comparison continuation — November 3, 2026
+
+With the user's renewed API authorization, ran the four-strategy checked-mode
+rehearsal on small FP32 bias/GELU. It completed four jobs, evaluated seven
+correct measured candidates, and promoted none. Five Muse Wonder requests
+reported 3,285 input and 8,488 output tokens. Raw evidence and hashes are in
+results/2026-11-03-strategy-rehearsal. The previous 25-request development
+history is separate.
+
+The frozen suite uses 108 checked-mode jobs and a 135-request ceiling, two
+requests each for feedback and independent sampling and one for one-shot per
+signature/trial. Repeated template tuning is local. The first 12 frozen jobs
+have a ceiling of 16 requests. Bounded resume now retains completed outcomes,
+recovers terminal results and records interrupted attempts conservatively.
+The offline report distinguishes verified search measurements, confirmed
+promotion, and matched strategy trials. The latest full local suite passed
+143 tests, including real Apple Silicon coverage, before the first batch.

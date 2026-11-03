@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:small",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          64,
+          257
+        ],
+        "strides": [
+          257,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          257
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        64,
+        257
+      ],
+      "strides": [
+        257,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "checked",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 120000,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 1703,
+    "runs_dir": "runs/strategy-rehearsal/jobs",
+    "artifacts_dir": "runs/strategy-rehearsal/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 3724,
+  "elapsed_seconds": 157.11623691700515,
+  "wall_deadline_utc": 1793741865.279031,
+  "seen": [
+    "65839244fb57458d9774f8ed76eb62198123584d5d8ae87e34da8ee0cfc1fe03",
+    "7a4863fd4eca344f669ff63b9898209edb2bb0d129804306363f5b1879d4cf36"
+  ],
+  "archive": [
+    {
+      "score": 0.027817984159171763,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "7a4863fd4eca344f669ff63b9898209edb2bb0d129804306363f5b1879d4cf36",
+        "workload_hash": "0c4845e365a8a11f642bbb1582f91373eba2829de2ef745bf5f99e253d8e70e9",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]]) {\n    uint col = gid.x;\n    uint row = gid.y;\n    if (row >= B || col >= D) {\n        return;\n    }\n    uint idx = row * D + col;\n    float z = float(x[idx]) + float(parameter[col]);\n    float z2 = z * z;\n    float z3 = z2 * z;\n    float inner = 0.7978845608028654f * (z + 0.044715f * z3);\n    float y = 0.5f * z * (1.0f + tanh(inner));\n    out[idx] = float(y);\n}\n",
+          "threads": [
+            257,
+            64,
+            1
+          ],
+          "group_size": [
+            32,
+            8,
+            1
+          ],
+          "hypothesis": "One thread per output with 2D indexing avoids division/modulo and coalesces loads for this small 64x257 tensor; tanh GELU in FP32 should be correct and launch-bound rather than bandwidth-bound."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 0.027772310807866414,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "65839244fb57458d9774f8ed76eb62198123584d5d8ae87e34da8ee0cfc1fe03",
+        "workload_hash": "0c4845e365a8a11f642bbb1582f91373eba2829de2ef745bf5f99e253d8e70e9",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nstatic float gelu_tanh(float z) {\n    float z2 = z * z;\n    float u = 0.7978845608028654f * (z + 0.044715f * z2 * z);\n    float au = min(fabs(u), 12.0f);\n    float e = exp(-2.0f * au);\n    float t = (1.0f - e) / (1.0f + e);\n    t = (u >= 0.0f) ? t : -t;\n    return 0.5f * z * (1.0f + t);\n}\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    uint n = B * D;\n    uint base = gid * 4u;\n    if (base >= n) {\n        return;\n    }\n    uint row = base / D;\n    uint col = base - row * D;\n    if (base + 3u < n) {\n        float4 xv = ((device const float4*)x)[gid];\n        uint c0 = col;\n        uint c1 = col + 1u;\n        uint c2 = col + 2u;\n        uint c3 = col + 3u;\n        c1 = (c1 >= D) ? (c1 - D) : c1;\n        c2 = (c2 >= D) ? (c2 - D) : c2;\n        c3 = (c3 >= D) ? (c3 - D) : c3;\n        float4 y;\n        y.x = gelu_tanh(xv.x + parameter[c0]);\n        y.y = gelu_tanh(xv.y + parameter[c1]);\n        y.z = gelu_tanh(xv.z + parameter[c2]);\n        y.w = gelu_tanh(xv.w + parameter[c3]);\n        ((device float4*)out)[gid] = y;\n    } else {\n        for (uint i = base; i < n; ++i) {\n            uint r = i / D;\n            uint c = i - r * D;\n            out[i] = gelu_tanh(x[i] + parameter[c]);\n        }\n    }\n}\n",
+          "threads": [
+            4112,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "Float4 flat vectorization with wrapped bias indices and exp-based tanh reduces thread count, memory transactions, and transcendental cost versus scalar tanh for the 64x257 workload."
+        },
+        "parent_id": "7a4863fd4eca344f669ff63b9898209edb2bb0d129804306363f5b1879d4cf36",
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

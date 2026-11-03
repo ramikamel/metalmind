@@ -1,0 +1,114 @@
+{
+  "campaign_id": "60cf4592f3c2c62c3b38a347825c0d4de6605e799a94a7d4874ec4410c4f4fb3",
+  "manifest_version": 2,
+  "config": {
+    "schema_version": 1,
+    "families": [
+      "bias_gelu"
+    ],
+    "cases": [
+      "small"
+    ],
+    "strategies": [
+      "feedback",
+      "one_shot",
+      "independent",
+      "template"
+    ],
+    "trials": 1,
+    "dtype": "float32",
+    "domain_mode": "checked",
+    "run_config": {
+      "schema_version": 1,
+      "model": "muse-wonder-1.0",
+      "reasoning_effort": "low",
+      "domain_mode": "checked",
+      "max_candidates": 2,
+      "max_requests": 2,
+      "wall_seconds": 1800.0,
+      "finalization_reserve_seconds": 300.0,
+      "max_output_tokens": 4096,
+      "total_output_tokens": 120000,
+      "request_timeout_seconds": 120.0,
+      "compile_timeout_seconds": 60.0,
+      "execution_timeout_seconds": 120.0,
+      "stagnation_limit": 10,
+      "seed": 1703,
+      "runs_dir": "runs/strategy-rehearsal/jobs",
+      "artifacts_dir": "runs/strategy-rehearsal/artifacts",
+      "warmups": 25,
+      "search_pairs": 10,
+      "confirmation_pairs": 30,
+      "bootstrap_resamples": 10000,
+      "confirmation_cooldown_seconds": 60.0
+    }
+  },
+  "workloads": [
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "workload": {
+        "schema_version": 1,
+        "workload_id": "bias_gelu:small",
+        "family": "bias_gelu",
+        "semantics_version": 1,
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              64,
+              257
+            ],
+            "strides": [
+              257,
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              257
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float32",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "output": {
+          "schema_version": 1,
+          "shape": [
+            64,
+            257
+          ],
+          "strides": [
+            257,
+            1
+          ],
+          "dtype": "float32",
+          "device": "mps",
+          "storage_offset": 0
+        },
+        "epsilon": 0.0,
+        "accumulation_dtype": "float32",
+        "reference_id": "bias_gelu",
+        "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+        "policy_version": 1
+      },
+      "policy": {
+        "schema_version": 1,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "max_input": 10.0,
+        "max_parameter": 10.0,
+        "exclude_subnormals": true
+      }
+    }
+  ],
+  "jobs": 4
+}

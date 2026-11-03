@@ -68,7 +68,9 @@ public-call measurements; they do not describe default checked-mode performance.
 [All outcomes, source, raw samples, confidence intervals, and reproduction](results/2026-11-02-fp32-pilot/README.md)
 are preserved. A separate unchanged matmul-plus-activation example measured
 1.153× whole-workflow gain in one session. This is not whole-model confirmation.
-The full 108-job comparison and feedback ablation remain unexecuted.
+A separate [checked-mode four-strategy rehearsal](results/2026-11-03-strategy-rehearsal/README.md)
+measured seven numerically valid candidates and zero wins for small bias/GELU.
+The frozen 108-job comparison is tracked separately.
 
 ## Module workflow
 
@@ -137,4 +139,4 @@ PyTorch is pinned to 2.15.0. GPU checks skip explicitly when MPS is unavailable.
 Use `requirements-dev.lock` for the tested dependency snapshot. The event lists
 Muse Wonder among its models; [rule alignment](docs/hackathon.md) distinguishes
 confirmed public requirements from the authenticated submission steps. The full
-comparison campaign remains unexecuted.
+comparison campaign has its own frozen protocol and result ledger.

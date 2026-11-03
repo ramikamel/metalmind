@@ -1,0 +1,48 @@
+{
+  "attempted": 4,
+  "promoted": 0,
+  "failed": 0,
+  "geometric_mean_speedup": 1.0,
+  "rows": [
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "independent",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/strategy-rehearsal/jobs/5413ad7528794dc08067dd1616211b28",
+      "requests": 2
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/strategy-rehearsal/jobs/c4c89857520e4950b95ba983ed7fa3bc",
+      "requests": 2
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "one_shot",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/strategy-rehearsal/jobs/89d52644f0374cd1ae1d93eb17912ba9",
+      "requests": 1
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "template",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "run_path": "runs/strategy-rehearsal/jobs/11a7cacc99914aed9bbd879c482ff548",
+      "requests": 2
+    }
+  ]
+}
