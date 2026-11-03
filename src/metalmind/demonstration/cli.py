@@ -12,6 +12,8 @@ def run_demo(args):
     if args.gpu_check:
         from metalmind.demonstration.checks import check_artifact_reuse
         data["live_check"]=check_artifact_reuse(child(args.evidence_root,PILOT,"artifacts",data["selected_artifact_id"]))
+    from metalmind.demonstration.provenance import runtime_source_info
+    data["runtime_source"]=runtime_source_info()
     data["chapters"]=build_chapters(data)
     if args.output: atomic_json(args.output,data)
     if args.json: print(json.dumps(data,indent=2,allow_nan=False))

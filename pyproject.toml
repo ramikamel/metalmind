@@ -23,3 +23,6 @@ where = ["src"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 markers = ["gpu: requires real Apple Silicon MPS execution"]
+
+[tool.setuptools.package-data]
+"metalmind.demonstration" = ["evidence-manifest.json"]

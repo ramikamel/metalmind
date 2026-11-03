@@ -66,8 +66,48 @@ def validate_module_candidate(folder,result):
     return identity
 
 
+def verify_frozen_evidence(root):
+    manifest=json.loads(Path(__file__).with_name("evidence-manifest.json").read_text())
+    if manifest["schema_version"]!=1 or not manifest["files"]: raise ValueError("Unsupported trusted evidence manifest")
+    for name,expected in manifest["files"].items():
+        path=child(root,name)
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest()!=expected:
+            raise ValueError("Evidence checksum mismatch: "+name)
+
+
+def validate_gate_sessions(gate):
+    required=gate["required_baselines"]
+    known={"original_eager_whole_module","torch_compile_inductor_fullgraph_whole_module"}
+    if not required or len(required)!=len(set(required)) or set(required)-known or "original_eager_whole_module" not in required:
+        raise ValueError("Unknown or duplicate required gate baseline")
+    outcome=gate["outcome"]
+    if outcome not in ("promoted","no_win","inconclusive","budget_exhausted","failed") or type(gate["enabled"]) is not bool:
+        raise ValueError("Unknown gate outcome or enabled state")
+    comparisons=[];complete=[];inconclusive=False
+    if len(gate["confirmations"])>2: raise ValueError("Too many gate sessions")
+    for index,session in enumerate(gate["confirmations"],1):
+        if session["session"]!=index or session["format_version"]!=2: raise ValueError("Invalid gate session")
+        names=[c["baseline"] for c in session["comparisons"]]
+        if len(names)!=len(set(names)) or set(names)-set(required): raise ValueError("Unknown or duplicate gate baseline")
+        complete.append(set(names)==set(required))
+        for c in session["comparisons"]:
+            if c["status"] not in ("valid","inconclusive"): raise ValueError("Unknown gate comparison status")
+            if c["status"]=="valid": comparisons.append({"session":index,"baseline":c["baseline"],**validate_pairs(c)})
+            else: inconclusive=True
+    failing=any(c["speedup"]<1.05 or c["lower"]<=1 for c in comparisons)
+    if outcome=="promoted":
+        if gate["enabled"] is not True or len(complete)!=2 or not all(complete) or inconclusive or failing:
+            raise ValueError("A promoted gate requires two complete passing sessions for every baseline")
+    elif gate["enabled"] is not False:
+        raise ValueError("An unpromoted gate cannot enable a rewrite")
+    if outcome=="no_win" and not failing: raise ValueError("No-win outcome lacks a failing valid comparison")
+    if outcome=="inconclusive" and not inconclusive: raise ValueError("Inconclusive outcome lacks an unstable comparison")
+    return comparisons
+
+
 def _load_demo_evidence(evidence_root):
-    root=Path(evidence_root).resolve();pilot=child(root,PILOT);module=child(root,MODULE)
+    root=Path(evidence_root).resolve();verify_frozen_evidence(root)
+    pilot=child(root,PILOT);module=child(root,MODULE)
     campaign=read_json(pilot,"campaign.json");analysis=read_json(pilot,"analysis.json");summary=read_json(pilot,"summary.json")
     if campaign.get("manifest_version",1)==1:
         expected=digest(campaign["config"])
@@ -180,14 +220,9 @@ def _load_demo_evidence(evidence_root):
                 raise ValueError("Strongest-baseline gate policy differs")
             required=gate["required_baselines"]
             if required!=identity["required_baselines"]: raise ValueError("Gate baseline identities differ")
-            gate_comparisons=[]
+            gate_comparisons=validate_gate_sessions(gate)
             for index,session in enumerate(gate["confirmations"],1):
                 if session!=read_json(gate_folder,f"confirmation-{index}.json"): raise ValueError("Gate confirmation records differ")
-                for c in session["comparisons"]:
-                    if c["baseline"] not in required: raise ValueError("Gate used an undeclared baseline")
-                    if c["status"]=="valid": gate_comparisons.append({"session":index,"baseline":c["baseline"],**validate_pairs(c)})
-            if gate["outcome"]=="no_win" and (gate["enabled"] is not False or not any(c["speedup"]<1.05 or c["lower"]<=1 for c in gate_comparisons)):
-                raise ValueError("Disabled gate outcome contradicts its comparisons")
             data["module_gate"]={"outcome":gate["outcome"],"enabled":gate["enabled"],"required_baselines":required,"comparisons":gate_comparisons}
     return data
 

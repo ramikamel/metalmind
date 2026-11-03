@@ -86,10 +86,15 @@ def main():
     parser.add_argument("--seconds-per-chapter",type=int,default=14)
     args=parser.parse_args()
     if not 5<=args.seconds_per_chapter<=30: parser.error("Chapter duration must be 5–30 seconds")
+    root=Path(__file__).resolve().parents[1]
+    script_head=subprocess.check_output(["git","show","HEAD:scripts/render_demo.py"],cwd=root)
+    if script_head!=Path(__file__).read_bytes(): raise ValueError("Commit renderer changes before rendering a reproducible release")
     source=args.recording_dir.resolve();folder=args.output_dir.resolve();folder.mkdir(parents=True,exist_ok=False)
     data=json.loads((source/"demo.json").read_text());capture=json.loads((source/"capture.json").read_text())
     if data["model_requests"]!=0 or capture["sha256"]["demo.json"]!=hashlib.sha256((source/"demo.json").read_bytes()).hexdigest():
         raise ValueError("Recording payload or zero-request provenance differs")
+    from metalmind.demonstration.provenance import validate_runtime_source
+    validate_runtime_source(data["runtime_source"],capture["executed_package"])
     chapters=data["chapters"];frames=[];captions=["WEBVTT",""];voice=[]
     modes=", ".join(sorted({w["domain_mode"] for w in data["function_winners"]}))
     scope=f"SAVED PERFORMANCE EVIDENCE  |  domain: {modes}  |  {data['hardware']['model']}, {data['hardware']['cores']} GPU cores"
@@ -115,6 +120,8 @@ def main():
     report={"schema_version":1,"mode":"paced saved-evidence walkthrough, not a desktop screencast or live generation",
         "silent":True,"model_requests":0,"chapter_count":len(chapters),"duration_seconds":metadata["duration"],"size":metadata["size"],"fps":metadata["fps"],
         "source_demo_sha256":hashlib.sha256((source/"demo.json").read_bytes()).hexdigest(),"source_commit":capture["source_commit"],
+        "renderer_sha256":hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),"renderer_source_matches_commit":True,
+        "renderer_commit":subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip(),
         "pillow_version":PIL.__version__,"imageio_ffmpeg_version":imageio_ffmpeg.__version__,
         "sha256":{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (video,folder/"captions.vtt",folder/"poster.png")}}
     (folder/"render.json").write_text(json.dumps(report,indent=2)+"\n")

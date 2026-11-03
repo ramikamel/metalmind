@@ -47,12 +47,12 @@ def test_fabricated_module_summary_is_rejected_from_raw_pairs(evidence):
     (folder/"result.json").write_text(json.dumps(result))
     report=json.loads((folder/"confirmation-1.json").read_text());report["summary"]["speedup"]=99.
     (folder/"confirmation-1.json").write_text(json.dumps(report))
-    with pytest.raises(ValueError,match="raw|summary"): load_demo_evidence(evidence)
+    with pytest.raises(ValueError,match="checksum|raw|summary"): load_demo_evidence(evidence)
 
 
 def test_run_identifier_cannot_escape_evidence_directory(evidence):
     path=evidence/MODULE/"release.json";data=json.loads(path.read_text());data["primary_run"]="../../.env";path.write_text(json.dumps(data))
-    with pytest.raises(ValueError,match="identifier"): load_demo_evidence(evidence)
+    with pytest.raises(ValueError,match="checksum|identifier"): load_demo_evidence(evidence)
 
 
 def test_symlink_cannot_read_outside_evidence_root(evidence,tmp_path):
@@ -91,7 +91,7 @@ def test_compiler_counterexample_and_disabled_gate_are_preserved(evidence):
 def test_fabricated_compiler_outcome_is_rejected(evidence):
     path=evidence/"2026-11-02-module-baselines/report.json"
     data=json.loads(path.read_text());data["compiled_comparison_outcome"]="confirmed_gain";path.write_text(json.dumps(data))
-    with pytest.raises(ValueError,match="outcome"): load_demo_evidence(evidence)
+    with pytest.raises(ValueError,match="checksum|outcome"): load_demo_evidence(evidence)
 
 
 def test_fresh_check_never_imports_a_custom_reference(monkeypatch):
@@ -111,3 +111,42 @@ def test_fresh_check_never_imports_a_custom_reference(monkeypatch):
     monkeypatch.setattr(registry,"resolve_reference",forbidden)
     result=check_artifact_reuse(Path("unused"))
     assert result["outcome"]=="unavailable" and "registered" in result["reason"]
+
+
+def test_false_promoted_gate_is_rejected_independently_of_file_checksums(evidence):
+    from metalmind.demonstration.evidence import validate_gate_sessions
+    gate=json.loads((evidence/"2026-11-02-module-baselines/strongest-gate/result.json").read_text())
+    gate["outcome"]="promoted";gate["enabled"]=True
+    with pytest.raises(ValueError,match="promotion|promoted"): validate_gate_sessions(gate)
+
+
+def test_ratio_preserving_raw_sample_changes_are_rejected(evidence):
+    path=evidence/"2026-11-02-module-baselines/report.json"
+    data=json.loads(path.read_text())
+    for session in data["sessions"]:
+        for c in session["comparisons"]:
+            for key in ("baseline_ms","candidate_ms"):
+                c["series"][key]=[v*2 for v in c["series"][key]]
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError,match="checksum|digest"): load_demo_evidence(evidence)
+
+
+@pytest.mark.parametrize("mutation",["duplicate","missing","unknown_status","unknown_outcome"])
+def test_promoted_gate_requires_complete_known_baselines(mutation):
+    from metalmind.demonstration.evidence import validate_gate_sessions
+    from metalmind.benchmarking.statistics import summarize_pairs
+    names=["original_eager_whole_module","torch_compile_inductor_fullgraph_whole_module"]
+    gate={"outcome":"promoted","enabled":True,"required_baselines":names,"confirmation_format_version":2,"confirmations":[]}
+    for i in range(2):
+        comparisons=[]
+        for name in names:
+            comparisons.append({"baseline":name,"status":"valid","seed":42,"bootstrap_resamples":1000,
+                "series":{"baseline_ms":[1.2]*30,"candidate_ms":[1.]*30,"repetitions":1,"order":["baseline_first","candidate_first"]*15},
+                "summary":summarize_pairs([1.2]*30,[1.]*30,resamples=1000).model_dump(mode="json")})
+        gate["confirmations"].append({"session":i+1,"format_version":2,"comparisons":comparisons})
+    validate_gate_sessions(gate)
+    if mutation=="duplicate": gate["confirmations"][0]["comparisons"][1]["baseline"]=names[0]
+    if mutation=="missing": gate["confirmations"][0]["comparisons"].pop()
+    if mutation=="unknown_status": gate["confirmations"][0]["comparisons"][0]["status"]="invented"
+    if mutation=="unknown_outcome": gate["outcome"]="invented"
+    with pytest.raises(ValueError): validate_gate_sessions(gate)

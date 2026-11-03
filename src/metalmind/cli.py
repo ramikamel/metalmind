@@ -48,7 +48,7 @@ def main(argv=None):
     module_opt.add_argument("--assume-domain",action="store_true",help="Explicit guarantee for every replaced region's input domain")
     module_opt.add_argument("--output-dir",type=Path,default=Path("runs/modules"))
     demo=commands.add_parser("demo",help="Validate and replay curated evidence; makes no model requests")
-    demo.add_argument("--evidence-root",type=Path,default=Path("results"))
+    demo.add_argument("--evidence-root",type=Path,default=Path("results"),help="Matching committed evidence snapshot for this release")
     demo.add_argument("--gpu-check",action="store_true",help="Also execute a fresh offline correctness/fallback check")
     demo.add_argument("--json",action="store_true")
     demo.add_argument("--output",type=Path,help="Save the validated demo payload")
