@@ -1,0 +1,17 @@
+# Separate FP16 pilot. Inputs must meet the registered numerical domain.
+# Nine signatures, one feedback trial each, at most 18 generation requests.
+families: [bias_gelu, rmsnorm, softmax]
+cases: [small, medium, large]
+strategies: [feedback]
+trials: 1
+dtype: float16
+domain_mode: assume
+run_config:
+  seed: 20261104
+  max_requests: 2
+  max_candidates: 2
+  max_output_tokens: 4096
+  total_output_tokens: 8192
+  domain_mode: assume
+  runs_dir: runs/fp16-pilot/jobs
+  artifacts_dir: runs/fp16-pilot/artifacts

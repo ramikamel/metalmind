@@ -16,3 +16,9 @@ measures the effect of the first possible feedback iteration. Three trials
 per signature provide descriptive dispersion with limited statistical power.
 Review caught unhandled CLI validation and an initialization crash gap. Each
 was reproduced by a failing regression and fixed before any full-run traffic.
+
+
+The comparison report and archive command are prepared for the final closeout.
+They preserve all attempted outcomes, compare matched search scores only when
+the selected candidates share a baseline set, and derive reports from the
+copied raw evidence. The final publication still requires the complete ledger.

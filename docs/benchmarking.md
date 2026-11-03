@@ -71,3 +71,25 @@ cooldown. The 4.45-million-call estimate covers that partial setup cost at
 the observed 29.1 µs median paired saving. Five separate loads of the existing
 artifact measured a median 199.63 ms, or about 6,863 workflow calls to offset
 that load. Other finalization time remains unavailable in the original run.
+
+
+## Closeout and separate FP16 pilot
+
+Run `python -m scripts.report_campaign_comparison <campaign-dir> --run-root
+<execution-checkout>` to review planned and attempted denominators, promotion
+rates, and confirmed all-job and winner-only aggregates. Feedback and
+independent sampling pair on family, case and trial. Search timings compare
+only when both selected candidates faced the same verified baselines. Rate
+intervals use a binomial model and the comparisons are descriptive.
+
+After all jobs finish, use `python -m scripts.archive_campaign <campaign-dir>
+--run-root <execution-checkout> --destination <new-results-directory>`. The
+archive checks the frozen package fingerprint, reconciles each recorded result
+and request count with the copied evidence, and regenerates both reports.
+Use relative run and artifact paths in the campaign configuration so the
+archive can preserve a portable layout.
+
+`configs/fp16-pilot.yaml` freezes a separate nine-signature, one-trial feedback
+pilot with up to 18 Meta requests. It measures FP16 with FP32 intermediates
+and caller-guaranteed input bounds. The FP32 checked campaign uses a different
+dtype and validation boundary. Keep the results in separate reports.
