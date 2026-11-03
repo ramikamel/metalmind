@@ -54,3 +54,11 @@ uses each winner's worst confirmed baseline/session ratio. Its geometric mean
 describes normalized local results. The integrated workflow is measured
 separately by `examples.integrated_block`, using unchanged eager matmul plus
 the original activation as its baseline.
+
+The [first 12 jobs](../results/2026-11-03-checked-campaign-checkpoint/README.md)
+are archived with their original proposal and timing records. Generate a
+read-only analysis of the current ledger with
+`python -m scripts.report_campaign runs/campaigns/<campaign-id>`.
+The report separates search-stage thresholds from confirmed promotion and
+pairs feedback with independent sampling only at matching signature/trial
+keys.

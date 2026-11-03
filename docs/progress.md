@@ -312,3 +312,11 @@ recovers terminal results and records interrupted attempts conservatively.
 The offline report distinguishes verified search measurements, confirmed
 promotion, and matched strategy trials. The latest full local suite passed
 143 tests, including real Apple Silicon coverage, before the first batch.
+
+First frozen checkpoint: 12 of 108 jobs, all no-win, no failed jobs.
+Nineteen of 20 evaluated candidates passed public correctness and timing;
+one candidate failed compilation. The 16 Meta requests reported 10,620
+input tokens and 29,728 output tokens. The live and archived offline
+analyses matched. The remaining jobs were resumed in bounded batches from
+the same source and GPU environment. The local continuation stops on an
+evaluator fault or a batch containing a newly failed job.
