@@ -53,3 +53,9 @@ def test_module_commands_are_offline_and_keep_no_artifact_fallback(capsys, tmp_p
     assert main(["optimize-module","--factory","examples.module_workloads:make_cpu_demo","--output-dir",str(tmp_path)]) == 0
     result = json.loads(capsys.readouterr().out)
     assert result["outcome"] == "no_artifact" and result["model_requests"] == 0
+
+
+def test_campaign_execution_flags_require_explicit_execute(capsys):
+    for flags in (["--resume"], ["--max-jobs", "2"]):
+        assert main(["evaluate", "--suite", "configs/evaluation.yaml", *flags]) == 1
+        assert "require --execute" in json.loads(capsys.readouterr().out)["reason"]

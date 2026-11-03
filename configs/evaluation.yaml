@@ -1,7 +1,15 @@
-# Frozen campaign design. Run a rehearsal before explicitly executing a full paid campaign.
+# Frozen checked-mode comparison. Preview is free. Execution is explicit.
 families: [bias_gelu, rmsnorm, softmax]
 cases: [small, medium, large]
 strategies: [feedback, one_shot, independent, template]
 trials: 3
 dtype: float32
 domain_mode: checked
+run_config:
+  seed: 20261103
+  max_requests: 2
+  max_candidates: 2
+  max_output_tokens: 4096
+  total_output_tokens: 8192
+  runs_dir: runs/fp32-checked-evaluation/jobs
+  artifacts_dir: runs/fp32-checked-evaluation/artifacts

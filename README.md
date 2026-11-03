@@ -51,9 +51,11 @@ metalmind optimize --function examples.my_workloads:bias_gelu --workload bias_ge
 metalmind evaluate --suite configs/evaluation.yaml
 ```
 
-The campaign command previews **108 jobs**. Add `--execute` only when you intend
-to run the configured campaign and its model requests. The full campaign has not
-been completed; a development rehearsal is not a benchmark campaign.
+The campaign command previews **108 checked-mode jobs** without contacting Meta.
+The frozen suite allows up to **135 Meta requests**. Add `--execute --max-jobs 12`
+to run a bounded batch. Continue the same campaign with
+`--execute --resume --max-jobs 12` from the same checkout. See the
+[campaign protocol](docs/benchmarking.md) for accounting and recovery.
 
 ## Measured development results
 

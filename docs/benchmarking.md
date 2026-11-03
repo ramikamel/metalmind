@@ -22,20 +22,35 @@ mode requires caller-guaranteed numerical bounds; its numbers are labeled
 separately. The first tiny checked-mode kernel was slower despite being correct;
 that run is development data and does not establish a general performance claim.
 
-The frozen campaign preview has 108 jobs: nine FP32 signatures, three trials,
-four strategies. It is not executed by preview. A full campaign, FP16 campaign,
-cross-chip comparisons, and performance claims require their own saved evidence.
+## Frozen FP32 comparison
 
+The suite in `configs/evaluation.yaml` uses checked mode and freezes 108 jobs
+across nine signatures, three trials and four search strategies. Feedback and
+independent sampling each get up to two requests and two candidates. One-shot
+gets one request and one candidate. Template tuning evaluates its first two
+predeclared group sizes, 32 and 64, locally. The Meta request ceiling is
+135 (27 × (2 + 2 + 1)), with 4,096 output tokens per request. Retries draw from
+the same slots. Each candidate faces the same numerical evaluator and promotion
+policy. The earlier assumed-domain pilot is a separate experiment.
 
-The development campaign aggregate assigns unsuccessful jobs a neutral factor
-of 1.0 and uses each winner's worst confirmed baseline/session ratio. Its
-geometric mean is a normalized research summary, not measured combined-workload
-latency. Actual end-to-end effects are measured separately by
-`examples.integrated_block`, whose baseline is unchanged eager matmul plus the
-original activation. It is not a compiled whole-model comparison.
+```sh
+metalmind evaluate --suite configs/evaluation.yaml
+metalmind evaluate --suite configs/evaluation.yaml --execute --max-jobs 12
+metalmind evaluate --suite configs/evaluation.yaml --execute --resume --max-jobs 12
+```
 
-Campaign manifest version 2 freezes resolved workload shapes, reference hashes,
-and correctness-policy values in addition to settings. The nine-case development
-pilot began under the earlier configuration-only identity; its per-run workload
-manifests remain authoritative, and its directory is preserved under that ID.
-Future previews use version 2 and therefore have different IDs.
+Preview resolves workload shapes, references, and correctness policies without
+contacting Meta. Execution records the shuffled job order, package hash and
+environment fingerprint under `runs/campaigns/<campaign-id>/`. Resume uses the
+same checkout, configuration and Apple Silicon environment. Each new job is
+journaled before search. A terminal result can be recovered if the process
+stopped before updating the campaign summary. An interrupted nonterminal job
+counts as a failed trial with its recorded reservation and is skipped on resume.
+Template slots and Meta requests are counted separately. A GPU fault pauses
+execution pending a successful `metalmind doctor --smoke`.
+
+The campaign aggregate assigns unsuccessful jobs a neutral factor of 1.0 and
+uses each winner's worst confirmed baseline/session ratio. Its geometric mean
+describes normalized local results. The integrated workflow is measured
+separately by `examples.integrated_block`, using unchanged eager matmul plus
+the original activation as its baseline.

@@ -55,7 +55,9 @@ def main(argv=None):
     demo.add_argument("--pace",type=float,default=0,help="Seconds between presentation lines; not benchmark timing")
     campaign=commands.add_parser("evaluate")
     campaign.add_argument("--suite",type=Path,required=True)
-    campaign.add_argument("--execute",action="store_true",help="Run the full configured campaign, including billable model requests")
+    campaign.add_argument("--execute",action="store_true",help="Run configured jobs, including billable model requests")
+    campaign.add_argument("--resume",action="store_true",help="Continue an existing frozen campaign")
+    campaign.add_argument("--max-jobs",type=int,help="Limit new jobs executed in this invocation")
     args=parser.parse_args(argv)
     if args.command=="doctor": return _doctor(args)
     try: return _run(args)
@@ -165,7 +167,9 @@ def _run(args):
         import yaml
         from metalmind.evaluation import CampaignConfig,freeze_campaign,run_campaign
         config=CampaignConfig.model_validate(yaml.safe_load(args.suite.read_text()))
-        report=run_campaign(config) if args.execute else freeze_campaign(config)
+        if not args.execute and (args.resume or args.max_jobs is not None):
+            raise ValueError("--resume and --max-jobs require --execute")
+        report=run_campaign(config,resume=args.resume,max_jobs=args.max_jobs) if args.execute else freeze_campaign(config)
         print(json.dumps(report,indent=2));return 0
     raise ValueError('unknown command')
 
