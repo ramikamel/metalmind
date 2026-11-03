@@ -27,11 +27,12 @@ was performed. These remain the entrant's portal steps.
 - Title: **MetalMind — verified autonomous Metal kernel optimization**.
 - Proposed track/theme: individual-builder track / Push the Frontier.
 - [Submission draft](submission-draft.md) maps the work to the rubric.
-- [Demo script](demo.md) distinguishes actual Meta generation, cached replay,
-  measured confirmations, fallback and limitations. Script timing is our proposed
-  presentation length, not an event-mandated video duration.
+- [Demo guide](demo.md) and [three-minute silent video](../demo/video/metalmind-evidence-walkthrough.mp4)
+  show saved generation evidence and a fresh correctness check. The presentation
+  length was chosen for readability.
 - [Function pilot](../results/2026-11-02-fp32-pilot/README.md) retains 2 wins and 7 no-win signatures.
-- [Module evidence](../results/2026-11-02-module-optimizer/README.md) records the integrated eager comparison.
+- [Whole-module compiler comparison](../results/2026-11-02-module-baselines/README.md)
+  explains why the stricter promotion gate kept the original module.
 - `.env` and API credentials are excluded from the repository and demo.
 
 ## Dependency/source attribution

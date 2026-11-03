@@ -1,52 +1,59 @@
-# Demonstration script
+# Demonstrating MetalMind
 
-1. Explain the supported-function scope and show an ordinary PyTorch bias/GELU function.
-2. Run `metalmind doctor --json --smoke` and `metalmind analyze --workload bias_gelu --case medium`.
-3. Start a bounded real run: `metalmind optimize --workload bias_gelu --case medium --max-requests 2 --max-candidates 2`.
-4. Show saved source, evaluation outcomes, numerical error, and verified baseline identities in the run report.
-5. Distinguish numerically valid, search-fast, independently confirmed, and promoted states.
-6. If no kernel wins, demonstrate the explained fallback. Do not present a cached or fabricated speedup as live.
-7. For a promoted artifact, demonstrate offline reuse with new values and fallback for changed shapes or gradient mode.
-8. Report local and integrated workflow latency separately. Label checked versus assumed-domain measurements.
+[Watch the three-minute walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
+or read the [recorded terminal transcript](../demo/recording/transcript.txt).
+The video is a silent, paced walkthrough with [captions](../demo/video/captions.vtt)
+and an optional [voiceover script](../demo/video/voiceover.md). Its performance
+numbers come from saved experiments. The capture also includes a fresh Apple
+Silicon correctness check.
 
-Have a recorded search and a saved report ready for network or timing instability.
-Clearly label live, recorded, and cached stages. Never display the local .env.
+## Run the demonstration
 
-The public event page lists Muse Wonder; public rules have been checked.
-See [event alignment](hackathon.md) for sources and remaining authenticated
-portal steps. The script duration here is a proposed presentation length,
-not a verified event video limit.
-
-
-## Saved development demonstration
-
-The [pilot GELU artifact](../results/2026-11-02-fp32-pilot/README.md)
-contains source, a 22-case private gate, two independent confirmation sessions,
-and raw timing pairs. Use it as an explicitly **cached, assumed-domain** example:
+From the installed checkout:
 
 ```sh
-python scripts/verify_offline_reuse.py results/2026-11-02-fp32-pilot/artifacts/db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87
-python -m examples.integrated_block --artifact results/2026-11-02-fp32-pilot/artifacts/db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87
+metalmind demo
+metalmind demo --gpu-check
 ```
 
-These commands make no model requests. Reuse is enabled only on a matching
-environment; another Mac needs explicit revalidation. The integrated command
-measures an unchanged matmul plus the guarded activation, checks complete output,
-and prints all pairs even when the whole-workflow effect is small or negative.
-Do not substitute local GELU gains for the whole-workflow measurement.
+The first command validates the matching committed evidence on a CPU-only
+machine. Pass `--evidence-root /path/to/metalmind/results` when running outside
+the checkout. The optional GPU check exercises the promoted bias/GELU artifact
+on new values and verifies original-function fallback for a changed shape and
+gradient mode. Both commands use zero model requests.
 
+1. Show the supported PyTorch bias/GELU function and explain the compile,
+   correctness, timing and model-feedback loop.
+2. Show the saved incorrect candidate, its feedback and the subsequent valid
+   candidate. Point out the generated Metal source and the private correctness
+   checks.
+3. Walk through all nine pilot signatures. Two won against verified function
+   baselines and seven recorded no win. The medium FP32 bias/GELU signature
+   measured 1.547× and 1.553× against Inductor fullgraph on a 14-core M3 Pro,
+   under explicit assumed-domain bounds.
+4. Show the fresh reuse check and the two fallback decisions.
+5. Explain the module counterexample. The guarded regional rewrite beat eager
+   but lost against the verified whole-module compiler path. The stricter
+   default gate therefore kept the original module.
 
-## Module extension in the demonstration
+See the [function pilot](../results/2026-11-02-fp32-pilot/README.md) and
+[whole-module comparison](../results/2026-11-02-module-baselines/README.md)
+for raw pairs, scope and baseline identities. The recorded presentation uses
+18 seconds per chapter for readability. See [event alignment](hackathon.md)
+for the remaining authenticated submission steps.
 
-1. Show `examples/module_workloads.py`: bias/tanh-GELU followed by unchanged residual math.
-2. Run `metalmind analyze-module --factory examples.module_workloads:make_demo`.
-3. Show the saved final module run's original/candidate FX graphs and the selected function artifact ID.
-4. Explain eight fresh private whole-output cases and the two 30-pair confirmations.
-5. Show **1.220× / 1.218× against the original eager whole module**, and the rejected 1.026× draft.
-6. Show post-run new-value, live-parameter, shape and gradient checks. State that this replay uses a cached Meta-generated kernel and makes no model requests.
+## Reproduce the media
 
-Use the [module evidence](../results/2026-11-02-module-optimizer/README.md) for exact
-bounds and source snapshots. Do not label this a compiled whole-model comparison.
-A fresh `python -m examples.optimize_module ...` run performs new verification and
-both timing sessions; allow its 60-second cooldown, or show the saved result as
-explicitly cached evidence during a short presentation.
+Use a clean, installed checkout with the matching committed evidence. Install
+the optional rendering dependencies and choose two new output directories:
+
+```sh
+python -m pip install -r requirements-demo.lock
+python -m scripts.record_demo --evidence-root results --output-dir runs/demo/recording --gpu-check
+python -m scripts.render_demo --recording-dir runs/demo/recording --output-dir runs/demo/video --seconds-per-chapter 18
+```
+
+Omit `--gpu-check` for a CPU-only replay capture. The recorder saves actual CLI
+output with timestamps and verifies the installed package bytes against the
+committed source. The renderer uses the structured CLI output for its chapter
+frames. See the [media index](../demo/README.md) for provenance and playback files.

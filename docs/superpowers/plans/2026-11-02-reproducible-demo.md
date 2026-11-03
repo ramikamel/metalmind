@@ -26,25 +26,25 @@
 
 ## Task 1 — Compiled whole-module diagnostic
 
-- [ ] Verify compiled and guarded outputs on eight new values; keep runtime parameters live.
-- [ ] Run two sequential paired sessions with 30 pairs/baseline, bootstrap intervals, drift rejection and 60-second cooldown.
-- [ ] Record eager and compiled whole-module comparisons separately, including no-win outcomes; do not rewrite the historical eager baseline results.
-- [ ] Apply the observed result: default module promotion requires every verified available whole-module baseline, including compiled fullgraph when numerically valid.
+- [x] Verify compiled and guarded outputs on eight new values; keep runtime parameters live.
+- [x] Run two sequential paired sessions with 30 pairs/baseline, bootstrap intervals, drift rejection and 60-second cooldown.
+- [x] Record eager and compiled whole-module comparisons separately, including no-win outcomes; do not rewrite the historical eager baseline results.
+- [x] Apply the observed result: default module promotion requires every verified available whole-module baseline, including compiled fullgraph when numerically valid.
 
 ## Task 2 — Read-only offline demo
 
-- [ ] RED→GREEN tests: source/summary tampering rejected, nine-job denominator retained, module identity/statistics checked, paths constrained, no network generation, safe terminal text.
-- [ ] Add `metalmind demo` with JSON or readable replay; optional fresh artifact correctness/fallback checks and output export.
-- [ ] Verify CPU replay outside the checkout without a key or local .env.
+- [x] RED→GREEN tests: source/summary tampering rejected, nine-job denominator retained, module identity/statistics checked, paths constrained, no network generation, safe terminal text.
+- [x] Add `metalmind demo` with JSON or readable replay; optional fresh artifact correctness/fallback checks and output export.
+- [x] Verify CPU replay outside the checkout without a key or local .env.
 
 ## Task 3 — Recorded backup
 
-- [ ] Capture actual CLI stdout/timecodes into a terminal recording.
-- [ ] Render a clearly labeled saved-evidence walkthrough and captions from the validated story. Pacing is for readability, never benchmark timing.
-- [ ] Inspect representative rendered frames, verify video metadata, record file/source hashes and exact reproduction commands.
+- [x] Capture actual CLI stdout/timecodes into a terminal recording.
+- [x] Render a clearly labeled saved-evidence walkthrough and captions from the validated story. Pacing is for readability, never benchmark timing.
+- [x] Inspect representative rendered frames, verify video metadata, record file/source hashes and exact reproduction commands.
 
 ## Task 4 — Release verification
 
-- [ ] Run complete tests, build/install checks and fresh final review; fix important findings once with RED→GREEN tests.
-- [ ] Update README/demo/submission material with the full baseline context.
+- [x] Run complete tests, build/install checks and fresh final review; fix important findings once with RED→GREEN tests.
+- [x] Update README/demo/submission material with the full baseline context.
 - [ ] Scan the full publication tree for credentials, commit, push and verify CI.

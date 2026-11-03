@@ -95,7 +95,10 @@ metalmind demo --gpu-check --output runs/demo.json
 
 Replay verifies saved source identities and raw statistics, includes all nine
 pilot outcomes, and makes **zero model requests**. `--gpu-check` adds fresh
-correctness and fallback checks; performance numbers remain labeled recorded.
+correctness and fallback checks. Performance numbers come from recorded experiments.
+See the [three-minute walkthrough](demo/video/metalmind-evidence-walkthrough.mp4)
+and [terminal recording](demo/README.md). Use `--evidence-root` to point an installed
+CLI at this checkout’s matching `results` snapshot.
 
 ## Numerical domain and performance boundaries
 
@@ -125,7 +128,7 @@ successful `metalmind doctor --smoke` health check.
 - [Architecture](docs/architecture.md)
 - [Environment](docs/environment.md)
 - [Measurement methodology](docs/benchmarking.md)
-- [Demo script](docs/demo.md)
+- [Demo and reproduction guide](docs/demo.md)
 - [Hackathon rules alignment and prepared submission](docs/hackathon.md)
 
 PyTorch is pinned to 2.15.0. GPU checks skip explicitly when MPS is unavailable.

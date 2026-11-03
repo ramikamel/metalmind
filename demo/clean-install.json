@@ -1,0 +1,29 @@
+{
+  "source_commit": "209c82e3abb943b230a9125594d7610992e812a4",
+  "python_version": "3.14.6",
+  "package_sha256": "4ebeee5a64453eb734f977a489623ad488154999a6c7d2fa7ab040e896ca91d2",
+  "wheel_sha256": "63004cc18cadcb183e91a1aa3bb651d7e9b90b11b271449aa669051b80f6b85a",
+  "sdist_sha256": "2c632089b5f7f3f205b6e5353fa0f0772f402c53d9b785344982cd5884a0e609",
+  "fresh_virtualenv_outside_checkout": true,
+  "installed_source_matches_commit": true,
+  "evidence_manifest_in_wheel_and_sdist": true,
+  "video_extras_installed": false,
+  "model_requests": 0,
+  "pilot_jobs": 9,
+  "module_gate_enabled": false,
+  "doctor_smoke": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null,
+    "shader_health_passed": true
+  }
+}

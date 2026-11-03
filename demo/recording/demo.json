@@ -1,0 +1,464 @@
+{
+  "schema_version": 1,
+  "mode": "saved_evidence_replay",
+  "model_requests": 0,
+  "recorded_session_generation_requests": 25,
+  "hardware": {
+    "model": "Apple M3 Pro",
+    "cores": "14",
+    "metal_family": "spdisplays_metal4",
+    "recommended_working_set": 14302248960
+  },
+  "runtime": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null,
+    "shader_health_passed": true
+  },
+  "models": [
+    "muse-wonder-1.0"
+  ],
+  "feedback_example": [
+    {
+      "candidate_id": "67a32c18f3f0d6cd5778c8043239db502eea350ed6dceaf64e3c3d842f702536",
+      "status": "valid",
+      "reason": null,
+      "public_cases": 10
+    },
+    {
+      "candidate_id": "7b12d24b03bf19eb44aba2947212097e624c59b593623cb2cca847e366dcf27b",
+      "status": "incorrect",
+      "reason": "nonfinite output",
+      "public_cases": 0
+    }
+  ],
+  "pilot": {
+    "campaign_id": "4ba23d2ada20e97c974af64e800f924d46679de8d0bfe53935b46f26bd0e16e8",
+    "jobs": 9,
+    "promoted": 2,
+    "no_win": 7,
+    "generation_requests": 18,
+    "candidate_status_counts": {
+      "valid": 14,
+      "runtime_error": 2,
+      "incorrect": 1
+    },
+    "rows": [
+      {
+        "family": "rmsnorm",
+        "case": "small",
+        "shape": [
+          64,
+          257
+        ],
+        "outcome": "no_win"
+      },
+      {
+        "family": "softmax",
+        "case": "small",
+        "shape": [
+          64,
+          257
+        ],
+        "outcome": "no_win"
+      },
+      {
+        "family": "softmax",
+        "case": "medium",
+        "shape": [
+          256,
+          1024
+        ],
+        "outcome": "no_win"
+      },
+      {
+        "family": "rmsnorm",
+        "case": "medium",
+        "shape": [
+          256,
+          1024
+        ],
+        "outcome": "no_win"
+      },
+      {
+        "family": "softmax",
+        "case": "large",
+        "shape": [
+          128,
+          4096
+        ],
+        "outcome": "no_win"
+      },
+      {
+        "family": "bias_gelu",
+        "case": "large",
+        "shape": [
+          512,
+          4096
+        ],
+        "outcome": "promoted"
+      },
+      {
+        "family": "rmsnorm",
+        "case": "large",
+        "shape": [
+          512,
+          4096
+        ],
+        "outcome": "no_win"
+      },
+      {
+        "family": "bias_gelu",
+        "case": "small",
+        "shape": [
+          64,
+          257
+        ],
+        "outcome": "no_win"
+      },
+      {
+        "family": "bias_gelu",
+        "case": "medium",
+        "shape": [
+          256,
+          1024
+        ],
+        "outcome": "promoted"
+      }
+    ]
+  },
+  "function_winners": [
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "shape": [
+        512,
+        4096
+      ],
+      "domain_mode": "assume",
+      "artifact_id": "4af22062f87308dc937c666cd7194c500d612ceb59510b75d46db74dc768807e",
+      "source_hash": "cdff502221bed6f037868320d3fe1f2cc01c125ad371e6e3dd63aded13f9d9ae",
+      "private_cases": 22,
+      "comparisons": [
+        {
+          "baseline": "original_eager",
+          "session": 1,
+          "schema_version": 1,
+          "speedup": 3.0511031055425986,
+          "lower": 3.002426309436113,
+          "upper": 3.095799122405719,
+          "pairs": 30
+        },
+        {
+          "baseline": "torch_compile_inductor_fullgraph",
+          "session": 1,
+          "schema_version": 1,
+          "speedup": 1.0930563819553747,
+          "lower": 1.086121169905059,
+          "upper": 1.1032145798896953,
+          "pairs": 30
+        },
+        {
+          "baseline": "original_eager",
+          "session": 2,
+          "schema_version": 1,
+          "speedup": 3.0703621087521915,
+          "lower": 3.045742357268918,
+          "upper": 3.122489799324069,
+          "pairs": 30
+        },
+        {
+          "baseline": "torch_compile_inductor_fullgraph",
+          "session": 2,
+          "schema_version": 1,
+          "speedup": 1.0971031453785356,
+          "lower": 1.0887091683732741,
+          "upper": 1.1017936229228247,
+          "pairs": 30
+        }
+      ],
+      "kernel_preview": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    uint col = gid.x * 4u;\n    uint row = gid.y;\n    if (col >= D || row >= B) return;\n    uint d4 = D >> 2;\n    uint idx = row * d4 + gid.x;\n    float4 xv = ((device const float4*)x)[idx];\n    float4 pv = ((device const float4*)parameter)[gid.x];\n    float4 z = xv + pv;\n    float4 z3 = z * z * z;\n    float4 a = 0.7978845608028654f * (z + 0.044715f * z3);\n    float4 th = float4(tanh(a.x), tanh(a.y), tanh(a.z), tanh(a.w));\n    float4 y = 0.5f * z * (1.0f + th);"
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "shape": [
+        256,
+        1024
+      ],
+      "domain_mode": "assume",
+      "artifact_id": "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87",
+      "source_hash": "4a6da691021af4135e241e39cc032a27b5a49ecb874e406af7b013bc91150758",
+      "private_cases": 22,
+      "comparisons": [
+        {
+          "baseline": "original_eager",
+          "session": 1,
+          "schema_version": 1,
+          "speedup": 2.3716127017820527,
+          "lower": 2.350544703630855,
+          "upper": 2.388775457053355,
+          "pairs": 30
+        },
+        {
+          "baseline": "torch_compile_inductor_fullgraph",
+          "session": 1,
+          "schema_version": 1,
+          "speedup": 1.5469442608743058,
+          "lower": 1.533969623077176,
+          "upper": 1.5683001852063982,
+          "pairs": 30
+        },
+        {
+          "baseline": "original_eager",
+          "session": 2,
+          "schema_version": 1,
+          "speedup": 2.3596012018647397,
+          "lower": 2.332005625223077,
+          "upper": 2.379525627542531,
+          "pairs": 30
+        },
+        {
+          "baseline": "torch_compile_inductor_fullgraph",
+          "session": 2,
+          "schema_version": 1,
+          "speedup": 1.5531727001873876,
+          "lower": 1.5428029368288994,
+          "upper": 1.5717028160895812,
+          "pairs": 30
+        }
+      ],
+      "kernel_preview": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint gid [[thread_position_in_grid]], uint grid_size [[threads_per_grid]]) {\n    (void)epsilon;\n    uint total = B * D;\n    if ((D & 3u) == 0u) {\n        uint total4 = total >> 2u;\n        uint D4 = D >> 2u;\n        for (uint idx = gid; idx < total4; idx += grid_size) {\n            uint row = idx / D4;\n            uint col = idx - row * D4;\n            float4 xv = reinterpret_cast<device const float4*>(x)[idx];\n            float4 pv = reinterpret_cast<device const float4*>(parameter)[col];\n            float4 z = xv + pv;\n            float4 z2 = z * z;\n            float4 inner = 0.7978845608f * (z + 0.044715f * z2 * z);"
+    }
+  ],
+  "selected_artifact_id": "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87",
+  "module": {
+    "candidate_id": "fed12063127c3fd040b7c3b6b0d75b8ce7695dad13c21306d10c370dd66c715d",
+    "graph_hash": "9e1962e252273e23e98515446ed6e65463c7d20f7a1d1661108f3b2ecedfa958",
+    "domain_mode": "assume",
+    "baseline": "original eager whole module (historical)",
+    "private_cases": 8,
+    "confirmations": [
+      {
+        "schema_version": 1,
+        "speedup": 1.220172336786451,
+        "lower": 1.2075581031278717,
+        "upper": 1.223398248555017,
+        "pairs": 30
+      },
+      {
+        "schema_version": 1,
+        "speedup": 1.2175294254283267,
+        "lower": 1.2041446360052044,
+        "upper": 1.2247852824263497,
+        "pairs": 30
+      }
+    ]
+  },
+  "compiled_module_comparison": {
+    "outcome": "no_confirmed_gain",
+    "comparisons": [
+      {
+        "session": 1,
+        "baseline": "original_eager_whole_module",
+        "status": "valid",
+        "schema_version": 1,
+        "speedup": 1.1230749715671549,
+        "lower": 1.1177461041922092,
+        "upper": 1.1259195886829445,
+        "pairs": 30
+      },
+      {
+        "session": 1,
+        "baseline": "torch_compile_inductor_fullgraph_whole_module",
+        "status": "valid",
+        "schema_version": 1,
+        "speedup": 0.4257488781034918,
+        "lower": 0.42363300498273254,
+        "upper": 0.4349665382430542,
+        "pairs": 30
+      },
+      {
+        "session": 2,
+        "baseline": "original_eager_whole_module",
+        "status": "valid",
+        "schema_version": 1,
+        "speedup": 1.1119932518397366,
+        "lower": 1.1026999904480665,
+        "upper": 1.122130714555938,
+        "pairs": 30
+      },
+      {
+        "session": 2,
+        "baseline": "torch_compile_inductor_fullgraph_whole_module",
+        "status": "valid",
+        "schema_version": 1,
+        "speedup": 0.432857765923073,
+        "lower": 0.4234777835896617,
+        "upper": 0.44070697120445246,
+        "pairs": 30
+      }
+    ],
+    "model_requests": 0
+  },
+  "module_gate": {
+    "outcome": "no_win",
+    "enabled": false,
+    "required_baselines": [
+      "original_eager_whole_module",
+      "torch_compile_inductor_fullgraph_whole_module"
+    ],
+    "comparisons": [
+      {
+        "session": 1,
+        "baseline": "original_eager_whole_module",
+        "schema_version": 1,
+        "speedup": 1.1129649514092121,
+        "lower": 1.0980669465643835,
+        "upper": 1.1275838268810758,
+        "pairs": 30
+      },
+      {
+        "session": 1,
+        "baseline": "torch_compile_inductor_fullgraph_whole_module",
+        "schema_version": 1,
+        "speedup": 0.4260552727674968,
+        "lower": 0.42313083938114504,
+        "upper": 0.43374070894210404,
+        "pairs": 30
+      }
+    ]
+  },
+  "live_check": {
+    "outcome": "passed",
+    "artifact_id": "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87",
+    "optimized_enabled": true,
+    "new_values_match": true,
+    "changed_shape_fallback": true,
+    "gradient_fallback": true,
+    "max_absolute_error": 2.9802322387695312e-08,
+    "new_performance_measurement": false
+  },
+  "runtime_source": {
+    "sha256": "4ebeee5a64453eb734f977a489623ad488154999a6c7d2fa7ab040e896ca91d2",
+    "file_count": 60,
+    "package_location": "/Users/rami/github/metalmind/src/metalmind",
+    "package_version": "0.1.0"
+  },
+  "chapters": [
+    {
+      "title": "MetalMind",
+      "label": "SAVED EVIDENCE + OPTIONAL FRESH CORRECTNESS CHECK",
+      "lines": [
+        "A Meta-powered agent for verified Apple GPU kernel optimization.",
+        "Model proposes Metal -> compile -> verify -> benchmark -> feedback.",
+        "Host code owns fixtures, numerical decisions and promotion.",
+        "No model generation is performed in this playback."
+      ]
+    },
+    {
+      "title": "The complete pilot",
+      "label": "RECORDED / FP32 / ASSUMED DOMAIN",
+      "lines": [
+        "9 signatures: 2 promoted; 7 no-win.",
+        "18 model requests; all outcomes stay in the denominator.",
+        "Bias + tanh GELU, RMSNorm and stable row softmax.",
+        "Target: Apple M3 Pro, 14 GPU cores.",
+        "Checked mode is the public default; these gains assume the input domain."
+      ]
+    },
+    {
+      "title": "The real feedback loop",
+      "label": "RECORDED SEARCH / NOT LIVE GENERATION",
+      "lines": [
+        "Candidate 1 (67a32c18f3f0): valid \u2014 10 public numerical cases passed.",
+        "Candidate 2 (7b12d24b03bf): incorrect \u2014 nonfinite output.",
+        "These are saved evaluator results from actual Meta proposals.",
+        "Search results are provisional; private and timing gates follow."
+      ]
+    },
+    {
+      "title": "bias_gelu / large",
+      "label": "RECORDED FUNCTION CONFIRMATIONS",
+      "lines": [
+        "Shape (512, 4096); 22 private numerical cases passed.",
+        "Session 1: 1.093x vs Inductor fullgraph; lower 95% 1.086x.",
+        "Session 2: 1.097x vs Inductor fullgraph; lower 95% 1.089x.",
+        "Public-call timing includes guards, allocation, dispatch and completion.",
+        "Kernel source SHA-256: cdff502221bed6f03786..."
+      ]
+    },
+    {
+      "title": "bias_gelu / medium",
+      "label": "RECORDED FUNCTION CONFIRMATIONS",
+      "lines": [
+        "Shape (256, 1024); 22 private numerical cases passed.",
+        "Session 1: 1.547x vs Inductor fullgraph; lower 95% 1.534x.",
+        "Session 2: 1.553x vs Inductor fullgraph; lower 95% 1.543x.",
+        "Public-call timing includes guards, allocation, dispatch and completion.",
+        "Kernel source SHA-256: 4a6da691021af4135e24..."
+      ]
+    },
+    {
+      "title": "Meta-generated Metal",
+      "label": "SAVED SOURCE EXCERPT / VERIFIED SOURCE HASH",
+      "lines": [
+        "Immutable source: 4a6da691021af4135e241e39...",
+        "Full source is preserved with its numerical and timing evidence."
+      ],
+      "code": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint gid [[thread_position_in_grid]], uint grid_size [[threads_per_grid]]) {\n    (void)epsilon;\n    uint total = B * D;\n    if ((D & 3u) == 0u) {\n        uint total4 = total >> 2u;\n        uint D4 = D >> 2u;\n        for (uint idx = gid; idx < total4; idx += grid_size) {\n            uint row = idx / D4;\n            uint col = idx - row * D4;\n            float4 xv = reinterpret_cast<device const float4*>(x)[idx];\n            float4 pv = reinterpret_cast<device const float4*>(parameter)[col];\n            float4 z = xv + pv;\n            float4 z2 = z * z;\n            float4 inner = 0.7978845608f * (z + 0.044715f * z2 * z);"
+    },
+    {
+      "title": "Whole-module gains need context",
+      "label": "SEPARATE WHOLE-MODULE EXPERIMENTS",
+      "lines": [
+        "A flat residual-activation module has its own correctness/timing gate.",
+        "Historical eager-only sessions: 1.220x / 1.218x.",
+        "A local kernel gain is not automatically a strongest whole-model gain."
+      ]
+    },
+    {
+      "title": "The compiler counterexample",
+      "label": "RECORDED / WHOLE-MODULE BASELINE CONTEXT",
+      "lines": [
+        "Session 1 vs eager whole module: 1.123x",
+        "Session 1 vs compiled whole module: 0.426x",
+        "Session 2 vs eager whole module: 1.112x",
+        "Session 2 vs compiled whole module: 0.433x",
+        "Below 1.0x means the regional rewrite is slower than that baseline.",
+        "Module promotion now requires every verified available baseline.",
+        "Current module gate: no_win; optimized rewrite enabled: False."
+      ]
+    },
+    {
+      "title": "Offline reuse check",
+      "label": "FRESH CORRECTNESS / NO FRESH PERFORMANCE CLAIM",
+      "lines": [
+        "Outcome: passed",
+        "New input values matched the original PyTorch function.",
+        "Changed shapes and gradient mode used the original fallback.",
+        "Maximum absolute error: 2.98e-08."
+      ]
+    },
+    {
+      "title": "Scope and next frontier",
+      "label": "LIMITS / ZERO MODEL REQUESTS IN THIS REPLAY",
+      "lines": [
+        "Exact shapes and supported pure forward patterns on the recorded chip.",
+        "No arbitrary nested-model, training or cross-chip speedup claim.",
+        "The full multi-strategy campaign has not been run.",
+        "This is saved evidence, not live generation or a recording of search latency.",
+        "Source, raw pairs, intervals and no-win outcomes are public."
+      ]
+    }
+  ]
+}

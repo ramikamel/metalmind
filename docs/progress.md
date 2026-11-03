@@ -277,3 +277,19 @@ freeze/commit, so a different or edited snapshot is rejected.
 Ruling: regrade recorder provenance as Important — a checkout SHA must identify
 the package actually executing; strict source comparison may reject stale wheels
 or uncommitted source, which is preferable to an unrepeatable recording.
+
+## Final demo capture and clean-install verification — November 3, 2026
+
+Recorded ten chapters from commit 209c82e in a temporary working directory
+without a model key or local .env. Fresh GPU reuse passed on new values
+(maximum absolute error 2.98e-08). Shape and gradient fallback both passed.
+The capture ran no timing experiment and made zero Meta generation requests.
+Published media are indexed in demo/README.md. The silent 179.96-second video
+decoded in full at 1920×1080, 24 fps. Representative frames were inspected.
+The ten caption cues, stdout transcript, timestamps, source and file hashes
+were checked against the capture and render metadata.
+
+Built wheel and sdist, then installed the wheel in a clean temporary
+environment without the video extras. The packaged replay verified all nine
+pilot jobs, and the Metal smoke check passed. The installed source fingerprint
+matched the recording commit. See demo/clean-install.json for package hashes.

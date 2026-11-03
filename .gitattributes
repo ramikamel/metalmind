@@ -1,0 +1,3 @@
+# Preserve the final blank lines in the captured CLI stdout and WebVTT cues.
+demo/recording/transcript.txt -text whitespace=-blank-at-eof
+demo/video/captions.vtt -text whitespace=-blank-at-eof

@@ -27,6 +27,11 @@ fixture answers, benchmark scores or acceptance decisions.
 
 ## Working demonstration
 
+- [Three-minute silent walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
+- [Terminal recording and captions](../demo/README.md)
+- [Function pilot](../results/2026-11-02-fp32-pilot/README.md)
+- [Whole-module compiler comparison](../results/2026-11-02-module-baselines/README.md)
+
 Show one stored generation/feedback sequence and its source, then the correctness
 and strongest available function-baseline comparisons. The nine-case FP32 pilot
 promoted 2 signatures and retained 7 no-win outcomes. Reuse a promoted artifact
