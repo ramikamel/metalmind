@@ -62,3 +62,11 @@ read-only analysis of the current ledger with
 The report separates search-stage thresholds from confirmed promotion and
 pairs feedback with independent sampling only at matching signature/trial
 keys.
+
+## Reuse cost from saved data
+
+The [workflow amortization report](../results/2026-11-03-workflow-amortization/README.md)
+uses the original 30 timing pairs and the recorded search plus confirmation
+cooldown. The 4.45-million-call estimate covers that partial setup cost at
+the observed 29.1 µs median paired saving. First-load compilation time and
+the remaining finalization time are unavailable in the saved run.

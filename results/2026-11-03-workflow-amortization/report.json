@@ -1,0 +1,25 @@
+{
+  "artifact_id": "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87",
+  "domain_mode": "assume",
+  "shape": [
+    256,
+    1024
+  ],
+  "boundary": "unchanged matmul plus guarded bias/GELU activation",
+  "workflow_comparison": {
+    "schema_version": 1,
+    "speedup": 1.1532137215634926,
+    "lower": 1.1424257373127453,
+    "upper": 1.1601414511422017,
+    "pairs": 30
+  },
+  "recorded_search_seconds": 69.59367320800084,
+  "configured_confirmation_cooldown_seconds": 60.0,
+  "accounted_seconds": 129.59367320800084,
+  "private_verification_and_confirmation_seconds_excluding_cooldown": null,
+  "first_load_seconds": null,
+  "estimate_kind": "partial cost using saved median paired savings",
+  "paired_samples": 30,
+  "median_paired_saving_ms": 0.029089660650072346,
+  "calls_to_offset_recorded_cost": 4454974
+}

@@ -1,6 +1,6 @@
 # MetalMind submission draft
 
-Prepared text; not submitted. Adapt field lengths to the authenticated portal.
+Copy-ready draft. Adapt the sections to the fields and limits shown after sign-in.
 
 ## One-sentence description
 
@@ -30,23 +30,26 @@ fixture answers, benchmark scores or acceptance decisions.
 - [Three-minute silent walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
 - [Terminal recording and captions](../demo/README.md)
 - [Function pilot](../results/2026-11-02-fp32-pilot/README.md)
+- [Checked-mode campaign checkpoint](../results/2026-11-03-checked-campaign-checkpoint/README.md)
+- [Workflow reuse-cost estimate](../results/2026-11-03-workflow-amortization/README.md)
 - [Whole-module compiler comparison](../results/2026-11-02-module-baselines/README.md)
 
-Show one stored generation/feedback sequence and its source, then the correctness
-and strongest available function-baseline comparisons. The nine-case FP32 pilot
-promoted 2 signatures and retained 7 no-win outcomes. Reuse a promoted artifact
-offline with new values, then demonstrate shape and gradient fallback. Finally
-show conservative module-region extraction: the final residual-activation module
-passed eight private cases. Explain that an eager-only gain was superseded by
-a compiled whole-module comparison: the compiler won, and the stricter default
-gate now disables the regional rewrite. Show that no-win decision alongside the
-function-level wins to demonstrate baseline-aware acceptance.
-Clearly label any stored search as cached/recorded; do not imply live API activity.
+The walkthrough follows a real Muse Wonder search from a rejected proposal
+through numerical feedback to a valid Metal kernel. It then runs
+a fresh correctness check using a previously promoted artifact and shows
+fallback on a changed shape and in gradient mode.
 
-Use the exact figures and bounds in the linked results, including assumed-domain
-labels. Function-level Inductor comparisons and original-eager whole-module
-comparisons are different experiments. No general or compiled whole-model speedup
-is claimed.
+The assumed-domain FP32 pilot on a 14-core Apple M3 Pro promoted two of nine
+signatures. Medium bias/GELU reached 1.547× and 1.553× against PyTorch Inductor
+fullgraph in independent confirmations. A separate eager matmul-plus-activation
+workflow reached 1.153× in one session. Its median saving was 29.1 µs per call,
+which makes the value of reusing a verified artifact visible.
+
+The first 12 jobs in a separate checked-mode comparison all fell back to PyTorch.
+At module level, the regional rewrite passed eight private correctness cases
+and beat eager execution. It lost to the verified compiled whole module, so
+MetalMind kept the original module. These cases demonstrate how the gate behaves
+when a candidate passes correctness checks but loses on performance.
 
 ## Impact and technical execution
 
@@ -60,8 +63,8 @@ local speedup cannot enable a slower integrated workflow.
 
 Current support is a small set of exact pure forward patterns and flat FP32
 inference modules. Training, arbitrary nested modules, dynamic shapes, other chips,
-compiled whole-module gains and a full multi-strategy evaluation remain unproven.
-No claim is made that feedback causally outperforms one-shot or independent sampling.
+and compiled whole-module gains remain open. The published multi-strategy
+checkpoint is partial and cannot establish an advantage for feedback.
 The public evidence preserves rejected kernels, unstable windows and no-win jobs.
 
-Repository: https://github.com/ramikamel/metalmind
+[Public repository](https://github.com/ramikamel/metalmind)
