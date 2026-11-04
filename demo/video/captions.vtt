@@ -7,7 +7,7 @@ A Meta-powered agent for verified Apple GPU kernel optimization. Model proposes 
 
 2
 00:00:18.000 --> 00:00:36.000
-The complete pilot
+The original FP32 pilot
 9 signatures: 2 promoted; 7 no-win. 18 model requests; all outcomes stay in the denominator. Bias + tanh GELU, RMSNorm and stable row softmax. Target: Apple M3 Pro, 14 GPU cores. Checked mode is the public default; these gains assume the input domain.
 
 3
@@ -48,5 +48,5 @@ Outcome: passed New input values matched the original PyTorch function. Changed 
 10
 00:02:42.000 --> 00:03:00.000
 Scope and next frontier
-Exact shapes and supported pure forward patterns on the recorded chip. No arbitrary nested-model, training or cross-chip speedup claim. The full multi-strategy campaign has not been run. This is saved evidence, not live generation or a recording of search latency. Source, raw pairs, intervals and no-win outcomes are public.
+Exact shapes and supported pure forward patterns on the recorded chip. No arbitrary nested-model, training or cross-chip speedup claim. This replay covers the original FP32 pilot. See the repo for later FP32 and FP16 results. This is saved evidence, not live generation or a recording of search latency. Source, raw pairs, intervals and no-win outcomes are public.
 

@@ -5,9 +5,9 @@
   "local_env_file_absent": true,
   "working_directory_outside_checkout": true,
   "model_requests": 0,
-  "source_commit": "209c82e3abb943b230a9125594d7610992e812a4",
+  "source_commit": "0a435b1fd068956fc70e1495d349d167aed5d6f4",
   "executed_package": {
-    "sha256": "4ebeee5a64453eb734f977a489623ad488154999a6c7d2fa7ab040e896ca91d2",
+    "sha256": "20a56fb61aabb27803ae9bd3d6cdb5dc3c3a3857930be855efee6920d4fec481",
     "file_count": 60,
     "package_location": "/Users/rami/github/metalmind/src/metalmind",
     "package_version": "0.1.0"
@@ -22,15 +22,15 @@
     "--evidence-root",
     "/Users/rami/github/metalmind/results",
     "--output",
-    "/Users/rami/github/metalmind/demo/recording/demo.json",
+    "/Users/rami/github/metalmind/runs/presenter-refresh.duFBRdTj/recording/demo.json",
     "--pace",
     "0.08",
     "--gpu-check"
   ],
-  "recording_seconds": 9.514104457994108,
+  "recording_seconds": 8.561341916996753,
   "sha256": {
-    "demo.cast": "b18e5d99026dc92f428531a64f717c29d568c5bbf0aa7357562a88f3a40bc572",
-    "demo.json": "35d242c51dcadd2f5e09e9dcbfb797dd552fe3afd7655fe70d30c0015fcbde0f",
-    "transcript.txt": "f9a8e89fd75cd03de5e226379a573723eeef13271322e913fd9ebd11c18cdcfe"
+    "demo.cast": "0239de35e4a1698cce183a5d94d4842e698c1cd088e753ae6dc2bb064981cda4",
+    "demo.json": "2fd8dac580d497cfa64b9a320484750b0ade616e5dd729844501f4c4c0cffa62",
+    "transcript.txt": "93f7c529020f01e59fa98403d5aa86eaf7fe34c6b3f5482d55b3529c79b12bb2"
   }
 }

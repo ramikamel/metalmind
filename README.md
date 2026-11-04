@@ -141,6 +141,7 @@ successful `metalmind doctor --smoke` health check.
 - [Architecture](docs/architecture.md)
 - [Environment](docs/environment.md)
 - [Measurement methodology](docs/benchmarking.md)
+- [Presenter guide and read-aloud script](docs/presenter-guide.md)
 - [Demo and reproduction guide](docs/demo.md)
 - [Hackathon rules alignment and prepared submission](docs/hackathon.md)
 

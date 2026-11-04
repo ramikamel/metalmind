@@ -36,8 +36,8 @@ fixture answers, benchmark scores or acceptance decisions.
 - [Workflow reuse-cost estimate](../results/2026-11-03-workflow-amortization/README.md)
 - [Whole-module compiler comparison](../results/2026-11-02-module-baselines/README.md)
 
-The walkthrough follows a real Muse Wonder search from a rejected proposal
-through numerical feedback to a valid Metal kernel. It then runs
+The walkthrough shows saved evaluator results from a real Muse Wonder search,
+including a valid Metal candidate and a proposal rejected for non-finite output. It then runs
 a fresh correctness check using a previously promoted artifact and shows
 fallback on a changed shape and in gradient mode.
 

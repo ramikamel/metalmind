@@ -6,7 +6,7 @@ Model proposes Metal -> compile -> verify -> benchmark -> feedback.
 Host code owns fixtures, numerical decisions and promotion.
 No model generation is performed in this playback.
 
-[2/10] The complete pilot
+[2/10] The original FP32 pilot
 RECORDED / FP32 / ASSUMED DOMAIN
 
 9 signatures: 2 promoted; 7 no-win.
@@ -78,7 +78,7 @@ LIMITS / ZERO MODEL REQUESTS IN THIS REPLAY
 
 Exact shapes and supported pure forward patterns on the recorded chip.
 No arbitrary nested-model, training or cross-chip speedup claim.
-The full multi-strategy campaign has not been run.
+This replay covers the original FP32 pilot. See the repo for later FP32 and FP16 results.
 This is saved evidence, not live generation or a recording of search latency.
 Source, raw pairs, intervals and no-win outcomes are public.
 

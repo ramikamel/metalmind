@@ -5,7 +5,7 @@ Silent video; record your own narration if desired.
 ## 00:00:00.000 — MetalMind
 A Meta-powered agent for verified Apple GPU kernel optimization. Model proposes Metal -> compile -> verify -> benchmark -> feedback. Host code owns fixtures, numerical decisions and promotion. No model generation is performed in this playback.
 
-## 00:00:18.000 — The complete pilot
+## 00:00:18.000 — The original FP32 pilot
 9 signatures: 2 promoted; 7 no-win. 18 model requests; all outcomes stay in the denominator. Bias + tanh GELU, RMSNorm and stable row softmax. Target: Apple M3 Pro, 14 GPU cores. Checked mode is the public default; these gains assume the input domain.
 
 ## 00:00:36.000 — The real feedback loop
@@ -30,4 +30,4 @@ Session 1 vs eager whole module: 1.123x Session 1 vs compiled whole module: 0.42
 Outcome: passed New input values matched the original PyTorch function. Changed shapes and gradient mode used the original fallback. Maximum absolute error: 2.98e-08.
 
 ## 00:02:42.000 — Scope and next frontier
-Exact shapes and supported pure forward patterns on the recorded chip. No arbitrary nested-model, training or cross-chip speedup claim. The full multi-strategy campaign has not been run. This is saved evidence, not live generation or a recording of search latency. Source, raw pairs, intervals and no-win outcomes are public.
+Exact shapes and supported pure forward patterns on the recorded chip. No arbitrary nested-model, training or cross-chip speedup claim. This replay covers the original FP32 pilot. See the repo for later FP32 and FP16 results. This is saved evidence, not live generation or a recording of search latency. Source, raw pairs, intervals and no-win outcomes are public.

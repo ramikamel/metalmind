@@ -349,7 +349,7 @@
     "new_performance_measurement": false
   },
   "runtime_source": {
-    "sha256": "4ebeee5a64453eb734f977a489623ad488154999a6c7d2fa7ab040e896ca91d2",
+    "sha256": "20a56fb61aabb27803ae9bd3d6cdb5dc3c3a3857930be855efee6920d4fec481",
     "file_count": 60,
     "package_location": "/Users/rami/github/metalmind/src/metalmind",
     "package_version": "0.1.0"
@@ -366,7 +366,7 @@
       ]
     },
     {
-      "title": "The complete pilot",
+      "title": "The original FP32 pilot",
       "label": "RECORDED / FP32 / ASSUMED DOMAIN",
       "lines": [
         "9 signatures: 2 promoted; 7 no-win.",
@@ -455,7 +455,7 @@
       "lines": [
         "Exact shapes and supported pure forward patterns on the recorded chip.",
         "No arbitrary nested-model, training or cross-chip speedup claim.",
-        "The full multi-strategy campaign has not been run.",
+        "This replay covers the original FP32 pilot. See the repo for later FP32 and FP16 results.",
         "This is saved evidence, not live generation or a recording of search latency.",
         "Source, raw pairs, intervals and no-win outcomes are public."
       ]

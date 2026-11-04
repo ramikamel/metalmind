@@ -10,16 +10,16 @@
     1080
   ],
   "fps": 24.0,
-  "source_demo_sha256": "35d242c51dcadd2f5e09e9dcbfb797dd552fe3afd7655fe70d30c0015fcbde0f",
-  "source_commit": "209c82e3abb943b230a9125594d7610992e812a4",
+  "source_demo_sha256": "2fd8dac580d497cfa64b9a320484750b0ade616e5dd729844501f4c4c0cffa62",
+  "source_commit": "0a435b1fd068956fc70e1495d349d167aed5d6f4",
   "renderer_sha256": "fa33559183600afcd536e8f7b434abef1635a8d135129d634a1ec995c29677c0",
   "renderer_source_matches_commit": true,
-  "renderer_commit": "209c82e3abb943b230a9125594d7610992e812a4",
+  "renderer_commit": "0a435b1fd068956fc70e1495d349d167aed5d6f4",
   "pillow_version": "13.0.0",
   "imageio_ffmpeg_version": "0.8.0",
   "sha256": {
-    "metalmind-evidence-walkthrough.mp4": "724273e85229a22eac49fd02cbd7811ec3bb58d11ecabfdb94fb667fc4f33832",
-    "captions.vtt": "099a455b86a40ff28ad12bbaa5eae8686e676f70cff86d82230a918cb7d940f2",
+    "metalmind-evidence-walkthrough.mp4": "75d560dd15ba02f0b8e0a92ac8d2c5c15cc839d199c5b85a783226dd8e2a1413",
+    "captions.vtt": "764f5328a4ca9153eec7af51c63066aec2cf6155c8b44bfbe79e20bbab7181f0",
     "poster.png": "62778b1932e6298fb518b5fcdbd3da6c2c856f3a9c801b35c9088069b0d39f5f"
   }
 }

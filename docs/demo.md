@@ -1,5 +1,7 @@
 # Demonstrating MetalMind
 
+Start with the [presenter guide](presenter-guide.md) for the plain-English explanation and read-aloud script.
+
 [Watch the three-minute walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
 or read the [recorded terminal transcript](../demo/recording/transcript.txt).
 The video is a silent, paced walkthrough with [captions](../demo/video/captions.vtt)
@@ -24,9 +26,9 @@ gradient mode. Both commands use zero model requests.
 
 1. Show the supported PyTorch bias/GELU function and explain the compile,
    correctness, timing and model-feedback loop.
-2. Show the saved incorrect candidate, its feedback and the subsequent valid
-   candidate. Point out the generated Metal source and the private correctness
-   checks.
+2. Show the saved valid and rejected candidates in their recorded order. The
+   rejected candidate produced non-finite output. Point out the generated Metal
+   source and the private correctness checks that follow search.
 3. Walk through all nine pilot signatures. Two won against verified function
    baselines and seven recorded no win. The medium FP32 bias/GELU signature
    measured 1.547× and 1.553× against Inductor fullgraph on a 14-core M3 Pro,
