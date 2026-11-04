@@ -1,5 +1,7 @@
 # MetalMind demo media
 
+Open the [offline evidence showcase](evidence-showcase.html) in your browser to inspect the model-generated code and both confirmation sessions. See the [judging rehearsal](../docs/judging-rehearsal.md) for a short sequence that pairs the showcase with a fresh GPU check.
+
 - [Video](video/metalmind-evidence-walkthrough.mp4) and [poster](video/poster.png)
 - [Captions](video/captions.vtt) and [optional narration](video/voiceover.md)
 - [Actual CLI recording](recording/demo.cast) and [plain transcript](recording/transcript.txt)

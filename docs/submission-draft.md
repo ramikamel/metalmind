@@ -27,6 +27,8 @@ fixture answers, benchmark scores or acceptance decisions.
 
 ## Working demonstration
 
+- [Offline evidence showcase](../demo/evidence-showcase.html)
+
 - [Three-minute silent walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
 - [Terminal recording and captions](../demo/README.md)
 - [Function pilot](../results/2026-11-02-fp32-pilot/README.md)

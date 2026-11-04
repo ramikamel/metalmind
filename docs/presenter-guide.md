@@ -19,6 +19,8 @@ has a working end-to-end optimization loop and verified function-level wins.
    in a second tab. It contains the strongest result from the later pilot.
 4. Use the [submission draft](submission-draft.md) when the portal is open.
 
+For a short judge-facing sequence, use the [offline showcase and judging rehearsal](judging-rehearsal.md).
+
 ## What you built
 
 > MetalMind uses a Meta model to propose Apple GPU code for a supported PyTorch
