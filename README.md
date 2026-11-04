@@ -5,6 +5,31 @@ PyTorch functions, checks them numerically on Apple Silicon, and measures them
 against verified framework baselines. Kernels are reused only after independent
 correctness and performance confirmation; otherwise PyTorch remains the fallback.
 
+## System flow
+
+```mermaid
+flowchart TD
+    A["Supported PyTorch function or registered workload"] --> B["Local analyzer records the exact tensor signature"]
+    B --> C["Local controller tracks the remaining search budget"]
+    C --> D["Muse Wonder API proposes Metal source and launch dimensions"]
+    D --> E{"Local worker compiles and passes public correctness checks?"}
+    E -->|Yes| F["Measure against verified PyTorch baselines"]
+    E -->|No| G["Record failure or timing feedback"]
+    F --> G
+    G -->|Budget remains| C
+    G -->|Search ends| H{"Best eligible candidate passes private checks and both timing sessions?"}
+    H -->|Yes| I["Save kernel, signature, and evidence as a promoted artifact"]
+    H -->|No| P["Keep the original PyTorch function"]
+    I --> J["Load and verify the artifact offline"]
+    J --> K{"Artifact and call satisfy the runtime guards?"}
+    K -->|Yes| M["Dispatch the Metal kernel"]
+    K -->|No| P
+```
+
+A promoted artifact can be reused without a model request. Checked mode scans
+tensor values before dispatch. With caller-guaranteed bounds, the wrapper
+still checks the tensor signature. [Full project walkthrough](docs/project-flow.md)
+
 ## Run locally
 
 ```sh
@@ -93,6 +118,8 @@ This preserves the original callable and exposes the compiler result.
 
 ## Offline demo
 
+Use the [timed recording guide](docs/demo-recording-guide.md) for the current FP16 softmax demonstration.
+
 ```sh
 metalmind demo
 metalmind demo --gpu-check --output runs/demo.json
@@ -131,6 +158,7 @@ successful `metalmind doctor --smoke` health check.
 - [Implementation plan](docs/superpowers/plans/2026-10-29-metalmind.md)
 - [Progress and verified results](docs/progress.md)
 - [Architecture](docs/architecture.md)
+- [Project walkthrough](docs/project-flow.md)
 - [Environment](docs/environment.md)
 - [Muse prompt tuning experiment](results/2026-11-04-muse-prompt-ab/README.md)
 - [Measurement methodology](docs/benchmarking.md)

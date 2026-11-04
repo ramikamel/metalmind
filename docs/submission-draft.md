@@ -27,6 +27,7 @@ fixture answers, benchmark scores or acceptance decisions.
 
 ## Working demonstration
 
+- [Current recording script and shot list](demo-recording-guide.md)
 - [Offline evidence showcase](../demo/evidence-showcase.html)
 - [Judging rehearsal and live dispatch command](judging-rehearsal.md)
 - [Final benchmark results](../RESULTS.md)

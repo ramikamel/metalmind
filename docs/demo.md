@@ -1,6 +1,8 @@
 # Demonstrating MetalMind
 
-Start with the [presenter guide](presenter-guide.md) for the plain-English explanation and read-aloud script.
+Use the [timed recording guide](demo-recording-guide.md) for the current FP16
+softmax demo. The [project walkthrough](project-flow.md) follows the full flow.
+The material below documents the earlier recorded walkthrough.
 
 [Watch the three-minute walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
 or read the [recorded terminal transcript](../demo/recording/transcript.txt).

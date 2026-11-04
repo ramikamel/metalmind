@@ -2,6 +2,9 @@
 
 ## Start here
 
+For the current demo, use the [timed recording guide](demo-recording-guide.md).
+For an explanation of each stage, see the [project walkthrough](project-flow.md).
+
 The hackathon release is ready to present. The remaining work is to rehearse,
 sign in to the event portal, check its current fields and media requirements,
 and submit. You can use the recorded walkthrough for the demo. A live terminal

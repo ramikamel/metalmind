@@ -1,5 +1,9 @@
 # MetalMind judging rehearsal
 
+The [updated recording guide](demo-recording-guide.md) has a timed script and
+screen cues for the current 3.10× / 3.18× FP16 softmax result. This page
+describes the earlier saved showcase and its rubric mapping.
+
 ## The demo moment
 
 > Muse Wonder wrote an Apple GPU kernel. MetalMind made it earn the right to run.
