@@ -29,11 +29,9 @@ fixture answers, benchmark scores or acceptance decisions.
 
 - [Offline evidence showcase](../demo/evidence-showcase.html)
 - [Judging rehearsal and live dispatch command](judging-rehearsal.md)
-- [Deeper model search, rechecks, and complete attention benchmark](../results/2026-11-03-hackathon-extension/README.md)
+- [Final benchmark results](../RESULTS.md)
 - [Original FP32 silent walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
 - [Terminal recording and captions](../demo/README.md)
-- [Function pilot](../results/2026-11-02-fp32-pilot/README.md)
-- [Separate FP16 results and reuse audit](../results/2026-11-03-assumed-fp16-pilot/README.md)
 - [Fresh-wheel live acceptance check](../results/2026-11-03-clean-wheel-live/README.md)
 - [Completed checked-mode campaign](../results/2026-11-03-checked-fp32-full/README.md)
 - [Workflow reuse-cost estimate](../results/2026-11-03-workflow-amortization/README.md)
@@ -44,25 +42,16 @@ including a valid Metal candidate and a proposal rejected for non-finite output.
 Use the rehearsal command to run a fresh GPU check of a promoted artifact and
 show fallback on a changed shape, dtype and gradient mode.
 
-The assumed-domain FP32 pilot on a 14-core Apple M3 Pro promoted two of nine
-signatures. Medium bias/GELU reached 1.547× and 1.553× against PyTorch Inductor
-fullgraph in independent confirmations. A separate eager matmul-plus-activation
-workflow reached 1.153× in one session. Its median saving was 29.1 µs per call,
-which makes the value of reusing a verified artifact visible.
+On a 14-core Apple M3 Pro, MetalMind promoted four of nine FP32 signatures
+and all nine FP16 signatures with caller-guaranteed input bounds. Medium
+FP32 bias/GELU measured 1.589× / 1.568× versus Inductor. Medium FP16
+softmax measured 2.641× / 2.544× versus eager PyTorch.
 
-A separate assumed-domain FP16 pilot promoted six of nine signatures
-across bias/GELU, RMSNorm and softmax. Medium softmax reached 2.641×
-and 2.544× against its fastest verified baseline. Each promoted artifact
-dispatched on new in-domain values and used PyTorch fallback on a changed
-shape, FP32 inputs and gradient mode.
-
-The follow-ups brought the FP16 total to nine distinct signatures with a
-promotion across studies. The last case, large RMSNorm, initially tied
-Inductor. After Muse Wonder received the earlier result and source, its new
-kernel beat Inductor by 1.252× and 1.268× after private verification. A fixed,
-manually integrated FP16 attention block reused the softmax artifact and
-measured 1.058× and 1.067× versus the fastest verified whole-block baseline,
-Inductor. The two matrix multiplications were included in that measurement.
+Large FP16 RMSNorm measured 1.252× / 1.268× versus Inductor after Muse
+Wonder used the earlier kernel source and benchmark feedback to propose a new
+schedule. A fixed FP16 attention block reused the softmax artifact and measured
+1.058× / 1.067× versus Inductor, the fastest verified whole-block
+baseline. Timing included both matrix multiplications.
 
 All 108 jobs in a separate checked-mode comparison fell back to PyTorch.
 At module level, the regional rewrite passed eight private correctness cases

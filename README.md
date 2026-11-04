@@ -58,39 +58,20 @@ to run a bounded batch. Continue the same campaign with
 `--execute --resume --max-jobs 12` from the same checkout. See the
 [campaign protocol](docs/benchmarking.md) for accounting and recovery.
 
-## Measured development results
+## Benchmark results
 
-A nine-case FP32 pilot on a **14-core M3 Pro GPU** promoted **2 of 9 signatures**:
-medium bias/GELU measured **1.547–1.553× versus Inductor fullgraph**, and large
-bias/GELU **1.093–1.097×**. Seven cases did not win. Each winner passed 22 private
-fixtures and two independent timing sessions. These are **assumed-domain**
-public-call measurements; they do not describe default checked-mode performance.
+Measured on a **14-core Apple M3 Pro GPU**. The speedups below show both
+confirmation sessions against the fastest verified PyTorch baseline.
 
-[All outcomes, source, raw samples, confidence intervals, and reproduction](results/2026-11-02-fp32-pilot/README.md)
-are preserved. A separate unchanged matmul-plus-activation example measured
-1.153× whole-workflow gain in one session. This is not whole-model confirmation.
-A separate [checked-mode four-strategy rehearsal](results/2026-11-03-strategy-rehearsal/README.md)
-measured seven numerically valid candidates and zero wins for small bias/GELU.
-The [completed 108-job FP32 comparison](results/2026-11-03-checked-fp32-full/README.md)
-promoted no kernels in checked mode. It compares four strategies and pairs
-feedback with independent sampling on matching trials.
+| Benchmark | Final result |
+| --- | --- |
+| FP16 functions with caller-guaranteed bounds | **9 of 9 signatures promoted**. Medium softmax reached **2.641× / 2.544×** vs eager PyTorch. |
+| FP32 functions with caller-guaranteed bounds | **4 of 9 signatures promoted**. Medium bias/GELU reached **1.589× / 1.568×** vs Inductor. |
+| Default checked FP32 campaign | **0 of 108 jobs promoted**. PyTorch handled every case. |
+| Complete fixed FP16 attention block | **1.058× / 1.067×** vs Inductor, including both matrix multiplications. |
+| FP32 residual module | PyTorch retained. The rewrite lost to Inductor. |
 
-A [separate FP16 assumed-domain pilot](results/2026-11-03-assumed-fp16-pilot/README.md)
-promoted **6 of 9 signatures** across bias/GELU, RMSNorm and softmax. Medium
-softmax measured **2.641× and 2.544×** versus the fastest verified baseline
-in its two confirmation sessions. All six artifacts passed an offline
-reuse audit with shape, dtype and gradient fallback.
-
-The [deeper Muse Wonder search and timing audit](results/2026-11-03-hackathon-extension/README.md)
-added two FP32 softmax wins and resolved the remaining FP16 signature.
-The new large FP16 RMSNorm kernel measured **1.252× and 1.268× versus
-Inductor**. Across the original FP16 pilot and follow-ups, **9 of 9** distinct
-signatures have an assumed-domain promotion. A fixed FP16 attention block
-using the medium softmax artifact measured **1.058× and 1.067× versus
-Inductor** for the whole block, including both matrix multiplications.
-All four FP32 winners across the pilot and deeper search reproduced in
-short-block confirmations. The checked wrapper remained substantially
-slower in the same-kernel diagnostic.
+[All 18 workload results and the complete workflow comparisons](RESULTS.md)
 
 ## Module workflow
 
