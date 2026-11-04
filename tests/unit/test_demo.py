@@ -150,3 +150,10 @@ def test_promoted_gate_requires_complete_known_baselines(mutation):
     if mutation=="unknown_status": gate["confirmations"][0]["comparisons"][0]["status"]="invented"
     if mutation=="unknown_outcome": gate["outcome"]="invented"
     with pytest.raises(ValueError): validate_gate_sessions(gate)
+
+
+def test_replay_scope_describes_the_original_pilot_without_stale_status(evidence):
+    data = load_demo_evidence(evidence)
+    closing = " ".join(build_chapters(data)[-1]["lines"])
+    assert "original FP32 pilot" in closing
+    assert "later FP32 and FP16 results" in closing

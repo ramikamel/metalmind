@@ -13,7 +13,7 @@ def build_chapters(data):
         "Model proposes Metal -> compile -> verify -> benchmark -> feedback.",
         "Host code owns fixtures, numerical decisions and promotion.",
         "No model generation is performed in this playback."]}]
-    chapters.append({"title":"The complete pilot","label":"RECORDED / FP32 / ASSUMED DOMAIN","lines":[
+    chapters.append({"title":"The original FP32 pilot","label":"RECORDED / FP32 / ASSUMED DOMAIN","lines":[
         f"{pilot['jobs']} signatures: {pilot['promoted']} promoted; {pilot['no_win']} no-win.",
         f"{pilot['generation_requests']} model requests; all outcomes stay in the denominator.",
         "Bias + tanh GELU, RMSNorm and stable row softmax.",
@@ -64,7 +64,7 @@ def build_chapters(data):
     chapters.append({"title":"Scope and next frontier","label":"LIMITS / ZERO MODEL REQUESTS IN THIS REPLAY","lines":[
         "Exact shapes and supported pure forward patterns on the recorded chip.",
         "No arbitrary nested-model, training or cross-chip speedup claim.",
-        "The full multi-strategy campaign has not been run.",
+        "This replay covers the original FP32 pilot. See the repo for later FP32 and FP16 results.",
         "This is saved evidence, not live generation or a recording of search latency.",
         "Source, raw pairs, intervals and no-win outcomes are public."]})
     return [{k:([safe_text(v) for v in value] if isinstance(value,list) else safe_text(value)) for k,value in chapter.items()} for chapter in chapters]
