@@ -11,16 +11,20 @@ applicable, and torch.compile/Inductor fullgraph when usable. Unsupported paths
 are recorded, not omitted silently. CPU fallback is disallowed during comparison.
 
 Use at least 25 warmups, calibrated common repetitions, balanced pair ordering,
-ten search pairs, and thirty independent confirmation pairs. Bootstrap whole
+ten search pairs, and thirty independent confirmation pairs. Use the smaller
+of the two calibrated repetition counts so the slower arm sets the block
+duration. Earlier frozen runs used the larger count. Bootstrap whole
 pairs 10,000 times. Promotion requires at least 1.05x median public-function gain
 and lower 95% bound above 1.0 in both confirmation sessions, separated by at least
 60 seconds. A private numerical gate precedes confirmation. Drift beyond 10%
 invalidates the window; no individual unfavorable samples are removed.
 
-Checked mode scans input domains and includes scan/synchronization cost. Assumed
-mode requires caller-guaranteed numerical bounds; its numbers are labeled
-separately. The first tiny checked-mode kernel was slower despite being correct;
-that run is development data and does not establish a general performance claim.
+Checked mode scans input domains and includes scan and synchronization costs.
+The scan uses IEEE magnitude bits so FP32 subnormals stored on the GPU cannot
+pass as zero under MPS floating-point comparisons. Assumed-domain mode requires
+caller-guaranteed numerical bounds and its numbers are labeled separately.
+The first tiny checked-mode kernel was slower despite passing correctness.
+That development run does not establish a general performance claim.
 
 ## Frozen FP32 comparison
 

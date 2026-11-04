@@ -73,10 +73,15 @@ def _doctor(args):
         report["shader_health_passed"] = False
         if ready:
             from metalmind.runtime.health import check_health
-            report["shader_health_passed"] = check_health()
-            if report["shader_health_passed"]:
-                from metalmind.runtime.worker import clear_device_fault
-                clear_device_fault()
+            from metalmind.runtime.lock import gpu_lock
+            from metalmind.runtime.worker import clear_device_fault
+            try:
+                with gpu_lock():
+                    report["shader_health_passed"] = check_health()
+                    if report["shader_health_passed"]:
+                        clear_device_fault()
+            except TimeoutError as exc:
+                report["unavailable_reason"] = str(exc)
         ready = ready and report["shader_health_passed"]
     if args.json:
         print(json.dumps(report, indent=2, allow_nan=False))
@@ -86,8 +91,8 @@ def _doctor(args):
         print(f"Shader API available: {info.capabilities.compile_shader}")
         if args.smoke:
             print(f"Shader health passed: {report['shader_health_passed']}")
-        if info.unavailable_reason:
-            print(info.unavailable_reason)
+        if report["unavailable_reason"]:
+            print(report["unavailable_reason"])
     return 0 if ready else 1
 
 

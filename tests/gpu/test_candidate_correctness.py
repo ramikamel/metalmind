@@ -40,3 +40,36 @@ def test_invalid_kernels_have_no_performance_score(source):
     result=evaluate(EvaluationRequest(candidate=c,workload=spec))
     assert result.status in ("incorrect","compile_error")
     assert not result.elapsed_ms
+
+
+@pytest.mark.parametrize("dtype", [torch.float32, torch.float16])
+def test_checked_domain_rejects_invalid_mps_input_contents(dtype):
+    from metalmind.verification.numerics import inputs_in_domain
+
+    spec = workload_for_shape("bias_gelu", (2, 3), dtype=str(dtype).removeprefix("torch."))
+    good = torch.tensor([0.0, -0.0, -10.0], dtype=dtype)
+    x = good.repeat(2, 1).to("mps")
+    bias = good.to("mps")
+    assert inputs_in_domain(spec, (x, bias))
+
+    smallest_normal = torch.finfo(dtype).tiny
+    boundary = torch.tensor([smallest_normal, -smallest_normal, 10.0], dtype=dtype).to("mps")
+    assert inputs_in_domain(spec, (boundary.repeat(2, 1), boundary))
+
+    for invalid in (float("nan"), float("inf"), -float("inf"), 10.125, -10.125,
+                    smallest_normal / 2, -smallest_normal / 2):
+        bad = good.clone()
+        bad[0] = invalid
+        assert not inputs_in_domain(spec, (bad.repeat(2, 1).to("mps"), bias)), invalid
+        assert not inputs_in_domain(spec, (x, bad.to("mps"))), invalid
+
+
+def test_function_baseline_rejects_incorrect_compiler_output(monkeypatch):
+    from metalmind.benchmarking.baselines import collect_baselines
+
+    spec = workload_for_shape("bias_gelu", (2, 3))
+    monkeypatch.setattr(torch, "compile", lambda fn, **kw: lambda x, bias: torch.zeros_like(x))
+    available, unavailable = collect_baselines(spec)
+    assert [name for name, _ in available] == ["original_eager"]
+    assert any("torch_compile_inductor_fullgraph" in detail and "numerical contract" in detail
+               for detail in unavailable)

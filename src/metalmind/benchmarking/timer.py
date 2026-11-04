@@ -22,7 +22,8 @@ def _calibrate(fn,target_ms):
 def measure_pair(baseline,candidate,*,pairs=10,target_ms=100,seed=42,warmups=25):
     with torch.inference_mode():
         for _ in range(warmups): baseline();candidate()
-        n=max(_calibrate(baseline,target_ms),_calibrate(candidate,target_ms))
+        # Let the slower arm set the common block size to bound asymmetric windows.
+        n=min(_calibrate(baseline,target_ms),_calibrate(candidate,target_ms))
         max_attempts=1+(200-warmups)//25
         for attempt in range(max_attempts):
             pilot=[_block(baseline,n) for _ in range(5)]

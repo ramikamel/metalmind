@@ -491,7 +491,7 @@ Do not claim “pure kernel time” from a host wall clock. PyTorch exposes time
 4. Disable gradient recording, debug validation, and verbose GPU profiling.
 5. Warm each callable at least 25 times. After calibration, collect five pilot blocks; require the medians of the first two and last two to differ by at most 10%. If unstable, repeat warmup in increments of 25 calls, capped at 200 warmup calls, then classify persistent instability explicitly.
 6. Synchronize before a timed block, invoke a callable `N` times, synchronize after, and divide elapsed wall time by `N`.
-7. Calibrate a common `N` for each paired comparison to target at least 100 ms per block, capped at 10,000 calls. If the cap cannot reach the target, record actual duration.
+7. Calibrate each arm toward 100 ms, then use the smaller calibrated repetition count as the common `N`, capped at 10,000 calls. This limits time spent in a much slower arm while retaining identical counts and synchronized per-call measurements. Earlier frozen campaigns used the larger calibrated count and retain that protocol in their evidence.
 8. Use ten paired blocks for search, with seeded balanced order.
 9. For final confirmation, use thirty fresh paired blocks against each relevant baseline, then repeat in a second session after at least 60 seconds of cooldown and a stable control baseline.
 10. Retain every raw block sample, order, repetition count, and environment fingerprint.
