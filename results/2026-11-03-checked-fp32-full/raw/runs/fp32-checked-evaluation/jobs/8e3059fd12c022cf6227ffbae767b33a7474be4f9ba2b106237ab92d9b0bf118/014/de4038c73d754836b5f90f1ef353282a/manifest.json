@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:medium",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          1024
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "checked",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261104,
+    "runs_dir": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/014",
+    "artifacts_dir": "runs/fp32-checked-evaluation/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 1860,
+  "elapsed_seconds": 84.10520883300342,
+  "wall_deadline_utc": 1793743835.813937,
+  "seen": [
+    "39816eff9431dc1a937d732bc4352c4261dcaa2bb75cfc20a1cb78a05b2cf543",
+    "b9191be059f9bf02d6af275501ebd3575e84210399d059dfcbb15de816c178ab"
+  ],
+  "archive": [
+    {
+      "score": 0.08414005784191672,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "39816eff9431dc1a937d732bc4352c4261dcaa2bb75cfc20a1cb78a05b2cf543",
+        "workload_hash": "524c5a2e7965ab8d49096975fed8eea2c6c060c8512f339e1d4710ab36a46d7d",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    uint total = B * D;\n    if (gid >= total) {\n        return;\n    }\n    uint col = gid % D;\n    float z = float(x[gid]) + float(parameter[col]);\n    float z3 = z * z * z;\n    float inner = 0.7978845608028654f * (z + 0.044715f * z3);\n    float y = 0.5f * z * (1.0f + tanh(inner));\n    out[gid] = float(y);\n}\n",
+          "threads": [
+            262144,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "Simple 1D coalesced dispatch with per-element modulo column lookup computes correct tanh-GELU bias addition efficiently for 256x1024."
+        },
+        "parent_id": "b9191be059f9bf02d6af275501ebd3575e84210399d059dfcbb15de816c178ab",
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 0.07963805287370665,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "b9191be059f9bf02d6af275501ebd3575e84210399d059dfcbb15de816c178ab",
+        "workload_hash": "524c5a2e7965ab8d49096975fed8eea2c6c060c8512f339e1d4710ab36a46d7d",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x [[buffer(0)]], device const float* parameter [[buffer(1)]], device float* out [[buffer(2)]], constant uint& B [[buffer(3)]], constant uint& D [[buffer(4)]], constant float& epsilon [[buffer(5)]], uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    if (gid.x >= D || gid.y >= B) return;\n    uint idx = gid.y * D + gid.x;\n    float z = float(x[idx]) + float(parameter[gid.x]);\n    float z3 = z * z * z;\n    float y = 0.5f * z * (1.0f + tanh(0.7978845608028654f * (z + 0.044715f * z3)));\n    out[idx] = float(y);\n}\n",
+          "threads": [
+            1024,
+            256,
+            1
+          ],
+          "group_size": [
+            32,
+            8,
+            1
+          ],
+          "hypothesis": "2D dispatch maps x-threads to columns for coalesced access and avoids division, giving a correct baseline."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

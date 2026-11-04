@@ -30,7 +30,7 @@ fixture answers, benchmark scores or acceptance decisions.
 - [Three-minute silent walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
 - [Terminal recording and captions](../demo/README.md)
 - [Function pilot](../results/2026-11-02-fp32-pilot/README.md)
-- [Checked-mode campaign checkpoint](../results/2026-11-03-checked-campaign-checkpoint/README.md)
+- [Completed checked-mode campaign](../results/2026-11-03-checked-fp32-full/README.md)
 - [Workflow reuse-cost estimate](../results/2026-11-03-workflow-amortization/README.md)
 - [Whole-module compiler comparison](../results/2026-11-02-module-baselines/README.md)
 
@@ -45,7 +45,7 @@ fullgraph in independent confirmations. A separate eager matmul-plus-activation
 workflow reached 1.153× in one session. Its median saving was 29.1 µs per call,
 which makes the value of reusing a verified artifact visible.
 
-The first 12 jobs in a separate checked-mode comparison all fell back to PyTorch.
+All 108 jobs in a separate checked-mode comparison fell back to PyTorch.
 At module level, the regional rewrite passed eight private correctness cases
 and beat eager execution. It lost to the verified compiled whole module, so
 MetalMind kept the original module. These cases demonstrate how the gate behaves
@@ -63,8 +63,8 @@ local speedup cannot enable a slower integrated workflow.
 
 Current support is a small set of exact pure forward patterns and flat FP32
 inference modules. Training, arbitrary nested modules, dynamic shapes, other chips,
-and compiled whole-module gains remain open. The published multi-strategy
-checkpoint is partial and cannot establish an advantage for feedback.
+and compiled whole-module gains remain open. The completed checked-mode comparison yielded zero promotions across all
+four strategies. It provides no evidence of a feedback advantage at this budget.
 The public evidence preserves rejected kernels, unstable windows and no-win jobs.
 
 [Public repository](https://github.com/ramikamel/metalmind)

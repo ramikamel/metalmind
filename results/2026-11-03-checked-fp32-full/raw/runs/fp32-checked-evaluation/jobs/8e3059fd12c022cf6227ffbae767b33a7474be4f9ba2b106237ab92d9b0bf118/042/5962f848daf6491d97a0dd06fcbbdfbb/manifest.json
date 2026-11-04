@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:large",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "checked",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261105,
+    "runs_dir": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/042",
+    "artifacts_dir": "runs/fp32-checked-evaluation/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 6010,
+  "elapsed_seconds": 156.83356295799604,
+  "wall_deadline_utc": 1793747354.506248,
+  "seen": [
+    "0bf0929a3560e13504f93a06a12f0802442c392f024a4df2cf979c27c34a1dcd",
+    "f3efb88a92c8075d963ecf572542166f518edd9af5e45629919c5ab32c49eaf6"
+  ],
+  "archive": [
+    {
+      "score": 0.07640768473056633,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "0bf0929a3560e13504f93a06a12f0802442c392f024a4df2cf979c27c34a1dcd",
+        "workload_hash": "f241fe3b0d19878ffa8e269da5d049293bad56b7f4e5bcc5d142ddc68a9c18ed",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint row [[threadgroup_position_in_grid]], uint lid [[thread_position_in_threadgroup]], uint tg_size [[threads_per_threadgroup]]) {\n    if (row >= B) return;\n    threadgroup float partial[256];\n    uint base = row * D;\n    float sum = 0.0f;\n    if ((D & 3u) == 0u) {\n        device const float4* x4 = (device const float4*)(x + base);\n        uint D4 = D >> 2;\n        for (uint i = lid; i < D4; i += tg_size) {\n            float4 v = x4[i];\n            sum += dot(v, v);\n        }\n    } else {\n        for (uint i = lid; i < D; i += tg_size) {\n            float v = x[base + i];\n            sum += v * v;\n        }\n    }\n    partial[lid] = sum;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    for (uint stride = tg_size >> 1; stride > 0u; stride >>= 1) {\n        if (lid < stride) partial[lid] += partial[lid + stride];\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n    }\n    float scale = rsqrt(partial[0] / float(D) + epsilon);\n    if ((D & 3u) == 0u) {\n        device const float4* x4 = (device const float4*)(x + base);\n        device const float4* p4 = (device const float4*)parameter;\n        device float4* o4 = (device float4*)(out + base);\n        uint D4 = D >> 2;\n        float4 s = float4(scale);\n        for (uint i = lid; i < D4; i += tg_size) {\n            o4[i] = x4[i] * s * p4[i];\n        }\n    } else {\n        for (uint i = lid; i < D; i += tg_size) {\n            out[base + i] = x[base + i] * scale * parameter[i];\n        }\n    }\n}\n",
+          "threads": [
+            131072,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "One 256-thread threadgroup per row with float4 dot-product reduction and a cached-row rescale pass maximizes bandwidth and reduction efficiency for 512x4096 RMSNorm."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 0.0731186158262396,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "f3efb88a92c8075d963ecf572542166f518edd9af5e45629919c5ab32c49eaf6",
+        "workload_hash": "f241fe3b0d19878ffa8e269da5d049293bad56b7f4e5bcc5d142ddc68a9c18ed",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint tg_pos [[threadgroup_position_in_grid]], uint lid [[thread_position_in_threadgroup]], uint tg_size [[threads_per_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint simd_id [[simdgroup_index_in_threadgroup]], uint sg_width [[threads_per_simdgroup]]) {\n    uint simdgroups = tg_size / sg_width;\n    uint row = tg_pos * simdgroups + simd_id;\n    if (row >= B) return;\n    uint base = row * D;\n    uint D4 = D >> 2;\n    uint tail = D & 3u;\n    uint per_lane = (D4 + sg_width - 1u) / sg_width;\n    if (per_lane <= 32u) {\n        float4 buf[32];\n        device const float4* x4 = (device const float4*)(x + base);\n        device const float4* p4 = (device const float4*)parameter;\n        device float4* o4 = (device float4*)(out + base);\n        float sum = 0.0f;\n        for (uint k = 0u; k < 32u; ++k) {\n            uint idx = lane + k * sg_width;\n            float4 v = float4(0.0f);\n            if (idx < D4) {\n                v = x4[idx];\n                sum += dot(v, v);\n            }\n            buf[k] = v;\n        }\n        float tail_val = 0.0f;\n        if (tail != 0u && lane < tail) {\n            tail_val = x[base + (D4 << 2) + lane];\n            sum += tail_val * tail_val;\n        }\n        float total = simd_broadcast_first(simd_sum(sum));\n        float scale = rsqrt(total / float(D) + epsilon);\n        for (uint k = 0u; k < 32u; ++k) {\n            uint idx = lane + k * sg_width;\n            if (idx < D4) o4[idx] = buf[k] * scale * p4[idx];\n        }\n        if (tail != 0u && lane < tail) {\n            uint col = (D4 << 2) + lane;\n            out[base + col] = tail_val * scale * parameter[col];\n        }\n    } else {\n        float sum = 0.0f;\n        for (uint i = lane; i < D; i += sg_width) {\n            float v = x[base + i];\n            sum += v * v;\n        }\n        float total = simd_broadcast_first(simd_sum(sum));\n        float scale = rsqrt(total / float(D) + epsilon);\n        for (uint i = lane; i < D; i += sg_width) {\n            out[base + i] = x[base + i] * scale * parameter[i];\n        }\n    }\n}\n",
+          "threads": [
+            16384,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "One simdgroup per row with register-cached float4 values and simd_sum removes threadgroup barriers and the second input read, improving bandwidth."
+        },
+        "parent_id": "0bf0929a3560e13504f93a06a12f0802442c392f024a4df2cf979c27c34a1dcd",
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

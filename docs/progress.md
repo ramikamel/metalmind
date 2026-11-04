@@ -340,3 +340,13 @@ Five offline process-level artifact loads measured median total load of
 199.63 ms and median Metal compile call of 1.12 ms. At the archived median
 workflow saving, the estimated reuse break-even is 6,863 calls for that
 measured load. See results/2026-11-03-workflow-amortization.
+
+
+## Completed checked-mode FP32 campaign — November 3, 2026
+
+All 108 planned jobs are archived. The runner recorded 91 no-win, four
+budget-exhausted and 13 failed jobs, with zero promoted artifacts. There
+were 146 valid timed candidates and 133 accounted Meta requests. Feedback
+and independent sampling each used 53 requests and produced zero promotions
+in all 27 matched trials. See results/2026-11-03-checked-fp32-full for raw
+pairs, all failure categories, and the reproducible analysis.

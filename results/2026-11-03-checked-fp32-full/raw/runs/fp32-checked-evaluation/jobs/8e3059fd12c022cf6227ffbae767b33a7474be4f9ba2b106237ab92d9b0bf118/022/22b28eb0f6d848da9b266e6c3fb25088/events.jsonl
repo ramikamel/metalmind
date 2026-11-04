@@ -1,0 +1,3 @@
+{"event": "request_reserved", "requests": 2, "output_tokens": 8192}
+{"event": "provider_error", "reason": "Meta API HTTP 503", "requests": 2}
+{"event": "finalized", "outcome": "failed", "reason": "No verified measured candidate was selected"}

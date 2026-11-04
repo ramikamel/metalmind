@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "softmax:small",
+    "family": "softmax",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          64,
+          257
+        ],
+        "strides": [
+          257,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        64,
+        257
+      ],
+      "strides": [
+        257,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "softmax",
+    "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "checked",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261103,
+    "runs_dir": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/031",
+    "artifacts_dir": "runs/fp32-checked-evaluation/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 4010,
+  "elapsed_seconds": 114.25835087499581,
+  "wall_deadline_utc": 1793746107.603931,
+  "seen": [
+    "50545ba060ae405444fea77b66732d8ba5ffc6d05cc9bbf7f16c8c7f0ac608ac",
+    "7b7dcfe75ec950aa14c0aace42cd12de5e5d7e96d11f1d474ddbefa292c2d2da"
+  ],
+  "archive": [
+    {
+      "score": 0.031258357565317904,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "7b7dcfe75ec950aa14c0aace42cd12de5e5d7e96d11f1d474ddbefa292c2d2da",
+        "workload_hash": "0e7ae7dc642d04bc5c667a89eb7573e955053ad72fb5472d4a8ced2ecbb8c4be",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tg_pos [[threadgroup_position_in_grid]], uint3 tid_in_tg [[thread_position_in_threadgroup]], uint3 threads_per_tg [[threads_per_threadgroup]]) {\n    (void)epsilon;\n    uint row = tg_pos.x;\n    if (row >= B) { return; }\n    uint tid = tid_in_tg.x;\n    uint tpg = threads_per_tg.x;\n    threadgroup float scratch[128];\n    uint base = row * D;\n    float local_max = -INFINITY;\n    for (uint i = tid; i < D; i += tpg) { local_max = max(local_max, x[base + i]); }\n    scratch[tid] = local_max;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    for (uint stride = tpg / 2; stride > 0; stride >>= 1) {\n        if (tid < stride) { scratch[tid] = max(scratch[tid], scratch[tid + stride]); }\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n    }\n    float row_max = scratch[0];\n    float local_sum = 0.0f;\n    for (uint i = tid; i < D; i += tpg) { local_sum += exp(x[base + i] - row_max); }\n    scratch[tid] = local_sum;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    for (uint stride = tpg / 2; stride > 0; stride >>= 1) {\n        if (tid < stride) { scratch[tid] += scratch[tid + stride]; }\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n    }\n    float row_sum = scratch[0];\n    float inv_sum = 1.0f / row_sum;\n    for (uint i = tid; i < D; i += tpg) { out[base + i] = exp(x[base + i] - row_max) * inv_sum; }\n}\n",
+          "threads": [
+            8192,
+            1,
+            1
+          ],
+          "group_size": [
+            128,
+            1,
+            1
+          ],
+          "hypothesis": "One 128-thread threadgroup per each of 64 rows with threadgroup max/sum reductions parallelizes the 257-wide softmax while staying numerically stable."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 0.02519562738103511,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "50545ba060ae405444fea77b66732d8ba5ffc6d05cc9bbf7f16c8c7f0ac608ac",
+        "workload_hash": "0e7ae7dc642d04bc5c667a89eb7573e955053ad72fb5472d4a8ced2ecbb8c4be",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tg_pos [[threadgroup_position_in_grid]], uint3 tid_in_tg [[thread_position_in_threadgroup]], uint3 threads_per_tg [[threads_per_threadgroup]]) {\n    (void)epsilon;\n    (void)tg_pos;\n    (void)threads_per_tg;\n    uint row = tid_in_tg.x;\n    if (row >= B) { return; }\n    uint base = row * D;\n    float row_max = -INFINITY;\n    uint i = 0;\n    for (; i + 4 <= D; i += 4) {\n        float a = x[base + i];\n        float b = x[base + i + 1];\n        float c = x[base + i + 2];\n        float d = x[base + i + 3];\n        row_max = max(row_max, max(max(a, b), max(c, d)));\n    }\n    for (; i < D; ++i) { row_max = max(row_max, x[base + i]); }\n    float row_sum = 0.0f;\n    i = 0;\n    for (; i + 4 <= D; i += 4) {\n        float a = exp(x[base + i] - row_max);\n        float b = exp(x[base + i + 1] - row_max);\n        float c = exp(x[base + i + 2] - row_max);\n        float d = exp(x[base + i + 3] - row_max);\n        row_sum += (a + b) + (c + d);\n    }\n    for (; i < D; ++i) { row_sum += exp(x[base + i] - row_max); }\n    float inv_sum = 1.0f / row_sum;\n    i = 0;\n    for (; i + 4 <= D; i += 4) {\n        out[base + i] = exp(x[base + i] - row_max) * inv_sum;\n        out[base + i + 1] = exp(x[base + i + 1] - row_max) * inv_sum;\n        out[base + i + 2] = exp(x[base + i + 2] - row_max) * inv_sum;\n        out[base + i + 3] = exp(x[base + i + 3] - row_max) * inv_sum;\n    }\n    for (; i < D; ++i) { out[base + i] = exp(x[base + i] - row_max) * inv_sum; }\n}\n",
+          "threads": [
+            64,
+            1,
+            1
+          ],
+          "group_size": [
+            64,
+            1,
+            1
+          ],
+          "hypothesis": "One thread per row eliminates threadgroup scratch and barriers for the tiny 64x257 workload, while four-way scalar unrolling provides instruction-level parallelism."
+        },
+        "parent_id": "7b7dcfe75ec950aa14c0aace42cd12de5e5d7e96d11f1d474ddbefa292c2d2da",
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

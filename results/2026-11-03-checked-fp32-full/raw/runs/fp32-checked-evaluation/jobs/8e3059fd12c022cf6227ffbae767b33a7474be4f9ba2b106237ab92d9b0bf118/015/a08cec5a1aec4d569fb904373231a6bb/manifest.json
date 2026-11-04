@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:small",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          64,
+          257
+        ],
+        "strides": [
+          257,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          257
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        64,
+        257
+      ],
+      "strides": [
+        257,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "checked",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261105,
+    "runs_dir": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/015",
+    "artifacts_dir": "runs/fp32-checked-evaluation/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 0,
+  "elapsed_seconds": 186.19962454198685,
+  "wall_deadline_utc": 1793743919.921242,
+  "seen": [
+    "c55255a3758a9be3a2860b3325e1961c74fbb4381d5f39589abdbd7583a0ff05",
+    "cb403e9572730cbc567a7b201e83ff7f1979d6f42421df168a2c11c859c8093f"
+  ],
+  "archive": [
+    {
+      "score": 0.012486898348099098,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "cb403e9572730cbc567a7b201e83ff7f1979d6f42421df168a2c11c859c8093f",
+        "workload_hash": "93956c6dd2ef2674deb50ba8a64c998bd5b9f09ccc948edf7cce1947826025bb",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x,device const float* p,device float* y,constant uint& B,constant uint& D,constant float& eps,uint i [[thread_position_in_grid]]) {if(i>=B)return;float s=0;for(uint j=0;j<D;j++){float v=float(x[i*D+j]);s+=v*v;}float scale=rsqrt(s/float(D)+eps);for(uint j=0;j<D;j++)y[i*D+j]=float(float(x[i*D+j])*scale*float(p[j]));}",
+          "threads": [
+            64,
+            1,
+            1
+          ],
+          "group_size": [
+            32,
+            1,
+            1
+          ],
+          "hypothesis": "Predeclared template, tune group size"
+        },
+        "parent_id": null,
+        "model": "template"
+      }
+    },
+    {
+      "score": 0.011692637187105726,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "c55255a3758a9be3a2860b3325e1961c74fbb4381d5f39589abdbd7583a0ff05",
+        "workload_hash": "93956c6dd2ef2674deb50ba8a64c998bd5b9f09ccc948edf7cce1947826025bb",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x,device const float* p,device float* y,constant uint& B,constant uint& D,constant float& eps,uint i [[thread_position_in_grid]]) {if(i>=B)return;float s=0;for(uint j=0;j<D;j++){float v=float(x[i*D+j]);s+=v*v;}float scale=rsqrt(s/float(D)+eps);for(uint j=0;j<D;j++)y[i*D+j]=float(float(x[i*D+j])*scale*float(p[j]));}",
+          "threads": [
+            64,
+            1,
+            1
+          ],
+          "group_size": [
+            64,
+            1,
+            1
+          ],
+          "hypothesis": "Predeclared template, tune group size"
+        },
+        "parent_id": "cb403e9572730cbc567a7b201e83ff7f1979d6f42421df168a2c11c859c8093f",
+        "model": "template"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

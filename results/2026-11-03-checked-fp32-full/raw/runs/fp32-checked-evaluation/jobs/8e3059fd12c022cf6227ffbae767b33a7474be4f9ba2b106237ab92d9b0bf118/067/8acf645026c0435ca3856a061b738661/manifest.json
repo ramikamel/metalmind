@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "softmax:medium",
+    "family": "softmax",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "softmax",
+    "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "checked",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261104,
+    "runs_dir": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/067",
+    "artifacts_dir": "runs/fp32-checked-evaluation/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 4697,
+  "elapsed_seconds": 106.44791104199248,
+  "wall_deadline_utc": 1793750494.617259,
+  "seen": [
+    "167e3f05052090300135356a38a221e8daafca9ce1844190193a887060db8139",
+    "3d01607bea9749fc894305ca3e2e375eacb0a12d3c2c63296cc03d5265de254c"
+  ],
+  "archive": [
+    {
+      "score": 0.05786940645206701,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "3d01607bea9749fc894305ca3e2e375eacb0a12d3c2c63296cc03d5265de254c",
+        "workload_hash": "461b8c004d540d5e390f3bcc82607e9e604c6e9f6317f09d019a790b41b31762",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint row [[threadgroup_position_in_grid]], uint tid [[thread_position_in_threadgroup]], uint tg [[threads_per_threadgroup]]) {\n    (void)epsilon;\n    if (row >= B || D == 0) return;\n    device const float* xr = x + (uint)row * D;\n    device float* orow = out + (uint)row * D;\n    threadgroup float sh[256];\n    float lmax = -INFINITY;\n    for (uint i = tid; i < D; i += tg) { lmax = max(lmax, xr[i]); }\n    sh[tid] = lmax;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    for (uint s = tg >> 1; s > 0; s >>= 1) { if (tid < s) sh[tid] = max(sh[tid], sh[tid + s]); threadgroup_barrier(mem_flags::mem_threadgroup); }\n    float rmax = sh[0];\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float lsum = 0.0f;\n    for (uint i = tid; i < D; i += tg) { lsum += exp(xr[i] - rmax); }\n    sh[tid] = lsum;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    for (uint s = tg >> 1; s > 0; s >>= 1) { if (tid < s) sh[tid] += sh[tid + s]; threadgroup_barrier(mem_flags::mem_threadgroup); }\n    float inv = 1.0f / sh[0];\n    for (uint i = tid; i < D; i += tg) { orow[i] = (float)(exp(xr[i] - rmax) * inv); }\n}",
+          "threads": [
+            65536,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "One 256-thread group per row with threadgroup max/sum reductions and strided FP32 loads will be correct and efficient for 256x1024 softmax."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

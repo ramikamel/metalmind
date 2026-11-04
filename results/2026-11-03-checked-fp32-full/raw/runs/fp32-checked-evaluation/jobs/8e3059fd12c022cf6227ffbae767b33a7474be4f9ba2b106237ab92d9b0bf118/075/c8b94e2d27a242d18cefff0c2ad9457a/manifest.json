@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:medium",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          1024
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "checked",
+    "max_candidates": 1,
+    "max_requests": 1,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261103,
+    "runs_dir": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/075",
+    "artifacts_dir": "runs/fp32-checked-evaluation/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 1,
+  "evaluated": 1,
+  "output_tokens": 3110,
+  "elapsed_seconds": 58.79574008399504,
+  "wall_deadline_utc": 1793751240.8518322,
+  "seen": [
+    "ac27cfedf32e5149b8f03c062b5e0885efd51036b0d3f57f3b0c2b71f1255140"
+  ],
+  "archive": [
+    {
+      "score": 0.0770467903287431,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "ac27cfedf32e5149b8f03c062b5e0885efd51036b0d3f57f3b0c2b71f1255140",
+        "workload_hash": "524c5a2e7965ab8d49096975fed8eea2c6c060c8512f339e1d4710ab36a46d7d",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]], uint2 grid [[threads_per_grid]]) {\n    (void)epsilon;\n    if (B == 0u || D == 0u) {\n        return;\n    }\n    const float coeff = 0.7978845608028654f;\n    if ((D & 3u) == 0u) {\n        uint vec_per_row = D >> 2;\n        device const float4* x4 = reinterpret_cast<device const float4*>(x);\n        device const float4* p4 = reinterpret_cast<device const float4*>(parameter);\n        device float4* o4 = reinterpret_cast<device float4*>(out);\n        for (uint cv = gid.x; cv < vec_per_row; cv += grid.x) {\n            float4 p = p4[cv];\n            for (uint r = gid.y; r < B; r += grid.y) {\n                uint i = r * vec_per_row + cv;\n                float4 z = x4[i] + p;\n                float4 z2 = z * z;\n                float4 inner = coeff * (z + 0.044715f * z * z2);\n                float4 y = 0.5f * z * (1.0f + tanh(inner));\n                o4[i] = y;\n            }\n        }\n    } else {\n        for (uint c = gid.x; c < D; c += grid.x) {\n            float p = parameter[c];\n            for (uint r = gid.y; r < B; r += grid.y) {\n                uint i = r * D + c;\n                float z = x[i] + p;\n                float z2 = z * z;\n                float inner = coeff * (z + 0.044715f * z * z2);\n                float y = 0.5f * z * (1.0f + tanh(inner));\n                out[i] = y;\n            }\n        }\n    }\n}\n",
+          "threads": [
+            256,
+            256,
+            1
+          ],
+          "group_size": [
+            32,
+            8,
+            1
+          ],
+          "hypothesis": "A 2D float4 grid maps one thread to each column-vector and row, hoisting each bias float4 in a register across rows and using coalesced vector loads/stores, which should beat a scalar elementwise kernel while remaining exact tanh-GELU FP32."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

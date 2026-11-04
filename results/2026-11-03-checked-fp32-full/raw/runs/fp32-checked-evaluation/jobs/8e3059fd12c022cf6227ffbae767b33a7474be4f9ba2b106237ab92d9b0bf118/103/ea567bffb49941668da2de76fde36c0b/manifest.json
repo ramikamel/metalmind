@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:large",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "checked",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261103,
+    "runs_dir": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/103",
+    "artifacts_dir": "runs/fp32-checked-evaluation/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 1,
+  "output_tokens": 5531,
+  "elapsed_seconds": 86.95843149999564,
+  "wall_deadline_utc": 1793753925.6491442,
+  "seen": [
+    "4fa9745ea86e977ecc3125faab8cd9ce9fae288def58ee1b3cec97690fa17cca"
+  ],
+  "archive": [
+    {
+      "score": 0.08756723548663782,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "4fa9745ea86e977ecc3125faab8cd9ce9fae288def58ee1b3cec97690fa17cca",
+        "workload_hash": "f5c2684354f47ebdacdc7350d43d80786bfafbe3c19f5487b2b5b0b26313c8ce",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    uint col = gid.x * 4u;\n    if (col >= D || gid.y >= B) return;\n    uint idx = gid.y * D + col;\n    float4 xv = reinterpret_cast<device const float4*>(x + idx)[0];\n    float4 pv = reinterpret_cast<device const float4*>(parameter + col)[0];\n    float4 z = xv + pv;\n    float4 z2 = z * z;\n    float4 inner = 0.7978845608028654f * (z + 0.044715f * z * z2);\n    float4 y = 0.5f * z * (1.0f + tanh(inner));\n    reinterpret_cast<device float4*>(out + idx)[0] = y;\n}\n",
+          "threads": [
+            1024,
+            512,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "Float4 vectorization with a 2D grid mapping x to columns and y to rows removes div/mod indexing and reuses each parameter vector across rows, improving bandwidth utilization versus a scalar kernel."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

@@ -1,0 +1,4 @@
+{"event": "request_reserved", "requests": 1, "output_tokens": 4096}
+{"event": "model_response", "model": "muse-wonder-1.0", "usage": {"schema_version": 1, "input_tokens": 474, "output_tokens": 1843, "reasoning_tokens": 1138}, "requests": 1, "error": null}
+{"event": "evaluation", "candidate_id": "73800478b09acc72d030f2fc23edafdbd598c9023d46e3c3836eef2db05f3ea0", "result": {"schema_version": 1, "status": "compile_error", "verification": null, "elapsed_ms": [], "reason": "program_source:23:25: error: use of undeclared identifier 'mem'\n    threadgroup_barrier(mem::mem_threadgroup);\n                        ^\nprogram_source:26:29: error: use of undeclared identifier 'mem'\n        threadgroup_barrier(mem::mem_threadgroup);\n                            ^\n", "device_fault": false, "timing": null}}
+{"event": "finalized", "outcome": "budget_exhausted", "reason": "No verified measured candidate was selected"}

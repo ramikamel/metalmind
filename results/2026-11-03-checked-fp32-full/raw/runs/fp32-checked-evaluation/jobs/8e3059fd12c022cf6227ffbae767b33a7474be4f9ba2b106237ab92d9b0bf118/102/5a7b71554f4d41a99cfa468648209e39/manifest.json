@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "softmax:small",
+    "family": "softmax",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          64,
+          257
+        ],
+        "strides": [
+          257,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        64,
+        257
+      ],
+      "strides": [
+        257,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "softmax",
+    "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "checked",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261104,
+    "runs_dir": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/102",
+    "artifacts_dir": "runs/fp32-checked-evaluation/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 3112,
+  "elapsed_seconds": 108.12746412500564,
+  "wall_deadline_utc": 1793753817.51805,
+  "seen": [
+    "81172df488dab4fd3db1ef9f18f7dc20c0b896525e76a5271253a9bb26033ac1",
+    "8875e7cc349c6142e617c5ff14b99d5195c38af3fb7b2b06065291e24fc78c93"
+  ],
+  "archive": [
+    {
+      "score": 0.02471782415033457,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "81172df488dab4fd3db1ef9f18f7dc20c0b896525e76a5271253a9bb26033ac1",
+        "workload_hash": "0e7ae7dc642d04bc5c667a89eb7573e955053ad72fb5472d4a8ced2ecbb8c4be",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tgpos [[threadgroup_position_in_grid]], uint3 tpos [[thread_position_in_threadgroup]], uint3 tgsize [[threads_per_threadgroup]]) {\n    (void)epsilon;\n    threadgroup float shared[256];\n    uint row = tgpos.x;\n    uint tid = tpos.x;\n    uint nt = tgsize.x;\n    bool valid = row < B;\n    float local_max = -1.0e38f;\n    if (valid) {\n        for (uint i = tid; i < D; i += nt) {\n            float v = x[(uint)row * D + i];\n            local_max = max(local_max, v);\n        }\n    }\n    shared[tid] = local_max;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    for (uint s = 128; s > 0; s >>= 1) {\n        if (tid < s && tid + s < nt) {\n            shared[tid] = max(shared[tid], shared[tid + s]);\n        }\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n    }\n    float row_max = shared[0];\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float local_sum = 0.0f;\n    if (valid) {\n        for (uint i = tid; i < D; i += nt) {\n            float v = x[(uint)row * D + i];\n            local_sum += exp(v - row_max);\n        }\n    }\n    shared[tid] = local_sum;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    for (uint s = 128; s > 0; s >>= 1) {\n        if (tid < s && tid + s < nt) {\n            shared[tid] = shared[tid] + shared[tid + s];\n        }\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n    }\n    float row_sum = shared[0];\n    float inv = 1.0f / row_sum;\n    if (valid) {\n        for (uint i = tid; i < D; i += nt) {\n            float v = x[(uint)row * D + i];\n            float e = exp(v - row_max);\n            out[(uint)row * D + i] = e * inv;\n        }\n    }\n}\n",
+          "threads": [
+            16384,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "One 256-thread group per row with threadgroup max/sum reductions and strided passes over D=257 should be correct and efficiently parallel for 64 rows."
+        },
+        "parent_id": "8875e7cc349c6142e617c5ff14b99d5195c38af3fb7b2b06065291e24fc78c93",
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 0.024555123451119758,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "8875e7cc349c6142e617c5ff14b99d5195c38af3fb7b2b06065291e24fc78c93",
+        "workload_hash": "0e7ae7dc642d04bc5c667a89eb7573e955053ad72fb5472d4a8ced2ecbb8c4be",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tg_pos [[threadgroup_position_in_grid]], uint3 tid_in_tg [[thread_position_in_threadgroup]], uint3 threads_per_tg [[threads_per_threadgroup]]) {\n    (void)epsilon;\n    uint row = tg_pos.x;\n    if (row >= B) {\n        return;\n    }\n    uint lane = tid_in_tg.x;\n    uint width = threads_per_tg.x;\n    uint base = row * D;\n    threadgroup float shared[32];\n    float local_max = -INFINITY;\n    for (uint i = lane; i < D; i += width) {\n        float v = x[base + i];\n        local_max = max(local_max, v);\n    }\n    shared[lane] = local_max;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (lane == 0) {\n        float m = shared[0];\n        for (uint i = 1; i < width; ++i) {\n            m = max(m, shared[i]);\n        }\n        shared[0] = m;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float row_max = shared[0];\n    float local_sum = 0.0f;\n    for (uint i = lane; i < D; i += width) {\n        local_sum += exp(x[base + i] - row_max);\n    }\n    shared[lane] = local_sum;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (lane == 0) {\n        float s = shared[0];\n        for (uint i = 1; i < width; ++i) {\n            s += shared[i];\n        }\n        shared[0] = s;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float inv_sum = 1.0f / shared[0];\n    for (uint i = lane; i < D; i += width) {\n        float v = exp(x[base + i] - row_max) * inv_sum;\n        out[base + i] = v;\n    }\n}\n",
+          "threads": [
+            2048,
+            1,
+            1
+          ],
+          "group_size": [
+            32,
+            1,
+            1
+          ],
+          "hypothesis": "One 32-thread group per row parallelizes the 257-wide max/sum reductions while fitting the small tensor in cache, beating one thread per row."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

@@ -1,0 +1,4037 @@
+{
+  "campaign_id": "8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118",
+  "domain_mode": "checked",
+  "planned_jobs": 108,
+  "attempted": 108,
+  "complete": true,
+  "strategies": {
+    "feedback": {
+      "attempted": 27,
+      "outcomes": {
+        "no_win": 23,
+        "failed": 3,
+        "budget_exhausted": 1
+      },
+      "model_requests": 53,
+      "response_count": 50,
+      "schema_rejections": 2,
+      "reported_input_tokens": 47647,
+      "reported_output_tokens": 112099,
+      "evaluations_started": 48,
+      "candidate_statuses": {
+        "valid": 40,
+        "compile_error": 2,
+        "runtime_error": 3,
+        "incorrect": 2
+      },
+      "verified_correct_candidates": 40,
+      "valid_timing_candidates": 40,
+      "search_threshold_candidates": {
+        "1.00": 0,
+        "1.05": 0,
+        "1.20": 0
+      },
+      "median_search_seconds": 126.88230595900677,
+      "geometric_mean_final_speedup": 1.0
+    },
+    "independent": {
+      "attempted": 27,
+      "outcomes": {
+        "no_win": 24,
+        "failed": 3
+      },
+      "model_requests": 53,
+      "response_count": 49,
+      "schema_rejections": 0,
+      "reported_input_tokens": 22780,
+      "reported_output_tokens": 89517,
+      "evaluations_started": 49,
+      "candidate_statuses": {
+        "compile_error": 3,
+        "valid": 44,
+        "timeout": 1,
+        "runtime_error": 1
+      },
+      "verified_correct_candidates": 44,
+      "valid_timing_candidates": 44,
+      "search_threshold_candidates": {
+        "1.00": 0,
+        "1.05": 0,
+        "1.20": 0
+      },
+      "median_search_seconds": 112.33747824998864,
+      "geometric_mean_final_speedup": 1.0
+    },
+    "one_shot": {
+      "attempted": 27,
+      "outcomes": {
+        "no_win": 24,
+        "budget_exhausted": 2,
+        "failed": 1
+      },
+      "model_requests": 27,
+      "response_count": 26,
+      "schema_rejections": 0,
+      "reported_input_tokens": 12035,
+      "reported_output_tokens": 48255,
+      "evaluations_started": 26,
+      "candidate_statuses": {
+        "valid": 24,
+        "compile_error": 2
+      },
+      "verified_correct_candidates": 24,
+      "valid_timing_candidates": 24,
+      "search_threshold_candidates": {
+        "1.00": 0,
+        "1.05": 0,
+        "1.20": 0
+      },
+      "median_search_seconds": 58.79574008399504,
+      "geometric_mean_final_speedup": 1.0
+    },
+    "template": {
+      "attempted": 27,
+      "outcomes": {
+        "no_win": 20,
+        "failed": 6,
+        "budget_exhausted": 1
+      },
+      "model_requests": 0,
+      "response_count": 0,
+      "schema_rejections": 0,
+      "reported_input_tokens": 0,
+      "reported_output_tokens": 0,
+      "evaluations_started": 48,
+      "candidate_statuses": {
+        "valid": 38,
+        "timeout": 6,
+        "runtime_error": 4
+      },
+      "verified_correct_candidates": 38,
+      "valid_timing_candidates": 38,
+      "search_threshold_candidates": {
+        "1.00": 0,
+        "1.05": 0,
+        "1.20": 0
+      },
+      "median_search_seconds": 120.66833770899393,
+      "geometric_mean_final_speedup": 1.0
+    }
+  },
+  "matched_feedback_independent": [
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "trial": 0,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.02766228401612794,
+      "independent_best_search_speedup": 0.024666403247822592
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "trial": 2,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.01445472854308014,
+      "independent_best_search_speedup": 0.01379011979807854
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "trial": 2,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "failed",
+      "feedback_best_search_speedup": 0.030647707474239574,
+      "independent_best_search_speedup": null
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "trial": 1,
+      "feedback_outcome": "failed",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": null,
+      "independent_best_search_speedup": 0.02471782415033457
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "trial": 0,
+      "feedback_outcome": "budget_exhausted",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": null,
+      "independent_best_search_speedup": 0.07722897831585164
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "trial": 1,
+      "feedback_outcome": "failed",
+      "independent_outcome": "failed",
+      "feedback_best_search_speedup": 0.020608934642177307,
+      "independent_best_search_speedup": null
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "trial": 1,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.05856129441498966,
+      "independent_best_search_speedup": 0.05786940645206701
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "trial": 0,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.031258357565317904,
+      "independent_best_search_speedup": 0.02498630056143561
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "trial": 0,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.05765648424395538,
+      "independent_best_search_speedup": 0.05887389014496984
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "trial": 1,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.08583221768387773,
+      "independent_best_search_speedup": 0.0879662452617623
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "trial": 1,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.07660109637108606,
+      "independent_best_search_speedup": 0.06760101063252703
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "trial": 2,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.07640768473056633,
+      "independent_best_search_speedup": 0.07696648930454511
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "trial": 2,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "failed",
+      "feedback_best_search_speedup": 0.06489783814674721,
+      "independent_best_search_speedup": 0.05529218258278257
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "trial": 1,
+      "feedback_outcome": "failed",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": null,
+      "independent_best_search_speedup": 0.027983849247963155
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "trial": 0,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.022984046254485413,
+      "independent_best_search_speedup": 0.02412492738833521
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "trial": 1,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.07710821216109685,
+      "independent_best_search_speedup": 0.08414005784191672
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "trial": 0,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.014378394533200025,
+      "independent_best_search_speedup": 0.013784117781699216
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "trial": 2,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.029114229411255507,
+      "independent_best_search_speedup": 0.02860534046445657
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "trial": 1,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.013651504429261122,
+      "independent_best_search_speedup": 0.01372509358225088
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "trial": 0,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.07808818873551869,
+      "independent_best_search_speedup": 0.06847976317570922
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "trial": 2,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.022697512213289184,
+      "independent_best_search_speedup": 0.022401919598722862
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "trial": 1,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.07847631164873695,
+      "independent_best_search_speedup": 0.07903072872267841
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "trial": 0,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.07640414914227085,
+      "independent_best_search_speedup": 0.07388363127169964
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "trial": 2,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.08817328204340054,
+      "independent_best_search_speedup": 0.09000045946625997
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "trial": 2,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.06709701029140737,
+      "independent_best_search_speedup": 0.06728304802220135
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "trial": 2,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.06934239860099656,
+      "independent_best_search_speedup": 0.07518568763137945
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "trial": 0,
+      "feedback_outcome": "no_win",
+      "independent_outcome": "no_win",
+      "feedback_best_search_speedup": 0.08756723548663782,
+      "independent_best_search_speedup": 0.08645302398395335
+    }
+  ],
+  "jobs": [
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "template",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/000/d461484c4a2649cf8fb485d8453aeff4",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.01854508819181895,
+        0.01864300055339587
+      ],
+      "correct": 2,
+      "search_seconds": 105.72808674999396,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "independent",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/001/b15d08a583484a0caf92e4da006dc4d7",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "compile_error": 1,
+        "valid": 1
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 948,
+        "output_tokens": 4287,
+        "reasoning_tokens": 3129
+      },
+      "scores": [
+        0.022401919598722862
+      ],
+      "correct": 1,
+      "search_seconds": 112.33747824998864,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "independent",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/002/8f36b4768f0a41ee96da232cf172d84c",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 856,
+        "output_tokens": 4535,
+        "reasoning_tokens": 2834
+      },
+      "scores": [
+        0.07388363127169964,
+        0.07178849776483462
+      ],
+      "correct": 2,
+      "search_seconds": 115.89264879199618,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/003/8b0349391d22466fa37f46d39164e111",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 1820,
+        "output_tokens": 3429,
+        "reasoning_tokens": 2556
+      },
+      "scores": [
+        0.02766228401612794,
+        0.027605534045850248
+      ],
+      "correct": 2,
+      "search_seconds": 157.09417979200953,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "one_shot",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/004/ab88ddcc71c741dd9cb17828bc101ac9",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 487,
+        "output_tokens": 1044,
+        "reasoning_tokens": 747
+      },
+      "scores": [
+        0.0282264833091765
+      ],
+      "correct": 1,
+      "search_seconds": 70.06839749999926,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "one_shot",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/005/9747436fbc944f9a825a9c9bb6a4d4bf",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 424,
+        "output_tokens": 2203,
+        "reasoning_tokens": 1534
+      },
+      "scores": [
+        0.02851026594487184
+      ],
+      "correct": 1,
+      "search_seconds": 52.67845395799668,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/006/a6e56bea25ac49ebb086cbd392f789e7",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2218,
+        "output_tokens": 3672,
+        "reasoning_tokens": 2667
+      },
+      "scores": [
+        0.01445472854308014,
+        0.013078918218665967
+      ],
+      "correct": 2,
+      "search_seconds": 200.5605397499894,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "independent",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/007/b19f16b1478b405ca604905752085145",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 948,
+        "output_tokens": 3464,
+        "reasoning_tokens": 2052
+      },
+      "scores": [
+        0.07693946834629034,
+        0.07696648930454511
+      ],
+      "correct": 2,
+      "search_seconds": 121.2974882080016,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "one_shot",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/008/053c115ffec847b8b4c896a45dac6600",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 474,
+        "output_tokens": 1387,
+        "reasoning_tokens": 892
+      },
+      "scores": [
+        0.02182185097377527
+      ],
+      "correct": 1,
+      "search_seconds": 95.54873845900875,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/009/4efcba2cf5fe4b938a9aa82a7a79a0a7",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2017,
+        "output_tokens": 4193,
+        "reasoning_tokens": 3160
+      },
+      "scores": [
+        0.030647707474239574,
+        0.018060854668079093
+      ],
+      "correct": 2,
+      "search_seconds": 132.3659676249954,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "one_shot",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/010/5f3bd47e60814e568f719cfb7fcd821e",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 428,
+        "output_tokens": 1514,
+        "reasoning_tokens": 901
+      },
+      "scores": [
+        0.056509955677432236
+      ],
+      "correct": 1,
+      "search_seconds": 52.86715949999052,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "template",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/011/85e7e3c95e4a4f0c90e308ed4b52ec12",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.07327735680080583,
+        0.07674602012555913
+      ],
+      "correct": 2,
+      "search_seconds": 67.86035212500428,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 1,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "Interrupted before the campaign checkpoint",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/012/f37f4027ee1f476993f66ed9deba47a9",
+      "proposal_slots": 1,
+      "request_accounting": "interrupted_upper_bound",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {},
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 424,
+        "output_tokens": 1696,
+        "reasoning_tokens": 1108
+      },
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 15.643888124992372,
+      "baselines": []
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "one_shot",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/013/7d5d9152b76c4286a80e7bcbf30aa705",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 428,
+        "output_tokens": 2537,
+        "reasoning_tokens": 1824
+      },
+      "scores": [
+        0.07321182376834007
+      ],
+      "correct": 1,
+      "search_seconds": 66.0582214580063,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "independent",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/014/de4038c73d754836b5f90f1ef353282a",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 984,
+        "output_tokens": 1860,
+        "reasoning_tokens": 1280
+      },
+      "scores": [
+        0.07963805287370665,
+        0.08414005784191672
+      ],
+      "correct": 2,
+      "search_seconds": 84.10520883300342,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "template",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/015/a08cec5a1aec4d569fb904373231a6bb",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.012486898348099098,
+        0.011692637187105726
+      ],
+      "correct": 2,
+      "search_seconds": 186.19962454198685,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "one_shot",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/016/8f651dc2ef584cf5bb009715c5a028e2",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 492,
+        "output_tokens": 1850,
+        "reasoning_tokens": 1397
+      },
+      "scores": [
+        0.08851687139940684
+      ],
+      "correct": 1,
+      "search_seconds": 43.79183416700107,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "independent",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/017/626f08cef3fa4d3ba2e3b87f239d8bab",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 974,
+        "output_tokens": 2704,
+        "reasoning_tokens": 2076
+      },
+      "scores": [
+        0.027983849247963155,
+        0.027710764250201733
+      ],
+      "correct": 2,
+      "search_seconds": 150.45859762499458,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "independent",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/018/c0160d1244884905afa5ce9f9c00cd02",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 938,
+        "output_tokens": 3312,
+        "reasoning_tokens": 2409
+      },
+      "scores": [
+        0.013784117781699216,
+        0.013771661636510581
+      ],
+      "correct": 2,
+      "search_seconds": 190.7259640830016,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "template",
+      "trial": 2,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/019/ced7ef5e5c5b4b3fa7ca7f2c225ae179",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 0,
+      "evaluations_started": 1,
+      "statuses": {
+        "timeout": 1
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 120.66833770899393,
+      "baselines": []
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "budget_exhausted",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/020/bc9fe2bde2ce4ce4a70582d03c4ee303",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "compile_error": 1,
+        "runtime_error": 1
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 1186,
+        "output_tokens": 3736,
+        "reasoning_tokens": 2361
+      },
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 60.7067514579976,
+      "baselines": []
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "template",
+      "trial": 2,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/021/863d946e8bb94d6fafaa8fc174da1479",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 0,
+      "evaluations_started": 1,
+      "statuses": {
+        "timeout": 1
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 120.61056070800987,
+      "baselines": []
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "independent",
+      "trial": 1,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/022/22b28eb0f6d848da9b266e6c3fb25088",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 0,
+      "statuses": {},
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 2.221921249991283,
+      "baselines": []
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "independent",
+      "trial": 2,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "Search stopped before finalization",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/023/0b140e75e9fa4f9c9b3c5c227478250c",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 428,
+        "output_tokens": 2083,
+        "reasoning_tokens": 1481
+      },
+      "scores": [
+        0.05529218258278257
+      ],
+      "correct": 1,
+      "search_seconds": 98.28851020798902,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "template",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/024/cbbfc8822c6d48eca56b9b9a7d5fa160",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 1,
+        "runtime_error": 1
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.0849399342764404
+      ],
+      "correct": 1,
+      "search_seconds": 52.18142100000114,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 1,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "Search stopped before finalization",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/025/1c3e2f4811ce4490891e41ad4a494d9c",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 474,
+        "output_tokens": 1332,
+        "reasoning_tokens": 915
+      },
+      "scores": [
+        0.020608934642177307
+      ],
+      "correct": 1,
+      "search_seconds": 116.46341637500154,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "one_shot",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/026/1f722a7ed2e84b9ca61768f36586437d",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 428,
+        "output_tokens": 1261,
+        "reasoning_tokens": 681
+      },
+      "scores": [
+        0.0724594582075709
+      ],
+      "correct": 1,
+      "search_seconds": 77.34363220800878,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "template",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/027/02d5c45d649d43418c1195d71f845513",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.011912477319002674,
+        0.011720526946551508
+      ],
+      "correct": 2,
+      "search_seconds": 185.86195370799396,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "independent",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/028/ec844c0809d54ba699739fd17deb06f2",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 938,
+        "output_tokens": 2958,
+        "reasoning_tokens": 2057
+      },
+      "scores": [
+        0.01379011979807854,
+        0.013695461327935605
+      ],
+      "correct": 2,
+      "search_seconds": 185.2816757910041,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "independent",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/029/a74ae8a2bdba47b689ce0505103ef6a8",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 856,
+        "output_tokens": 4874,
+        "reasoning_tokens": 2962
+      },
+      "scores": [
+        0.07326395225842504,
+        0.07518568763137945
+      ],
+      "correct": 2,
+      "search_seconds": 123.59115379099967,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/030/adde024d85fc4f48831ff2c06791fe9e",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2176,
+        "output_tokens": 5620,
+        "reasoning_tokens": 3864
+      },
+      "scores": [
+        0.05856129441498966,
+        0.05760156049530929
+      ],
+      "correct": 2,
+      "search_seconds": 140.36298170800728,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/031/6f7b7ce930984b5ebd2d4f4363f7a843",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 1975,
+        "output_tokens": 4010,
+        "reasoning_tokens": 2701
+      },
+      "scores": [
+        0.031258357565317904,
+        0.02519562738103511
+      ],
+      "correct": 2,
+      "search_seconds": 114.25835087499581,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/032/2a62656ba0db4a9296b95d1f227f194b",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 2,
+      "schema_rejections": 1,
+      "reported_tokens": {
+        "input_tokens": 2012,
+        "output_tokens": 5839,
+        "reasoning_tokens": 4158
+      },
+      "scores": [
+        0.05765648424395538
+      ],
+      "correct": 1,
+      "search_seconds": 104.98961908400815,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "template",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/033/5f237a8a45a849da8915ee4725f40208",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.08342622975471484,
+        0.0862735928608548
+      ],
+      "correct": 2,
+      "search_seconds": 60.21776149999641,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "template",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/034/9ab9b3c9d6a44835991a38650289e17b",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.08100972084647454,
+        0.08523747372189518
+      ],
+      "correct": 2,
+      "search_seconds": 54.103302791001624,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "independent",
+      "trial": 2,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/035/1f1c3d3c08ba477c9c66f8485f4e7d6f",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "timeout": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 424,
+        "output_tokens": 1783,
+        "reasoning_tokens": 1182
+      },
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 77.22841737500858,
+      "baselines": []
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/036/853d5b9507b44d1991634a560446f9b4",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 1,
+        "incorrect": 1
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2051,
+        "output_tokens": 5353,
+        "reasoning_tokens": 4149
+      },
+      "scores": [
+        0.08583221768387773
+      ],
+      "correct": 1,
+      "search_seconds": 116.7552902919997,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "one_shot",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/037/ede55292a3c54893b1f5f5945fa1eca3",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 474,
+        "output_tokens": 1522,
+        "reasoning_tokens": 1090
+      },
+      "scores": [
+        0.022837304014401073
+      ],
+      "correct": 1,
+      "search_seconds": 93.84619808399293,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/038/a9de0f49bcad42728a32dd7a846d3241",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 1994,
+        "output_tokens": 5495,
+        "reasoning_tokens": 3704
+      },
+      "scores": [
+        0.07573377576248339,
+        0.07660109637108606
+      ],
+      "correct": 2,
+      "search_seconds": 240.01004345799447,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "template",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/039/337349e993ed48d48dcdfe28d2352ef6",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.05239178197161383,
+        0.054533441023433105
+      ],
+      "correct": 2,
+      "search_seconds": 123.66001941700233,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "independent",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/040/0d5779ad053043a589eeb6e1b03a3672",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 948,
+        "output_tokens": 3545,
+        "reasoning_tokens": 2377
+      },
+      "scores": [
+        0.02412492738833521,
+        0.02336686499818505
+      ],
+      "correct": 2,
+      "search_seconds": 183.9171506249986,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "one_shot",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/041/de68ec4abca4487b9d70a2485211ecda",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 474,
+        "output_tokens": 2334,
+        "reasoning_tokens": 1622
+      },
+      "scores": [
+        0.07711106583623525
+      ],
+      "correct": 1,
+      "search_seconds": 68.8213423339912,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/042/5962f848daf6491d97a0dd06fcbbdfbb",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2403,
+        "output_tokens": 6010,
+        "reasoning_tokens": 4549
+      },
+      "scores": [
+        0.07640768473056633,
+        0.0731186158262396
+      ],
+      "correct": 2,
+      "search_seconds": 156.83356295799604,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "template",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/043/f22ad2e30fe3477595a78f9caabe84c0",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.02991082194932333,
+        0.029549763720786434
+      ],
+      "correct": 2,
+      "search_seconds": 153.42094191600336,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/044/20b5a6e90c2a46268732af7b7c6f7c93",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "runtime_error": 1,
+        "valid": 1
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 873,
+        "output_tokens": 3732,
+        "reasoning_tokens": 2564
+      },
+      "scores": [
+        0.06489783814674721
+      ],
+      "correct": 1,
+      "search_seconds": 97.79438029200537,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 1,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/045/81168b75adf74e3bb244c486bc2d6c0e",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 0,
+      "statuses": {},
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 14.219048292012303,
+      "baselines": []
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "independent",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/046/4680e269b3c84cfcab0953b0eb0d3ca1",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 984,
+        "output_tokens": 5303,
+        "reasoning_tokens": 4153
+      },
+      "scores": [
+        0.08505378083859755,
+        0.08645302398395335
+      ],
+      "correct": 2,
+      "search_seconds": 117.94089974999952,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "one_shot",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/047/aef93e38d4764a49b31a6a4297bf53b0",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 424,
+        "output_tokens": 2247,
+        "reasoning_tokens": 1623
+      },
+      "scores": [
+        0.03070247015334144
+      ],
+      "correct": 1,
+      "search_seconds": 53.720527124998625,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/048/b3f6129ad964410fa626e87d225d1add",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2247,
+        "output_tokens": 2759,
+        "reasoning_tokens": 1620
+      },
+      "scores": [
+        0.022983273092335176,
+        0.022984046254485413
+      ],
+      "correct": 2,
+      "search_seconds": 189.0364915409882,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "template",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/049/1f8d22fe5e7d46a382c9e8227698fd80",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.05301347612540595,
+        0.05249998722144851
+      ],
+      "correct": 2,
+      "search_seconds": 124.06115295800555,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/050/708cd5f721604e9ea06f98de23d4d930",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2143,
+        "output_tokens": 5394,
+        "reasoning_tokens": 4149
+      },
+      "scores": [
+        0.07653679035124492,
+        0.07710821216109685
+      ],
+      "correct": 2,
+      "search_seconds": 126.88230595900677,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "template",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/051/f7fa63ffd013498da05ac99224c8d4f5",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.07212473828285654,
+        0.07565091140548469
+      ],
+      "correct": 2,
+      "search_seconds": 70.44377379199432,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "one_shot",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/052/1eb1c724b14a4aca95f6a2c891d00c7f",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 428,
+        "output_tokens": 1873,
+        "reasoning_tokens": 1206
+      },
+      "scores": [
+        0.07551320323919054
+      ],
+      "correct": 1,
+      "search_seconds": 55.23638237500563,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/053/4477e03a634348cf813fe3ed4c477cea",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2208,
+        "output_tokens": 2781,
+        "reasoning_tokens": 1865
+      },
+      "scores": [
+        0.014378394533200025,
+        0.013244005434124366
+      ],
+      "correct": 2,
+      "search_seconds": 187.24882766700466,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/054/54ac1e1d0f1a45aa874d9e2feb0efe92",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 1817,
+        "output_tokens": 3738,
+        "reasoning_tokens": 3085
+      },
+      "scores": [
+        0.029114229411255507,
+        0.02863678432999618
+      ],
+      "correct": 2,
+      "search_seconds": 161.9763559999992,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "one_shot",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/055/085c9f4378004e338e82491826c29dda",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 492,
+        "output_tokens": 2287,
+        "reasoning_tokens": 1778
+      },
+      "scores": [
+        0.07870652178912543
+      ],
+      "correct": 1,
+      "search_seconds": 55.656891834005364,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "template",
+      "trial": 1,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/056/1b4413be771d4c95b19c09b72972c88f",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 0,
+      "evaluations_started": 1,
+      "statuses": {
+        "timeout": 1
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 120.59137437499885,
+      "baselines": []
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "feedback",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/057/15d685d1af2e417a88c4f1f3bf71146a",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2235,
+        "output_tokens": 4865,
+        "reasoning_tokens": 3846
+      },
+      "scores": [
+        0.013042985187635154,
+        0.013651504429261122
+      ],
+      "correct": 2,
+      "search_seconds": 215.37699124999926,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/058/9ae5be662d6244479934012fb47ef6e0",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2129,
+        "output_tokens": 4130,
+        "reasoning_tokens": 3043
+      },
+      "scores": [
+        0.07569068872226087,
+        0.07808818873551869
+      ],
+      "correct": 2,
+      "search_seconds": 113.73716716599301,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "template",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/059/3449e6b88ee3439794b0357b55968e1b",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "runtime_error": 1,
+        "valid": 1
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.054452274153238375
+      ],
+      "correct": 1,
+      "search_seconds": 124.77192345799995,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "one_shot",
+      "trial": 2,
+      "outcome": "budget_exhausted",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/060/696fe369dd684fa19a22c50f5f68a7fc",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "compile_error": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 474,
+        "output_tokens": 1927,
+        "reasoning_tokens": 1382
+      },
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 17.592950375008513,
+      "baselines": []
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "independent",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/061/c40f0fd7bd5e4ece8f256e9d39804618",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 974,
+        "output_tokens": 3550,
+        "reasoning_tokens": 2914
+      },
+      "scores": [
+        0.02761362355269221,
+        0.02860534046445657
+      ],
+      "correct": 2,
+      "search_seconds": 159.3958925830084,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "one_shot",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/062/521ad527ac7d4e42a3d7656160257fa6",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 424,
+        "output_tokens": 1864,
+        "reasoning_tokens": 1276
+      },
+      "scores": [
+        0.03026610531055439
+      ],
+      "correct": 1,
+      "search_seconds": 50.593805416996474,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "template",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/063/c4cb7d152d20468a93145c664b73dd11",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.02781864877450728,
+        0.02926935680125808
+      ],
+      "correct": 2,
+      "search_seconds": 122.02633362499182,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "one_shot",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/064/f6a1472a8b85402bb31e2715be3e6e23",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 487,
+        "output_tokens": 603,
+        "reasoning_tokens": 325
+      },
+      "scores": [
+        0.029410540085991664
+      ],
+      "correct": 1,
+      "search_seconds": 66.3441804999893,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "template",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/065/50c2faa8ac604d18b7fa46592f23cea0",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.011285569524321111,
+        0.011705799545837918
+      ],
+      "correct": 2,
+      "search_seconds": 183.27057837499888,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/066/8edf6075f559496fa7af4b99091fd73c",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "runtime_error": 1,
+        "valid": 1
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 965,
+        "output_tokens": 3729,
+        "reasoning_tokens": 2552
+      },
+      "scores": [
+        0.022697512213289184
+      ],
+      "correct": 1,
+      "search_seconds": 195.21046149999893,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "independent",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/067/8acf645026c0435ca3856a061b738661",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 1,
+        "runtime_error": 1
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 856,
+        "output_tokens": 4697,
+        "reasoning_tokens": 2965
+      },
+      "scores": [
+        0.05786940645206701
+      ],
+      "correct": 1,
+      "search_seconds": 106.44791104199248,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "one_shot",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/068/3bc5d423cf9042e5b666c36eefe8d224",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 492,
+        "output_tokens": 2114,
+        "reasoning_tokens": 1494
+      },
+      "scores": [
+        0.09153937149528985
+      ],
+      "correct": 1,
+      "search_seconds": 46.275301040994236,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/069/c95c3f81805d444cadf1e7ef6cfc4cab",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2513,
+        "output_tokens": 4874,
+        "reasoning_tokens": 3105
+      },
+      "scores": [
+        0.07847631164873695,
+        0.07665708679619813
+      ],
+      "correct": 2,
+      "search_seconds": 135.3519225839991,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "independent",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/070/3d65eaa597f24226b0458a3b2b8e07b5",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 948,
+        "output_tokens": 4049,
+        "reasoning_tokens": 2469
+      },
+      "scores": [
+        0.0764254061217518,
+        0.07722897831585164
+      ],
+      "correct": 2,
+      "search_seconds": 122.86667454200506,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "one_shot",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/071/a94153f446de4cbd97a7ecd91b0f76c5",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 492,
+        "output_tokens": 2077,
+        "reasoning_tokens": 1701
+      },
+      "scores": [
+        0.08811688855194566
+      ],
+      "correct": 1,
+      "search_seconds": 51.20744312500756,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "one_shot",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/072/985f8a7ac9e743a8a1442f975b44abbf",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 469,
+        "output_tokens": 1094,
+        "reasoning_tokens": 632
+      },
+      "scores": [
+        0.014158193598823917
+      ],
+      "correct": 1,
+      "search_seconds": 87.88701508300437,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "template",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/073/cee27bf61c644dd7875764ab8377cd88",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.028246140502291392,
+        0.029006317347009127
+      ],
+      "correct": 2,
+      "search_seconds": 121.33867029099201,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "one_shot",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/074/3256639e87ec44f49fbcf9de52c4f2c0",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 487,
+        "output_tokens": 1469,
+        "reasoning_tokens": 1192
+      },
+      "scores": [
+        0.029723901625619005
+      ],
+      "correct": 1,
+      "search_seconds": 72.46729266599868,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "one_shot",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/075/c8b94e2d27a242d18cefff0c2ad9457a",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 492,
+        "output_tokens": 3110,
+        "reasoning_tokens": 2488
+      },
+      "scores": [
+        0.0770467903287431
+      ],
+      "correct": 1,
+      "search_seconds": 58.79574008399504,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/076/340467deca674f4d92dcd5232ad3fd6a",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2122,
+        "output_tokens": 5631,
+        "reasoning_tokens": 3872
+      },
+      "scores": [
+        0.07490704832987621,
+        0.07640414914227085
+      ],
+      "correct": 2,
+      "search_seconds": 129.9692031670129,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "independent",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/077/2b4d20dd14bb4d42accb8bca4bf55ffb",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 984,
+        "output_tokens": 3795,
+        "reasoning_tokens": 2687
+      },
+      "scores": [
+        0.08775783558823293,
+        0.0879662452617623
+      ],
+      "correct": 2,
+      "search_seconds": 99.58016487500572,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/078/d8f8c4782cec4b9dbbde837384b78c67",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 1,
+        "incorrect": 1
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2169,
+        "output_tokens": 6453,
+        "reasoning_tokens": 5229
+      },
+      "scores": [
+        0.08817328204340054
+      ],
+      "correct": 1,
+      "search_seconds": 97.4960878330021,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "template",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/079/e6edff83f2b4452282bd924a60670f61",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.018758333812029803,
+        0.01768465146707518
+      ],
+      "correct": 2,
+      "search_seconds": 108.50438241699885,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "independent",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/080/6878f2e101764425b84c1263d131e27c",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 1,
+        "compile_error": 1
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 938,
+        "output_tokens": 2660,
+        "reasoning_tokens": 1753
+      },
+      "scores": [
+        0.01372509358225088
+      ],
+      "correct": 1,
+      "search_seconds": 107.29663008300122,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "template",
+      "trial": 1,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/081/38e61d50c49d4e8982aa42ef9333c7b2",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 0,
+      "evaluations_started": 1,
+      "statuses": {
+        "timeout": 1
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 120.61013420800737,
+      "baselines": []
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "template",
+      "trial": 2,
+      "outcome": "budget_exhausted",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/082/cc8a8d06c2d342079af5695188646ebc",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "runtime_error": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 111.39992004200758,
+      "baselines": []
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "one_shot",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/083/533086ea6bc342eebfe8375085c83741",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 469,
+        "output_tokens": 1257,
+        "reasoning_tokens": 798
+      },
+      "scores": [
+        0.013839580518071923
+      ],
+      "correct": 1,
+      "search_seconds": 90.02264195799944,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "independent",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/084/4562c52082234c17b3b056ea160b5232",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 856,
+        "output_tokens": 3496,
+        "reasoning_tokens": 2277
+      },
+      "scores": [
+        0.05887389014496984,
+        0.05709396858757389
+      ],
+      "correct": 2,
+      "search_seconds": 127.01597645800211,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "one_shot",
+      "trial": 1,
+      "outcome": "budget_exhausted",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/085/eb0af63f487346bf9bfed84e2b4e9f0b",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "compile_error": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 474,
+        "output_tokens": 1843,
+        "reasoning_tokens": 1138
+      },
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 33.71107754200057,
+      "baselines": []
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "template",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/086/cf16b399a74c472aa4d4a004e15efd19",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.018433450127577466,
+        0.017866501242883987
+      ],
+      "correct": 2,
+      "search_seconds": 109.13400983299653,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "strategy": "one_shot",
+      "trial": 2,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/087/c6740bd0d61f4a8e96dbc71a722a30b6",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 0,
+      "statuses": {},
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 0.8427307079982711,
+      "baselines": []
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "independent",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/088/11d8548c07ee4fbfb76372e7f8f6aef3",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 428,
+        "output_tokens": 1691,
+        "reasoning_tokens": 1042
+      },
+      "scores": [
+        0.06760101063252703
+      ],
+      "correct": 1,
+      "search_seconds": 85.36842837500444,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "strategy": "template",
+      "trial": 0,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/089/25b5df80e27844f2b7cc93cf537caba9",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 0,
+      "evaluations_started": 1,
+      "statuses": {
+        "timeout": 1
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 120.91469774999132,
+      "baselines": []
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "template",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/090/c1ea202930c740418ee5365c9a7f5973",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.06401027087729504,
+        0.06680376966487794
+      ],
+      "correct": 2,
+      "search_seconds": 81.00780608301284,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "feedback",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/091/8177182c40324072b8f71ab1f25d7a60",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 2024,
+        "output_tokens": 3961,
+        "reasoning_tokens": 2898
+      },
+      "scores": [
+        0.06515141907390407,
+        0.06709701029140737
+      ],
+      "correct": 2,
+      "search_seconds": 118.6196315420093,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "one_shot",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/092/a54f2634696e4fe8b95bdfac67f096ec",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 474,
+        "output_tokens": 1930,
+        "reasoning_tokens": 1290
+      },
+      "scores": [
+        0.07860543105730405
+      ],
+      "correct": 1,
+      "search_seconds": 67.9408758750069,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "one_shot",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/093/f457f51fe1df4e7082e04123e2e62b9e",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 428,
+        "output_tokens": 2694,
+        "reasoning_tokens": 1293
+      },
+      "scores": [
+        0.05001112240873019
+      ],
+      "correct": 1,
+      "search_seconds": 67.01121033300296,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "one_shot",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/094/1350e0b504774c2481301b27598a4f6b",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 428,
+        "output_tokens": 2036,
+        "reasoning_tokens": 1095
+      },
+      "scores": [
+        0.0501496853280239
+      ],
+      "correct": 1,
+      "search_seconds": 64.55368633300532,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "strategy": "template",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/095/faa691d8e92d44daa20a2334a3bb0610",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.02344803024359317,
+        0.02328993780157434
+      ],
+      "correct": 2,
+      "search_seconds": 178.36729429099069,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/096/914a2748dee74d11a6b1a95208f269b8",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "compile_error": 1,
+        "valid": 1
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 1580,
+        "output_tokens": 4136,
+        "reasoning_tokens": 2770
+      },
+      "scores": [
+        0.06934239860099656
+      ],
+      "correct": 1,
+      "search_seconds": 78.52830249999533,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "independent",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/097/2e6cfa3556db45fba2baa117db583c0e",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 984,
+        "output_tokens": 4069,
+        "reasoning_tokens": 2879
+      },
+      "scores": [
+        0.08820246628096508,
+        0.09000045946625997
+      ],
+      "correct": 2,
+      "search_seconds": 101.0239151249989,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "strategy": "independent",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/098/df3e5331892d4c519c49e9aa9a797e8c",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "compile_error": 1,
+        "valid": 1
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 948,
+        "output_tokens": 3208,
+        "reasoning_tokens": 2079
+      },
+      "scores": [
+        0.07903072872267841
+      ],
+      "correct": 1,
+      "search_seconds": 77.38906312499603,
+      "baselines": [
+        "functional_rms_norm",
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "independent",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/099/bfbb6d495a9645928942b54f831a9be3",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 974,
+        "output_tokens": 2297,
+        "reasoning_tokens": 1722
+      },
+      "scores": [
+        0.024666403247822592,
+        0.02429795352836138
+      ],
+      "correct": 2,
+      "search_seconds": 162.11518649999925,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "one_shot",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/100/ab4bed47dcba4a51ba487fd937099208",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 1,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 1,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 492,
+        "output_tokens": 2178,
+        "reasoning_tokens": 1622
+      },
+      "scores": [
+        0.06453779671992653
+      ],
+      "correct": 1,
+      "search_seconds": 58.580765916995006,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "independent",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/101/654399a4ab7a4b799d742fca586db39a",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 848,
+        "output_tokens": 4020,
+        "reasoning_tokens": 2735
+      },
+      "scores": [
+        0.02498630056143561,
+        0.024057807791586644
+      ],
+      "correct": 2,
+      "search_seconds": 110.34572758300055,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "strategy": "independent",
+      "trial": 1,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/102/5a7b71554f4d41a99cfa468648209e39",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 848,
+        "output_tokens": 3112,
+        "reasoning_tokens": 1792
+      },
+      "scores": [
+        0.024555123451119758,
+        0.02471782415033457
+      ],
+      "correct": 2,
+      "search_seconds": 108.12746412500564,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "strategy": "feedback",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/103/ea567bffb49941668da2de76fde36c0b",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 1,
+      "statuses": {
+        "valid": 1
+      },
+      "responses": 2,
+      "schema_rejections": 1,
+      "reported_tokens": {
+        "input_tokens": 1872,
+        "output_tokens": 5531,
+        "reasoning_tokens": 4922
+      },
+      "scores": [
+        0.08756723548663782
+      ],
+      "correct": 1,
+      "search_seconds": 86.95843149999564,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "strategy": "template",
+      "trial": 0,
+      "outcome": "failed",
+      "speedup": 1.0,
+      "reason": "No verified measured candidate was selected",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/104/f8d4a6c73646458a8bf7c0befb4b66a0",
+      "artifact_path": null,
+      "proposal_slots": 1,
+      "request_accounting": "search_ledger",
+      "requests": 1,
+      "model_requests": 0,
+      "evaluations_started": 1,
+      "statuses": {
+        "timeout": 1
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [],
+      "correct": 0,
+      "search_seconds": 120.74031208299857,
+      "baselines": []
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "independent",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/105/a8d4b29be66e48769db579be7b5282d7",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 984,
+        "output_tokens": 3682,
+        "reasoning_tokens": 2612
+      },
+      "scores": [
+        0.066654241807306,
+        0.06728304802220135
+      ],
+      "correct": 2,
+      "search_seconds": 107.97438179099117,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "strategy": "independent",
+      "trial": 0,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/106/ca2d7b32d1234393a769f403446393e4",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 2,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 2,
+      "schema_rejections": 0,
+      "reported_tokens": {
+        "input_tokens": 984,
+        "output_tokens": 4483,
+        "reasoning_tokens": 3372
+      },
+      "scores": [
+        0.06701766938460792,
+        0.06847976317570922
+      ],
+      "correct": 2,
+      "search_seconds": 118.55753350000305,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "strategy": "template",
+      "trial": 2,
+      "outcome": "no_win",
+      "speedup": 1.0,
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "run_path": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/107/14524b899e2647168c29586496f763b7",
+      "artifact_path": null,
+      "proposal_slots": 2,
+      "request_accounting": "search_ledger",
+      "requests": 2,
+      "model_requests": 0,
+      "evaluations_started": 2,
+      "statuses": {
+        "valid": 2
+      },
+      "responses": 0,
+      "schema_rejections": 0,
+      "reported_tokens": {},
+      "scores": [
+        0.024462644172064764,
+        0.02422966725157905
+      ],
+      "correct": 2,
+      "search_seconds": 141.01591037500475,
+      "baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ]
+    }
+  ]
+}

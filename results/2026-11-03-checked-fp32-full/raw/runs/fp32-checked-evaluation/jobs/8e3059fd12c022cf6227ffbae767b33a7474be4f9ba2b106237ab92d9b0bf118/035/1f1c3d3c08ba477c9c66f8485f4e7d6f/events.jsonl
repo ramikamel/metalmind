@@ -1,0 +1,4 @@
+{"event": "request_reserved", "requests": 2, "output_tokens": 8192}
+{"event": "model_response", "model": "muse-wonder-1.0", "usage": {"schema_version": 1, "input_tokens": 424, "output_tokens": 1783, "reasoning_tokens": 1182}, "requests": 1, "error": null}
+{"event": "evaluation", "candidate_id": "a639c5d491cdcec2ee0dec928cee5079e8605486c06d05bfdf2cfa149d7046df", "result": {"schema_version": 1, "status": "timeout", "verification": null, "elapsed_ms": [], "reason": "GPU evaluation lock timed out", "device_fault": false, "timing": null}}
+{"event": "finalized", "outcome": "failed", "reason": "No verified measured candidate was selected"}

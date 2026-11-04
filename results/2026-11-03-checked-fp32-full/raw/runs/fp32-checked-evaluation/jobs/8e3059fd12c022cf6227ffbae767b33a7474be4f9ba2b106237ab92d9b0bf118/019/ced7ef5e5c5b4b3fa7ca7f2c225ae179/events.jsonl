@@ -1,0 +1,4 @@
+{"event": "request_reserved", "requests": 2, "output_tokens": 8192}
+{"event": "model_response", "model": "template", "usage": {"schema_version": 1, "input_tokens": 0, "output_tokens": 0, "reasoning_tokens": null}, "requests": 1, "error": null}
+{"event": "evaluation", "candidate_id": "1f78e47806a2ba04906447a9fe9440d02d3a3fb8f695d1e51e698a8dbdae06ce", "result": {"schema_version": 1, "status": "timeout", "verification": null, "elapsed_ms": [], "reason": "worker absolute/stage deadline exceeded; health validation required", "device_fault": true, "timing": null}}
+{"event": "finalized", "outcome": "failed", "reason": "No verified measured candidate was selected"}

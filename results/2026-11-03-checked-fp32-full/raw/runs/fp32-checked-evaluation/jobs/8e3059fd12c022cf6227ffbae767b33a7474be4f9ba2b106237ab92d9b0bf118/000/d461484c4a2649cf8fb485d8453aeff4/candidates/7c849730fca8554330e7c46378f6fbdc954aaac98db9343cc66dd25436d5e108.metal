@@ -1,0 +1,3 @@
+#include <metal_stdlib>
+using namespace metal;
+kernel void metalmind_kernel(device const float* x,device float* y,constant uint& B,constant uint& D,constant float& eps,uint i [[thread_position_in_grid]]) {if(i>=B)return;float m=-INFINITY;for(uint j=0;j<D;j++)m=max(m,float(x[i*D+j]));float s=0;for(uint j=0;j<D;j++)s+=exp(float(x[i*D+j])-m);for(uint j=0;j<D;j++)y[i*D+j]=float(exp(float(x[i*D+j])-m)/s);}

@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:medium",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          1024
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "checked",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261105,
+    "runs_dir": "runs/fp32-checked-evaluation/jobs/8e3059fd12c022cf6227ffbae767b33a7474be4f9ba2b106237ab92d9b0bf118/066",
+    "artifacts_dir": "runs/fp32-checked-evaluation/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 3729,
+  "elapsed_seconds": 195.21046149999893,
+  "wall_deadline_utc": 1793750299.402121,
+  "seen": [
+    "3623df7f9690f12ba5560675d00542aff277e9d44fd31bddf915f92bd2e33840",
+    "49cf55dde107919835d520738c45264120982dbd3f9a4c7b103227184aec354b"
+  ],
+  "archive": [
+    {
+      "score": 0.022697512213289184,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "3623df7f9690f12ba5560675d00542aff277e9d44fd31bddf915f92bd2e33840",
+        "workload_hash": "8554a653ff711d7c5a47a1e2ac99ae598c43d320fc1d977a46a28a10e4f1bb32",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tg_pos [[threadgroup_position_in_grid]], uint3 tid_in_tg [[thread_position_in_threadgroup]], uint3 threads_per_tg [[threads_per_threadgroup]]) {\n  uint row = tg_pos.x;\n  uint tid = tid_in_tg.x;\n  uint tsize = threads_per_tg.x;\n  if (row >= B) { return; }\n  uint base = row * D;\n  float local = 0.0f;\n  for (uint i = tid; i < D; i += tsize) {\n    float v = x[base + i];\n    local += v * v;\n  }\n  threadgroup float shared[256];\n  shared[tid] = local;\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  for (uint stride = 128; stride > 0; stride >>= 1) {\n    if (tid < stride) { shared[tid] += shared[tid + stride]; }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n  }\n  float inv = rsqrt(shared[0] / float(D) + epsilon);\n  for (uint i = tid; i < D; i += tsize) {\n    float v = x[base + i];\n    out[base + i] = float(v * inv * parameter[i]);\n  }\n}\n",
+          "threads": [
+            65536,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "One 256-thread group per row with 4 elements per thread and threadgroup reduction minimizes global passes to two row reads and one write."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

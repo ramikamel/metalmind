@@ -71,8 +71,9 @@ are preserved. A separate unchanged matmul-plus-activation example measured
 1.153× whole-workflow gain in one session. This is not whole-model confirmation.
 A separate [checked-mode four-strategy rehearsal](results/2026-11-03-strategy-rehearsal/README.md)
 measured seven numerically valid candidates and zero wins for small bias/GELU.
-The [first 12 frozen jobs](results/2026-11-03-checked-campaign-checkpoint/README.md)
-also used fallback in checked mode.
+The [completed 108-job FP32 comparison](results/2026-11-03-checked-fp32-full/README.md)
+promoted no kernels in checked mode. It compares four strategies and pairs
+feedback with independent sampling on matching trials.
 
 ## Module workflow
 

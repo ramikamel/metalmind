@@ -8,7 +8,8 @@
 
 - [x] Test bounded execution, resume, interrupted job accounting, and the distinction between local proposal slots and Meta requests.
 - [x] Add an explicit CLI resume flag and per-invocation job bound. Refuse a changed source fingerprint or concurrent writer.
-- [ ] Run the same synthetic protocol end to end, audit outcome accounting, and publish the frozen protocol and measured results available.
+- [x] Run the frozen protocol end to end, audit outcome accounting, and publish
+  [all 108 jobs](../../../results/2026-11-03-checked-fp32-full/README.md).
 
 
 The two-request cap prioritizes equal paid budgets and repeat trials. This
@@ -21,4 +22,4 @@ was reproduced by a failing regression and fixed before any full-run traffic.
 The comparison report and archive command are prepared for the final closeout.
 They preserve all attempted outcomes, compare matched search scores only when
 the selected candidates share a baseline set, and derive reports from the
-copied raw evidence. The final publication still requires the complete ledger.
+copied raw evidence. The published archive reconciles the complete ledger.
