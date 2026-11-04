@@ -1,0 +1,6 @@
+{
+  "outcome": "promoted",
+  "run_path": "runs/faeeeaeeefa240d2b588a6094f98d07c",
+  "artifact_path": "artifacts/e62408a7dd877bb0868c85667cd8ce1ad0fd44d13c76971286271157e49ee58b",
+  "reason": "Numerically verified and faster in both independent confirmation sessions"
+}

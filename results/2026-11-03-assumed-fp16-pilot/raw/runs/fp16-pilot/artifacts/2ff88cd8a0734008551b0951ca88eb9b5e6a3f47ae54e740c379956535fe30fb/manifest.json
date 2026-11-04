@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "artifact_id": "2ff88cd8a0734008551b0951ca88eb9b5e6a3f47ae54e740c379956535fe30fb",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:medium",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          1024
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "6a50d893a1e148fc623d7ff6e340dbd52df31399c3ed8db013ad6711f630e4da",
+    "workload_hash": "f857e4d8b3552c9decaf335ed4c4088cc1d3dac5d5a19b93a13a06ffe2da9adf",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]], uint2 tpg [[threads_per_grid]]) {\n    (void)epsilon;\n    const float k = 0.7978845608028654f;\n    if ((D & 3u) == 0u) {\n        const uint d4 = D >> 2;\n        device const half4* x4 = (device const half4*)x;\n        device const half4* p4 = (device const half4*)parameter;\n        device half4* o4 = (device half4*)out;\n        const uint step = tpg.x << 1;\n        for (uint row = gid.y; row < B; row += tpg.y) {\n            const uint base = row * d4;\n            for (uint c = gid.x; c < d4; c += step) {\n                float4 z0 = float4(x4[base + c]) + float4(p4[c]);\n                float4 z03 = z0 * z0 * z0;\n                float4 y0 = 0.5f * z0 * (1.0f + tanh(k * (z0 + 0.044715f * z03)));\n                o4[base + c] = half4(y0);\n                const uint c1 = c + tpg.x;\n                if (c1 < d4) {\n                    float4 z1 = float4(x4[base + c1]) + float4(p4[c1]);\n                    float4 z13 = z1 * z1 * z1;\n                    float4 y1 = 0.5f * z1 * (1.0f + tanh(k * (z1 + 0.044715f * z13)));\n                    o4[base + c1] = half4(y1);\n                }\n            }\n        }\n    } else {\n        for (uint row = gid.y; row < B; row += tpg.y) {\n            const uint base = row * D;\n            for (uint col = gid.x; col < D; col += tpg.x) {\n                float z = float(x[base + col]) + float(parameter[col]);\n                float z3 = z * z * z;\n                float y = 0.5f * z * (1.0f + tanh(k * (z + 0.044715f * z3)));\n                out[base + col] = half(y);\n            }\n        }\n    }\n}\n",
+      "threads": [
+        128,
+        256,
+        1
+      ],
+      "group_size": [
+        128,
+        1,
+        1
+      ],
+      "hypothesis": "Two independent half4 GELU evaluations per thread with a 128x256 grid increase ILP and vector reuse while exactly covering 256 rows, reducing loop and launch overhead versus one vector per iteration."
+    },
+    "parent_id": "5a0a04826017232032e574ba662f440da4c3a75bc7ac8840ac73cbc941db0fbf",
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "2913c48c2f941b094da5aec49d7251871287ff29238ba8608a8b35ee72e1a1a7",
+  "evidence_hash": "ff36b7460d39b1c1c14295d10b734bc0519843ebe60878614d12d9f6dfde4461",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

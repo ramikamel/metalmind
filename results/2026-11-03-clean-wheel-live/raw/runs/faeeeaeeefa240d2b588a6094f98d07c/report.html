@@ -1,0 +1,1044 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MetalMind — promoted</title><style>
+    :root{color-scheme:light;font-family:system-ui,-apple-system,sans-serif;color:#172b31;background:#f3f6f4}
+    body{max-width:1160px;margin:3rem auto;padding:0 1.5rem;line-height:1.55}
+    h1{font-size:3.5rem;line-height:1.1;letter-spacing:-.06em;margin:.5rem 0 1rem}
+    h2{font-size:1.25rem;letter-spacing:-.02em}.eyebrow{font-size:.75rem;letter-spacing:.15em;color:#356654}
+    header{max-width:850px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;margin:2rem 0}
+    .card,section{background:#fff;border:1px solid #dbe4de;border-radius:12px;padding:1.25rem}
+    .card span{display:block;color:#5c6f68;font-size:.85rem}.card strong{display:block;font-size:1.5rem;margin-top:.35rem}
+    section{margin:1rem 0}.notice{border-left:3px solid #448a6f;padding:.5rem 1rem;color:#3a574c}
+    .table{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{text-align:left;padding:.75rem;border-bottom:1px solid #e4eae6;white-space:nowrap}
+    th{color:#52675d;font-weight:600}pre{font-size:.8rem;background:#f6f8f7;border:1px solid #e5ebe7;padding:1rem;border-radius:7px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+    details{margin:1rem 0}summary{cursor:pointer;color:#275e49}code{font-size:.85em}
+    @media(max-width:600px){body{margin:1.5rem auto;padding:0 1rem}h1{font-size:2.5rem}}
+    </style></head><body><main><header><p class="eyebrow">METALMIND / RUN EVIDENCE</p><h1>promoted</h1><p>Numerically verified and faster in both independent confirmation sessions</p></header><div class="cards"><div class="card"><span>Outcome</span><strong>promoted</strong></div><div class="card"><span>Model requests</span><strong>2</strong></div><div class="card"><span>Output tokens</span><strong>4945</strong></div><div class="card"><span>Domain mode</span><strong>assume</strong></div></div><p class="notice">Speedups describe the recorded public-call boundary and domain mode. Search measurements are not confirmed promotion. Compilation and model time are outside warm timing.</p><section><h2>Workload and stages</h2><pre>{
+  &quot;workload&quot;: {
+    &quot;schema_version&quot;: 1,
+    &quot;workload_id&quot;: &quot;bias_gelu:medium&quot;,
+    &quot;family&quot;: &quot;bias_gelu&quot;,
+    &quot;semantics_version&quot;: 1,
+    &quot;inputs&quot;: [
+      {
+        &quot;schema_version&quot;: 1,
+        &quot;shape&quot;: [
+          256,
+          1024
+        ],
+        &quot;strides&quot;: [
+          1024,
+          1
+        ],
+        &quot;dtype&quot;: &quot;float32&quot;,
+        &quot;device&quot;: &quot;mps&quot;,
+        &quot;storage_offset&quot;: 0
+      },
+      {
+        &quot;schema_version&quot;: 1,
+        &quot;shape&quot;: [
+          1024
+        ],
+        &quot;strides&quot;: [
+          1
+        ],
+        &quot;dtype&quot;: &quot;float32&quot;,
+        &quot;device&quot;: &quot;mps&quot;,
+        &quot;storage_offset&quot;: 0
+      }
+    ],
+    &quot;output&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;shape&quot;: [
+        256,
+        1024
+      ],
+      &quot;strides&quot;: [
+        1024,
+        1
+      ],
+      &quot;dtype&quot;: &quot;float32&quot;,
+      &quot;device&quot;: &quot;mps&quot;,
+      &quot;storage_offset&quot;: 0
+    },
+    &quot;epsilon&quot;: 0.0,
+    &quot;accumulation_dtype&quot;: &quot;float32&quot;,
+    &quot;reference_id&quot;: &quot;bias_gelu&quot;,
+    &quot;reference_hash&quot;: &quot;c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777&quot;,
+    &quot;policy_version&quot;: 1
+  },
+  &quot;stages&quot;: {
+    &quot;numerically_valid&quot;: true,
+    &quot;search_fast&quot;: true,
+    &quot;final_verified&quot;: true,
+    &quot;confirmation_sessions&quot;: 2,
+    &quot;promoted&quot;: true
+  },
+  &quot;candidate_counts&quot;: {
+    &quot;valid&quot;: 1
+  }
+}</pre></section><section><h2>Confirmation sessions</h2><div class="table"><table><thead><tr><th>Session / candidate</th><th>Baseline</th><th>Median speedup</th><th>95% interval</th><th>Pairs</th></tr></thead><tbody><tr><td>Session 1</td><td>original_eager</td><td>2.371×</td><td>2.353–2.383×</td><td>30</td></tr><tr><td>Session 1</td><td>torch_compile_inductor_fullgraph</td><td>1.566×</td><td>1.557–1.574×</td><td>30</td></tr><tr><td>Session 2</td><td>original_eager</td><td>2.421×</td><td>2.393–2.463×</td><td>30</td></tr><tr><td>Session 2</td><td>torch_compile_inductor_fullgraph</td><td>1.575×</td><td>1.555–1.591×</td><td>30</td></tr></tbody></table></div><details><summary>Private numerical verification</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;status&quot;: &quot;valid&quot;,
+  &quot;verification&quot;: {
+    &quot;schema_version&quot;: 1,
+    &quot;passed&quot;: true,
+    &quot;cases&quot;: 22,
+    &quot;max_absolute_error&quot;: 9.5367431640625e-07,
+    &quot;max_relative_error&quot;: 0.2982377225180244,
+    &quot;rmse&quot;: 6.280788744031052e-08,
+    &quot;mismatches&quot;: 0,
+    &quot;reason&quot;: null
+  },
+  &quot;elapsed_ms&quot;: [],
+  &quot;reason&quot;: null,
+  &quot;device_fault&quot;: false,
+  &quot;timing&quot;: null
+}</pre></details></section><section><h2>Search evaluations</h2><div class="table"><table><thead><tr><th>Session / candidate</th><th>Baseline</th><th>Median speedup</th><th>95% interval</th><th>Pairs</th></tr></thead><tbody><tr><td>b862d7e649d9</td><td>original_eager</td><td>2.423×</td><td>2.388–2.506×</td><td>10</td></tr><tr><td>b862d7e649d9</td><td>torch_compile_inductor_fullgraph</td><td>1.593×</td><td>1.566–1.614×</td><td>10</td></tr></tbody></table></div><p><code>b862d7e649d9</code> · valid · See raw evidence for numerical and timing details</p></section><section><h2>Candidate source</h2><details><summary>b862d7e649d9cb39e28c042c9066b9b093844fd62a63937525b0da891f95641a</summary><pre>#include &lt;metal_stdlib&gt;
+using namespace metal;
+kernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint2 gid [[thread_position_in_grid]]) {
+    (void)epsilon;
+    if (gid.y &gt;= B || gid.x &gt;= (D + 3u) / 4u) {
+        return;
+    }
+    uint col = gid.x * 4u;
+    uint row_base = gid.y * D;
+    if (col + 3u &lt; D) {
+        device const float4* x4 = reinterpret_cast&lt;device const float4*&gt;(x);
+        device const float4* p4 = reinterpret_cast&lt;device const float4*&gt;(parameter);
+        device float4* o4 = reinterpret_cast&lt;device float4*&gt;(out);
+        uint vec_index = gid.y * (D / 4u) + gid.x;
+        float4 z = x4[vec_index] + p4[gid.x];
+        float4 z2 = z * z;
+        float4 inner = 0.7978845608028654f * (z + 0.044715f * z2 * z);
+        float4 y = 0.5f * z * (1.0f + tanh(inner));
+        o4[vec_index] = y;
+    } else {
+        for (uint c = col; c &lt; D; ++c) {
+            float z = x[row_base + c] + parameter[c];
+            float z2 = z * z;
+            float inner = 0.7978845608028654f * (z + 0.044715f * z2 * z);
+            out[row_base + c] = 0.5f * z * (1.0f + tanh(inner));
+        }
+    }
+}
+</pre></details></section><section><details><summary>Complete raw evidence and configuration</summary><pre>{
+  &quot;manifest&quot;: {
+    &quot;schema_version&quot;: 1,
+    &quot;phase&quot;: &quot;terminal&quot;,
+    &quot;workload&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;workload_id&quot;: &quot;bias_gelu:medium&quot;,
+      &quot;family&quot;: &quot;bias_gelu&quot;,
+      &quot;semantics_version&quot;: 1,
+      &quot;inputs&quot;: [
+        {
+          &quot;schema_version&quot;: 1,
+          &quot;shape&quot;: [
+            256,
+            1024
+          ],
+          &quot;strides&quot;: [
+            1024,
+            1
+          ],
+          &quot;dtype&quot;: &quot;float32&quot;,
+          &quot;device&quot;: &quot;mps&quot;,
+          &quot;storage_offset&quot;: 0
+        },
+        {
+          &quot;schema_version&quot;: 1,
+          &quot;shape&quot;: [
+            1024
+          ],
+          &quot;strides&quot;: [
+            1
+          ],
+          &quot;dtype&quot;: &quot;float32&quot;,
+          &quot;device&quot;: &quot;mps&quot;,
+          &quot;storage_offset&quot;: 0
+        }
+      ],
+      &quot;output&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;shape&quot;: [
+          256,
+          1024
+        ],
+        &quot;strides&quot;: [
+          1024,
+          1
+        ],
+        &quot;dtype&quot;: &quot;float32&quot;,
+        &quot;device&quot;: &quot;mps&quot;,
+        &quot;storage_offset&quot;: 0
+      },
+      &quot;epsilon&quot;: 0.0,
+      &quot;accumulation_dtype&quot;: &quot;float32&quot;,
+      &quot;reference_id&quot;: &quot;bias_gelu&quot;,
+      &quot;reference_hash&quot;: &quot;c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777&quot;,
+      &quot;policy_version&quot;: 1
+    },
+    &quot;config&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;model&quot;: &quot;muse-wonder-1.0&quot;,
+      &quot;reasoning_effort&quot;: &quot;low&quot;,
+      &quot;domain_mode&quot;: &quot;assume&quot;,
+      &quot;max_candidates&quot;: 2,
+      &quot;max_requests&quot;: 2,
+      &quot;wall_seconds&quot;: 1800.0,
+      &quot;finalization_reserve_seconds&quot;: 300.0,
+      &quot;max_output_tokens&quot;: 4096,
+      &quot;total_output_tokens&quot;: 120000,
+      &quot;request_timeout_seconds&quot;: 120.0,
+      &quot;compile_timeout_seconds&quot;: 60.0,
+      &quot;execution_timeout_seconds&quot;: 120.0,
+      &quot;stagnation_limit&quot;: 10,
+      &quot;seed&quot;: 42,
+      &quot;runs_dir&quot;: &quot;runs&quot;,
+      &quot;artifacts_dir&quot;: &quot;artifacts&quot;,
+      &quot;warmups&quot;: 25,
+      &quot;search_pairs&quot;: 10,
+      &quot;confirmation_pairs&quot;: 30,
+      &quot;bootstrap_resamples&quot;: 10000,
+      &quot;confirmation_cooldown_seconds&quot;: 60.0
+    },
+    &quot;environment&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;python_version&quot;: &quot;3.14.6&quot;,
+      &quot;torch_version&quot;: &quot;2.15.0&quot;,
+      &quot;os_version&quot;: &quot;27.2&quot;,
+      &quot;architecture&quot;: &quot;arm64&quot;,
+      &quot;capabilities&quot;: {
+        &quot;mps_built&quot;: true,
+        &quot;mps_available&quot;: true,
+        &quot;compile_shader&quot;: true,
+        &quot;timed_events&quot;: true
+      },
+      &quot;unavailable_reason&quot;: null
+    },
+    &quot;requests&quot;: 2,
+    &quot;evaluated&quot;: 1,
+    &quot;output_tokens&quot;: 4945,
+    &quot;elapsed_seconds&quot;: 65.69097737500852,
+    &quot;wall_deadline_utc&quot;: 1793756770.6062238,
+    &quot;seen&quot;: [
+      &quot;b862d7e649d9cb39e28c042c9066b9b093844fd62a63937525b0da891f95641a&quot;
+    ],
+    &quot;archive&quot;: [
+      {
+        &quot;score&quot;: 1.5928096865973538,
+        &quot;candidate&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;candidate_id&quot;: &quot;b862d7e649d9cb39e28c042c9066b9b093844fd62a63937525b0da891f95641a&quot;,
+          &quot;workload_hash&quot;: &quot;524c5a2e7965ab8d49096975fed8eea2c6c060c8512f339e1d4710ab36a46d7d&quot;,
+          &quot;proposal&quot;: {
+            &quot;schema_version&quot;: 1,
+            &quot;entry_point&quot;: &quot;metalmind_kernel&quot;,
+            &quot;source&quot;: &quot;#include &lt;metal_stdlib&gt;\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    if (gid.y &gt;= B || gid.x &gt;= (D + 3u) / 4u) {\n        return;\n    }\n    uint col = gid.x * 4u;\n    uint row_base = gid.y * D;\n    if (col + 3u &lt; D) {\n        device const float4* x4 = reinterpret_cast&lt;device const float4*&gt;(x);\n        device const float4* p4 = reinterpret_cast&lt;device const float4*&gt;(parameter);\n        device float4* o4 = reinterpret_cast&lt;device float4*&gt;(out);\n        uint vec_index = gid.y * (D / 4u) + gid.x;\n        float4 z = x4[vec_index] + p4[gid.x];\n        float4 z2 = z * z;\n        float4 inner = 0.7978845608028654f * (z + 0.044715f * z2 * z);\n        float4 y = 0.5f * z * (1.0f + tanh(inner));\n        o4[vec_index] = y;\n    } else {\n        for (uint c = col; c &lt; D; ++c) {\n            float z = x[row_base + c] + parameter[c];\n            float z2 = z * z;\n            float inner = 0.7978845608028654f * (z + 0.044715f * z2 * z);\n            out[row_base + c] = 0.5f * z * (1.0f + tanh(inner));\n        }\n    }\n}\n&quot;,
+            &quot;threads&quot;: [
+              256,
+              256,
+              1
+            ],
+            &quot;group_size&quot;: [
+              32,
+              8,
+              1
+            ],
+            &quot;hypothesis&quot;: &quot;float4 vectorized loads/stores and 2D mapping matching rows and quarter-columns reduce addressing overhead while keeping exact FP32 tanh GELU semantics.&quot;
+          },
+          &quot;parent_id&quot;: null,
+          &quot;model&quot;: &quot;muse-wonder-1.0&quot;
+        }
+      }
+    ],
+    &quot;outcome&quot;: &quot;promoted&quot;
+  },
+  &quot;result&quot;: {
+    &quot;outcome&quot;: &quot;promoted&quot;,
+    &quot;reason&quot;: &quot;Numerically verified and faster in both independent confirmation sessions&quot;,
+    &quot;artifact_path&quot;: &quot;artifacts/e62408a7dd877bb0868c85667cd8ce1ad0fd44d13c76971286271157e49ee58b&quot;
+  },
+  &quot;stages&quot;: {
+    &quot;numerically_valid&quot;: true,
+    &quot;search_fast&quot;: true,
+    &quot;final_verified&quot;: true,
+    &quot;confirmation_sessions&quot;: 2,
+    &quot;promoted&quot;: true
+  },
+  &quot;candidate_counts&quot;: {
+    &quot;valid&quot;: 1
+  },
+  &quot;final_evidence&quot;: {
+    &quot;private_verification&quot;: {
+      &quot;schema_version&quot;: 1,
+      &quot;status&quot;: &quot;valid&quot;,
+      &quot;verification&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;passed&quot;: true,
+        &quot;cases&quot;: 22,
+        &quot;max_absolute_error&quot;: 9.5367431640625e-07,
+        &quot;max_relative_error&quot;: 0.2982377225180244,
+        &quot;rmse&quot;: 6.280788744031052e-08,
+        &quot;mismatches&quot;: 0,
+        &quot;reason&quot;: null
+      },
+      &quot;elapsed_ms&quot;: [],
+      &quot;reason&quot;: null,
+      &quot;device_fault&quot;: false,
+      &quot;timing&quot;: null
+    },
+    &quot;confirmations&quot;: [
+      {
+        &quot;schema_version&quot;: 1,
+        &quot;status&quot;: &quot;valid&quot;,
+        &quot;verification&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;passed&quot;: true,
+          &quot;cases&quot;: 10,
+          &quot;max_absolute_error&quot;: 4.76837158203125e-07,
+          &quot;max_relative_error&quot;: 0.29823704039699805,
+          &quot;rmse&quot;: 6.295044705082381e-08,
+          &quot;mismatches&quot;: 0,
+          &quot;reason&quot;: null
+        },
+        &quot;elapsed_ms&quot;: [
+          0.021423187256175424,
+          0.021284108397523482,
+          0.021433822631422572,
+          0.019667938230938375,
+          0.02109313964915316,
+          0.021194549560732412,
+          0.02157583105422134,
+          0.021437728882744977,
+          0.021229064941508113,
+          0.0201100311265634,
+          0.021674570801266668,
+          0.02138509118587706,
+          0.02155177807594555,
+          0.02158386230455278,
+          0.021624206542725233,
+          0.021436798096630127,
+          0.019747746703657754,
+          0.02108639526454681,
+          0.0214451344007216,
+          0.021871587158273087,
+          0.02135582482942766,
+          0.02142587280218322,
+          0.021222844482693404,
+          0.02159740197704707,
+          0.021421574951219213,
+          0.02150525927824276,
+          0.02107518517924234,
+          0.021800811767391792,
+          0.02145988976920421,
+          0.021582646729356725
+        ],
+        &quot;reason&quot;: null,
+        &quot;device_fault&quot;: false,
+        &quot;timing&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;seed&quot;: 43,
+          &quot;bootstrap_resamples&quot;: 10000,
+          &quot;comparisons&quot;: [
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;original_eager&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.05110372924832518,
+                  0.05131144714276559,
+                  0.05003000891257159,
+                  0.04903347265639013,
+                  0.04839505505493946,
+                  0.05082897436459177,
+                  0.049116170288243666,
+                  0.05096301269524872,
+                  0.05137196862747828,
+                  0.05159650671338056,
+                  0.04941494750987374,
+                  0.050796147583298534,
+                  0.050525171873871955,
+                  0.05107031249984573,
+                  0.05142686975112554,
+                  0.051153030396378085,
+                  0.05128822839317593,
+                  0.04975764465342536,
+                  0.04938389587394454,
+                  0.050617243530837186,
+                  0.050276657104220135,
+                  0.050999013305741414,
+                  0.0514949798589015,
+                  0.050097096801593466,
+                  0.05056093847599641,
+                  0.04853279626537699,
+                  0.051398981689487755,
+                  0.051332605957910005,
+                  0.05048705554244748,
+                  0.05126227832086272
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.021423187256175424,
+                  0.021284108397523482,
+                  0.021433822631422572,
+                  0.019667938230938375,
+                  0.02109313964915316,
+                  0.021194549560732412,
+                  0.02157583105422134,
+                  0.021437728882744977,
+                  0.021229064941508113,
+                  0.0201100311265634,
+                  0.021674570801266668,
+                  0.02138509118587706,
+                  0.02155177807594555,
+                  0.02158386230455278,
+                  0.021624206542725233,
+                  0.021436798096630127,
+                  0.019747746703657754,
+                  0.02108639526454681,
+                  0.0214451344007216,
+                  0.021871587158273087,
+                  0.02135582482942766,
+                  0.02142587280218322,
+                  0.021222844482693404,
+                  0.02159740197704707,
+                  0.021421574951219213,
+                  0.02150525927824276,
+                  0.02107518517924234,
+                  0.021800811767391792,
+                  0.02145988976920421,
+                  0.021582646729356725
+                ],
+                &quot;repetitions&quot;: 8192,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 2.370647953654432,
+                &quot;lower&quot;: 2.3534302176586133,
+                &quot;upper&quot;: 2.382846890435926,
+                &quot;pairs&quot;: 30
+              }
+            },
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;torch_compile_inductor_fullgraph&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.03284285473625914,
+                  0.033591639160945874,
+                  0.03336762500083523,
+                  0.033285135986105274,
+                  0.032915334106320415,
+                  0.0339967243654371,
+                  0.033896652221088175,
+                  0.034213592529752646,
+                  0.03379885864163157,
+                  0.03420684301858046,
+                  0.03419158434958547,
+                  0.03416320287996655,
+                  0.03411788940432814,
+                  0.03383485925390062,
+                  0.03359561157267876,
+                  0.033535359740710646,
+                  0.033844543457561826,
+                  0.0340352680652245,
+                  0.03343791198595625,
+                  0.033261372925252886,
+                  0.033597132444995736,
+                  0.0332932891851101,
+                  0.03314780688334906,
+                  0.033478602050607265,
+                  0.0333982086182516,
+                  0.033350555421307604,
+                  0.0336917928454028,
+                  0.03355030822760341,
+                  0.03359094238319926,
+                  0.033259002686136796
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.020983957885079008,
+                  0.02159641015531122,
+                  0.021595759033488093,
+                  0.021538854005243024,
+                  0.019725448607843532,
+                  0.01981375634763083,
+                  0.021349675536797008,
+                  0.021554153441627477,
+                  0.021693852660931157,
+                  0.021726760865092842,
+                  0.0217583109130004,
+                  0.02181440222059905,
+                  0.021782719970886433,
+                  0.021514343261586077,
+                  0.02113108313039902,
+                  0.021319208739711826,
+                  0.021190058472342344,
+                  0.02136633801264054,
+                  0.02162928772087014,
+                  0.02160938513107169,
+                  0.02160358679148544,
+                  0.021439320800453743,
+                  0.021583221435861333,
+                  0.020565277099038326,
+                  0.021656697509087053,
+                  0.021363769532101173,
+                  0.020238632201241558,
+                  0.021712417602515188,
+                  0.021464233398660326,
+                  0.021339670897901897
+                ],
+                &quot;repetitions&quot;: 8192,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 1.5656129257802214,
+                &quot;lower&quot;: 1.5567097177501539,
+                &quot;upper&quot;: 1.5737110411696098,
+                &quot;pairs&quot;: 30
+              }
+            }
+          ],
+          &quot;unavailable&quot;: [],
+          &quot;boundary&quot;: &quot;amortized synchronized public function latency&quot;,
+          &quot;domain_mode&quot;: &quot;assume&quot;
+        }
+      },
+      {
+        &quot;schema_version&quot;: 1,
+        &quot;status&quot;: &quot;valid&quot;,
+        &quot;verification&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;passed&quot;: true,
+          &quot;cases&quot;: 10,
+          &quot;max_absolute_error&quot;: 4.76837158203125e-07,
+          &quot;max_relative_error&quot;: 0.29823704039699805,
+          &quot;rmse&quot;: 6.295044705082381e-08,
+          &quot;mismatches&quot;: 0,
+          &quot;reason&quot;: null
+        },
+        &quot;elapsed_ms&quot;: [
+          0.02106273901247846,
+          0.020664637206735392,
+          0.021107299804867807,
+          0.020922861693861705,
+          0.021304412841871567,
+          0.020628489258101013,
+          0.021190673828996864,
+          0.020325398681464435,
+          0.020590164185207982,
+          0.021066508056222233,
+          0.02162947082418043,
+          0.021095545410076966,
+          0.021254613159271685,
+          0.02035781860421082,
+          0.01984165954560524,
+          0.021413060423469688,
+          0.02176891076643983,
+          0.021249099731335264,
+          0.021283396362647977,
+          0.021177978513975404,
+          0.01980167138704303,
+          0.01968420922793257,
+          0.021718190552633132,
+          0.02057018542522826,
+          0.020284113526614078,
+          0.022070149658048877,
+          0.021353398683032765,
+          0.020226827025737748,
+          0.021158996581505107,
+          0.02127462768442001
+        ],
+        &quot;reason&quot;: null,
+        &quot;device_fault&quot;: false,
+        &quot;timing&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;seed&quot;: 44,
+          &quot;bootstrap_resamples&quot;: 10000,
+          &quot;comparisons&quot;: [
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;original_eager&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.049727249145092856,
+                  0.05118538916093485,
+                  0.0498165334459344,
+                  0.051441014647934935,
+                  0.051390640258830445,
+                  0.05159104406793347,
+                  0.051578068969604374,
+                  0.04917682910132726,
+                  0.050818761108573085,
+                  0.050684600829242754,
+                  0.05133310961902282,
+                  0.051409484862929844,
+                  0.05147090661594689,
+                  0.05154790746964011,
+                  0.04903175854487074,
+                  0.050641377807636445,
+                  0.050520970580336666,
+                  0.05114424133267903,
+                  0.05153123974643847,
+                  0.051491943358072945,
+                  0.051451904296229145,
+                  0.05082667028766252,
+                  0.04894129443400175,
+                  0.050919881104505293,
+                  0.05088547265685861,
+                  0.0489035238029345,
+                  0.050837020873828465,
+                  0.05000563561985416,
+                  0.04902209472668062,
+                  0.050456415893407325
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.02106273901247846,
+                  0.020664637206735392,
+                  0.021107299804867807,
+                  0.020922861693861705,
+                  0.021304412841871567,
+                  0.020628489258101013,
+                  0.021190673828996864,
+                  0.020325398681464435,
+                  0.020590164185207982,
+                  0.021066508056222233,
+                  0.02162947082418043,
+                  0.021095545410076966,
+                  0.021254613159271685,
+                  0.02035781860421082,
+                  0.01984165954560524,
+                  0.021413060423469688,
+                  0.02176891076643983,
+                  0.021249099731335264,
+                  0.021283396362647977,
+                  0.021177978513975404,
+                  0.01980167138704303,
+                  0.01968420922793257,
+                  0.021718190552633132,
+                  0.02057018542522826,
+                  0.020284113526614078,
+                  0.022070149658048877,
+                  0.021353398683032765,
+                  0.020226827025737748,
+                  0.021158996581505107,
+                  0.02127462768442001
+                ],
+                &quot;repetitions&quot;: 8192,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 2.4214144915433327,
+                &quot;lower&quot;: 2.393339410828255,
+                &quot;upper&quot;: 2.463355893757794,
+                &quot;pairs&quot;: 30
+              }
+            },
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;torch_compile_inductor_fullgraph&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.03422767639094104,
+                  0.03291103112879057,
+                  0.0336876424551491,
+                  0.03294676208476233,
+                  0.034013905883867324,
+                  0.03386813354566698,
+                  0.03375926721105316,
+                  0.034039067626778774,
+                  0.033479243041867335,
+                  0.03395869445732558,
+                  0.03301964318858097,
+                  0.03405141198875583,
+                  0.03330625415109978,
+                  0.0335870565191243,
+                  0.033201090454682,
+                  0.033644007446653745,
+                  0.03333151245143995,
+                  0.03412906384347991,
+                  0.03403721105854629,
+                  0.03294489025940095,
+                  0.03410081481902694,
+                  0.033746200562845274,
+                  0.034041071655721566,
+                  0.033663960815388805,
+                  0.034106836915626104,
+                  0.03339011633229916,
+                  0.0334995778814573,
+                  0.033727320433385444,
+                  0.032915740966643625,
+                  0.03380034887712213
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.021743972776988585,
+                  0.020703933715893186,
+                  0.021855382202673468,
+                  0.021906285644135437,
+                  0.02148157250836391,
+                  0.021104232788005106,
+                  0.021711771728050167,
+                  0.021419443848813557,
+                  0.021030034302427225,
+                  0.02092494714389659,
+                  0.019948501586597445,
+                  0.020842300413548287,
+                  0.021125462890125846,
+                  0.021707183838870492,
+                  0.02136181640643997,
+                  0.021668314575506997,
+                  0.02156422424270943,
+                  0.021023061036018476,
+                  0.02127964782872027,
+                  0.020378585814384564,
+                  0.021788380859533163,
+                  0.020604715944116947,
+                  0.021114537597455296,
+                  0.0216401926280696,
+                  0.021501169799265085,
+                  0.021739979979784607,
+                  0.021598297120561938,
+                  0.02145119213992075,
+                  0.021579203247412693,
+                  0.021543685912561727
+                ],
+                &quot;repetitions&quot;: 8192,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 1.5753576754773189,
+                &quot;lower&quot;: 1.5552525813780202,
+                &quot;upper&quot;: 1.5907878136534674,
+                &quot;pairs&quot;: 30
+              }
+            }
+          ],
+          &quot;unavailable&quot;: [],
+          &quot;boundary&quot;: &quot;amortized synchronized public function latency&quot;,
+          &quot;domain_mode&quot;: &quot;assume&quot;
+        }
+      }
+    ]
+  },
+  &quot;events&quot;: [
+    {
+      &quot;event&quot;: &quot;request_reserved&quot;,
+      &quot;requests&quot;: 2,
+      &quot;output_tokens&quot;: 8192
+    },
+    {
+      &quot;event&quot;: &quot;model_response&quot;,
+      &quot;model&quot;: &quot;muse-wonder-1.0&quot;,
+      &quot;usage&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;input_tokens&quot;: 492,
+        &quot;output_tokens&quot;: 1659,
+        &quot;reasoning_tokens&quot;: 1142
+      },
+      &quot;requests&quot;: 1,
+      &quot;error&quot;: null
+    },
+    {
+      &quot;event&quot;: &quot;evaluation&quot;,
+      &quot;candidate_id&quot;: &quot;b862d7e649d9cb39e28c042c9066b9b093844fd62a63937525b0da891f95641a&quot;,
+      &quot;result&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;status&quot;: &quot;valid&quot;,
+        &quot;verification&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;passed&quot;: true,
+          &quot;cases&quot;: 10,
+          &quot;max_absolute_error&quot;: 4.76837158203125e-07,
+          &quot;max_relative_error&quot;: 0.29823704039699805,
+          &quot;rmse&quot;: 6.295044705082381e-08,
+          &quot;mismatches&quot;: 0,
+          &quot;reason&quot;: null
+        },
+        &quot;elapsed_ms&quot;: [
+          0.0214259440909359,
+          0.019574350952566988,
+          0.020967198606669513,
+          0.02084104919397589,
+          0.021236129761348366,
+          0.02119093322683341,
+          0.021234186766250218,
+          0.01965255236768826,
+          0.021108016968085508,
+          0.020039794922155352
+        ],
+        &quot;reason&quot;: null,
+        &quot;device_fault&quot;: false,
+        &quot;timing&quot;: {
+          &quot;schema_version&quot;: 1,
+          &quot;seed&quot;: 42,
+          &quot;bootstrap_resamples&quot;: 10000,
+          &quot;comparisons&quot;: [
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;original_eager&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.050448923827772774,
+                  0.05047515368694633,
+                  0.0494324899893428,
+                  0.049774505614053055,
+                  0.051384272339305426,
+                  0.051585927367980844,
+                  0.051516789795869045,
+                  0.05112710571353318,
+                  0.050503133177670634,
+                  0.049963678954156876
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.0214259440909359,
+                  0.019574350952566988,
+                  0.020967198606669513,
+                  0.02084104919397589,
+                  0.021236129761348366,
+                  0.02119093322683341,
+                  0.021234186766250218,
+                  0.01965255236768826,
+                  0.021108016968085508,
+                  0.020039794922155352
+                ],
+                &quot;repetitions&quot;: 8192,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 2.422893842721537,
+                &quot;lower&quot;: 2.388262377192189,
+                &quot;upper&quot;: 2.5064884932209477,
+                &quot;pairs&quot;: 10
+              }
+            },
+            {
+              &quot;schema_version&quot;: 1,
+              &quot;name&quot;: &quot;torch_compile_inductor_fullgraph&quot;,
+              &quot;series&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;baseline_ms&quot;: [
+                  0.033110031127492334,
+                  0.0327146251226651,
+                  0.03312425732460156,
+                  0.03267793274019937,
+                  0.03339323937900929,
+                  0.03339395141566115,
+                  0.03410356640642931,
+                  0.03365645849484622,
+                  0.033439753174491216,
+                  0.03366599536036574
+                ],
+                &quot;candidate_ms&quot;: [
+                  0.02102369689893635,
+                  0.02051378881695598,
+                  0.02166182959051355,
+                  0.02119144689949337,
+                  0.021323526976146923,
+                  0.020991175293971764,
+                  0.021308400389941085,
+                  0.020414921998224145,
+                  0.02056634008873459,
+                  0.020861317993947637
+                ],
+                &quot;repetitions&quot;: 8192,
+                &quot;order&quot;: [
+                  &quot;candidate_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;baseline_first&quot;,
+                  &quot;candidate_first&quot;
+                ]
+              },
+              &quot;summary&quot;: {
+                &quot;schema_version&quot;: 1,
+                &quot;speedup&quot;: 1.5928096865973538,
+                &quot;lower&quot;: 1.566027956649192,
+                &quot;upper&quot;: 1.6138000182986063,
+                &quot;pairs&quot;: 10
+              }
+            }
+          ],
+          &quot;unavailable&quot;: [],
+          &quot;boundary&quot;: &quot;amortized synchronized public function latency&quot;,
+          &quot;domain_mode&quot;: &quot;assume&quot;
+        }
+      }
+    },
+    {
+      &quot;event&quot;: &quot;request_reserved&quot;,
+      &quot;requests&quot;: 1,
+      &quot;output_tokens&quot;: 4096
+    },
+    {
+      &quot;event&quot;: &quot;model_response&quot;,
+      &quot;model&quot;: &quot;muse-wonder-1.0&quot;,
+      &quot;usage&quot;: {
+        &quot;schema_version&quot;: 1,
+        &quot;input_tokens&quot;: 1545,
+        &quot;output_tokens&quot;: 3286,
+        &quot;reasoning_tokens&quot;: 2124
+      },
+      &quot;requests&quot;: 1,
+      &quot;error&quot;: &quot;only a direct metal_stdlib include is allowed&quot;
+    },
+    {
+      &quot;event&quot;: &quot;finalized&quot;,
+      &quot;outcome&quot;: &quot;promoted&quot;,
+      &quot;reason&quot;: &quot;Numerically verified and faster in both independent confirmation sessions&quot;
+    }
+  ],
+  &quot;candidates&quot;: [
+    {
+      &quot;candidate_id&quot;: &quot;b862d7e649d9cb39e28c042c9066b9b093844fd62a63937525b0da891f95641a&quot;,
+      &quot;source&quot;: &quot;#include &lt;metal_stdlib&gt;\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint&amp; B, constant uint&amp; D, constant float&amp; epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    if (gid.y &gt;= B || gid.x &gt;= (D + 3u) / 4u) {\n        return;\n    }\n    uint col = gid.x * 4u;\n    uint row_base = gid.y * D;\n    if (col + 3u &lt; D) {\n        device const float4* x4 = reinterpret_cast&lt;device const float4*&gt;(x);\n        device const float4* p4 = reinterpret_cast&lt;device const float4*&gt;(parameter);\n        device float4* o4 = reinterpret_cast&lt;device float4*&gt;(out);\n        uint vec_index = gid.y * (D / 4u) + gid.x;\n        float4 z = x4[vec_index] + p4[gid.x];\n        float4 z2 = z * z;\n        float4 inner = 0.7978845608028654f * (z + 0.044715f * z2 * z);\n        float4 y = 0.5f * z * (1.0f + tanh(inner));\n        o4[vec_index] = y;\n    } else {\n        for (uint c = col; c &lt; D; ++c) {\n            float z = x[row_base + c] + parameter[c];\n            float z2 = z * z;\n            float inner = 0.7978845608028654f * (z + 0.044715f * z2 * z);\n            out[row_base + c] = 0.5f * z * (1.0f + tanh(inner));\n        }\n    }\n}\n&quot;
+    }
+  ]
+}</pre></details></section></main></body></html>

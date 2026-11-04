@@ -4,19 +4,15 @@ Updated November 3, 2026. Plan: [ordered implementation tasks](superpowers/plans
 
 ## Current state
 
-The function-level release is published on `main` (`cdb8ec1`); its CPU CI passed.
-Module continuation is implemented on `feat/module-optimizer` (core `e34a32f`).
-Original Tasks 16–17 now have tested code and measured acceptance for flat pure
-FP32 inference modules, not arbitrary nested models. Tasks 13–15 still have
-broader research/submission items: the full 108-job campaign and authenticated
-submission. The later compiled whole-module comparison supersedes the earlier
-eager-only acceptance; details are recorded below.
+The function-level optimizer, guarded flat-module integration, and release
+demo are published. The 108-job checked-mode FP32 comparison, separate
+nine-job assumed-domain FP16 pilot, and full live journey from a fresh
+wheel have all completed. The results are indexed below.
 
-The authorized nine-case FP32 development pilot is complete: **2 promoted,
-7 no-win, 0 failed jobs**, using 18 additional generation requests. Including
-seven prior requests, generation usage is **25 of 30 approved requests**; every
-request was capped at 4,096 output tokens. No more live requests are required
-for this release checkpoint. The access probe is separate.
+The prepared hackathon materials still need entrant sign-in and submission.
+The compiled whole-module experiment kept the original module after the
+regional rewrite lost to Inductor. Cross-chip, dynamic-shape and training
+research remain separate extensions.
 
 ## Implemented and exercised
 
@@ -350,3 +346,30 @@ were 146 valid timed candidates and 133 accounted Meta requests. Feedback
 and independent sampling each used 53 requests and produced zero promotions
 in all 27 matched trials. See results/2026-11-03-checked-fp32-full for raw
 pairs, all failure categories, and the reproducible analysis.
+
+
+## Release-plan closeout — November 3, 2026
+
+- Tasks 1–11 and 14 shipped the function-level agent, Metal evaluator,
+  correctness and timing gates, guarded artifact reuse, CLI and reports.
+- Task 12 verified custom explicit-cast FP16 functions and completed a separate
+  nine-job pilot. Six artifacts promoted across all three workload families.
+  Every winner passed a new-value, shape, dtype and gradient audit.
+  See results/2026-11-03-assumed-fp16-pilot.
+- Task 13 closed all 108 checked-mode FP32 jobs and 27 matched feedback trials.
+  The five original provider-failed jobs received separate bounded reruns.
+  Four reruns received model responses and finished with fallback. One
+  one-shot rerun still timed out connecting to Meta. An earlier overlapping
+  diagnostic also timed out on the GPU lock and was superseded by a separate
+  completed rerun. The frozen ledger retains its original outcomes.
+- Task 15 now includes a fresh installed-wheel live run, a new promoted
+  artifact, a 22-case audit, and a no-key reload of that same artifact.
+  The final local suite passed 178 tests, including GPU tests.
+  See results/2026-11-03-clean-wheel-live.
+- Tasks 16–17 implemented and tested module analysis and guarded rewriting.
+  The strongest-baseline gate retained the original module. A speedup
+  against the compiled whole module remains an unmet performance target.
+
+The demo and [submission draft](submission-draft.md) are ready. Entrant
+submission requires the authenticated portal. Later research items remain
+outside this release closeout.

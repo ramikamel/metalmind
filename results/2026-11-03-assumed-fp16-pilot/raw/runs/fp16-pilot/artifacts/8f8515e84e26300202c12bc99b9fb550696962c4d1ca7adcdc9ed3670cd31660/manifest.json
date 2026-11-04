@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "artifact_id": "8f8515e84e26300202c12bc99b9fb550696962c4d1ca7adcdc9ed3670cd31660",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:large",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "77db0358d2883e27f7f6e26c32dbbac098f71fc900088e6aafce950f03222e48",
+    "workload_hash": "c722e89a23dfda974e883dbb56b38bcd13f25124b57341b7ef2f8b58e2208d00",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 pos [[thread_position_in_grid]], uint2 grid [[threads_per_grid]]) {\n  (void)epsilon;\n  if ((D & 15u) == 0u) {\n    uint dv = D >> 2;\n    device const half4* xv = reinterpret_cast<device const half4*>(x);\n    device const half4* pv = reinterpret_cast<device const half4*>(parameter);\n    device half4* ov = reinterpret_cast<device half4*>(out);\n    uint row = pos.y;\n    if (row < B) {\n      uint c = pos.x << 2;\n      if (c + 3u < dv) {\n        uint base = row * dv + c;\n        float4 p0 = float4(pv[c]);\n        float4 p1 = float4(pv[c + 1u]);\n        float4 p2 = float4(pv[c + 2u]);\n        float4 p3 = float4(pv[c + 3u]);\n        float4 z0 = float4(xv[base]) + p0;\n        float4 z1 = float4(xv[base + 1u]) + p1;\n        float4 z2v = float4(xv[base + 2u]) + p2;\n        float4 z3 = float4(xv[base + 3u]) + p3;\n        float4 i0 = 0.7978845608028654f * (z0 + 0.044715f * z0 * z0 * z0);\n        float4 i1 = 0.7978845608028654f * (z1 + 0.044715f * z1 * z1 * z1);\n        float4 i2 = 0.7978845608028654f * (z2v + 0.044715f * z2v * z2v * z2v);\n        float4 i3 = 0.7978845608028654f * (z3 + 0.044715f * z3 * z3 * z3);\n        float4 y0 = 0.5f * z0 * (1.0f + tanh(i0));\n        float4 y1 = 0.5f * z1 * (1.0f + tanh(i1));\n        float4 y2 = 0.5f * z2v * (1.0f + tanh(i2));\n        float4 y3 = 0.5f * z3 * (1.0f + tanh(i3));\n        ov[base] = half4(y0);\n        ov[base + 1u] = half4(y1);\n        ov[base + 2u] = half4(y2);\n        ov[base + 3u] = half4(y3);\n      } else {\n        for (uint k = c; k < dv; ++k) {\n          float4 z = float4(xv[row * dv + k]) + float4(pv[k]);\n          float4 inner = 0.7978845608028654f * (z + 0.044715f * z * z * z);\n          ov[row * dv + k] = half4(0.5f * z * (1.0f + tanh(inner)));\n        }\n      }\n    }\n  } else {\n    uint total = B * D;\n    uint lin = pos.y * grid.x + pos.x;\n    uint stride = grid.x * grid.y;\n    for (uint i = lin; i < total; i += stride) {\n      uint col = (D == 0u) ? 0u : (i % D);\n      float z = float(x[i]) + float(parameter[col]);\n      float inner = 0.7978845608028654f * (z + 0.044715f * z * z * z);\n      out[i] = half(0.5f * z * (1.0f + tanh(inner)));\n    }\n  }\n}\n",
+      "threads": [
+        256,
+        512,
+        1
+      ],
+      "group_size": [
+        32,
+        8,
+        1
+      ],
+      "hypothesis": "Processing four independent half4 vectors per thread with one thread per row segment increases instruction-level parallelism around tanh and improves bandwidth versus one vector per thread."
+    },
+    "parent_id": "62d0d821e68e37aec4091272be9ef6787ced76fb761b33c3cb1a04f9c4f4d786",
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "2e56cd2355bc3dcc4a6c30810e3c1130c1d7217abd3fec7df4e272a24f4bbce8",
+  "evidence_hash": "a7a4170d1e4ea139f93ea8fba15e98ba870870de9e7c4d5d315cdfbe630772ea",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

@@ -1,0 +1,10 @@
+{
+  "outcome": "passed",
+  "artifact_id": "e62408a7dd877bb0868c85667cd8ce1ad0fd44d13c76971286271157e49ee58b",
+  "optimized_enabled": true,
+  "new_values_match": true,
+  "changed_shape_fallback": true,
+  "gradient_fallback": true,
+  "max_absolute_error": 2.9802322387695312e-08,
+  "new_performance_measurement": false
+}

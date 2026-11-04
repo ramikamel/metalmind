@@ -1,5 +1,9 @@
 # MetalMind Implementation Plan
 
+> The release outcomes are recorded in [the implementation closeout](../../progress.md#release-plan-closeout--november-3-2026).
+> The original checklist below preserves the implementation and research scope.
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Implementation was subsequently authorized in the conversation. See [current progress](../../progress.md) for executed work, evidence, and deviations.
 
 **Goal:** Build a local autonomous agent that turns supported PyTorch functions into numerically verified Metal implementations, promotes only confirmed performance wins, and exports guarded reusable callables.

@@ -75,6 +75,12 @@ The [completed 108-job FP32 comparison](results/2026-11-03-checked-fp32-full/REA
 promoted no kernels in checked mode. It compares four strategies and pairs
 feedback with independent sampling on matching trials.
 
+A [separate FP16 assumed-domain pilot](results/2026-11-03-assumed-fp16-pilot/README.md)
+promoted **6 of 9 signatures** across bias/GELU, RMSNorm and softmax. Medium
+softmax measured **2.641× and 2.544×** versus the fastest verified baseline
+in its two confirmation sessions. All six artifacts passed an offline
+reuse audit with shape, dtype and gradient fallback.
+
 ## Module workflow
 
 The module path reuses confirmed function artifacts and makes no model requests.

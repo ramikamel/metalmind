@@ -1,0 +1,8 @@
+{
+  "campaign_id": "9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93",
+  "source_commit": "0cb08a322a61a0e39d8bcda63cec64775e5262ae",
+  "source_sha256": "4d5fa2de66193754a1d40f57f3f83f68e4a607cc7f2fbc330abe463b21ebc790",
+  "jobs": 9,
+  "model_requests": 18,
+  "max_model_requests": 18
+}

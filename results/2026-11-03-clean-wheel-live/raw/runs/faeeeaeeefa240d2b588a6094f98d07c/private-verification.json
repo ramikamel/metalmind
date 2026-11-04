@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "valid",
+  "verification": {
+    "schema_version": 1,
+    "passed": true,
+    "cases": 22,
+    "max_absolute_error": 9.5367431640625e-07,
+    "max_relative_error": 0.2982377225180244,
+    "rmse": 6.280788744031052e-08,
+    "mismatches": 0,
+    "reason": null
+  },
+  "elapsed_ms": [],
+  "reason": null,
+  "device_fault": false,
+  "timing": null
+}

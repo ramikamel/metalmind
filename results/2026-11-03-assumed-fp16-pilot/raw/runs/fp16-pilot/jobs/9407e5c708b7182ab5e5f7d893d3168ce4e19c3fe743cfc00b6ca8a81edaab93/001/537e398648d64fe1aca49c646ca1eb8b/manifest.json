@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:medium",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          1024
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "assume",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261104,
+    "runs_dir": "runs/fp16-pilot/jobs/9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93/001",
+    "artifacts_dir": "runs/fp16-pilot/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 4873,
+  "elapsed_seconds": 90.33044891701138,
+  "wall_deadline_utc": 1793754680.8431191,
+  "seen": [
+    "5a0a04826017232032e574ba662f440da4c3a75bc7ac8840ac73cbc941db0fbf",
+    "6a50d893a1e148fc623d7ff6e340dbd52df31399c3ed8db013ad6711f630e4da"
+  ],
+  "archive": [
+    {
+      "score": 1.6364609022159762,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "6a50d893a1e148fc623d7ff6e340dbd52df31399c3ed8db013ad6711f630e4da",
+        "workload_hash": "f857e4d8b3552c9decaf335ed4c4088cc1d3dac5d5a19b93a13a06ffe2da9adf",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]], uint2 tpg [[threads_per_grid]]) {\n    (void)epsilon;\n    const float k = 0.7978845608028654f;\n    if ((D & 3u) == 0u) {\n        const uint d4 = D >> 2;\n        device const half4* x4 = (device const half4*)x;\n        device const half4* p4 = (device const half4*)parameter;\n        device half4* o4 = (device half4*)out;\n        const uint step = tpg.x << 1;\n        for (uint row = gid.y; row < B; row += tpg.y) {\n            const uint base = row * d4;\n            for (uint c = gid.x; c < d4; c += step) {\n                float4 z0 = float4(x4[base + c]) + float4(p4[c]);\n                float4 z03 = z0 * z0 * z0;\n                float4 y0 = 0.5f * z0 * (1.0f + tanh(k * (z0 + 0.044715f * z03)));\n                o4[base + c] = half4(y0);\n                const uint c1 = c + tpg.x;\n                if (c1 < d4) {\n                    float4 z1 = float4(x4[base + c1]) + float4(p4[c1]);\n                    float4 z13 = z1 * z1 * z1;\n                    float4 y1 = 0.5f * z1 * (1.0f + tanh(k * (z1 + 0.044715f * z13)));\n                    o4[base + c1] = half4(y1);\n                }\n            }\n        }\n    } else {\n        for (uint row = gid.y; row < B; row += tpg.y) {\n            const uint base = row * D;\n            for (uint col = gid.x; col < D; col += tpg.x) {\n                float z = float(x[base + col]) + float(parameter[col]);\n                float z3 = z * z * z;\n                float y = 0.5f * z * (1.0f + tanh(k * (z + 0.044715f * z3)));\n                out[base + col] = half(y);\n            }\n        }\n    }\n}\n",
+          "threads": [
+            128,
+            256,
+            1
+          ],
+          "group_size": [
+            128,
+            1,
+            1
+          ],
+          "hypothesis": "Two independent half4 GELU evaluations per thread with a 128x256 grid increase ILP and vector reuse while exactly covering 256 rows, reducing loop and launch overhead versus one vector per iteration."
+        },
+        "parent_id": "5a0a04826017232032e574ba662f440da4c3a75bc7ac8840ac73cbc941db0fbf",
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 1.6280618217270812,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "5a0a04826017232032e574ba662f440da4c3a75bc7ac8840ac73cbc941db0fbf",
+        "workload_hash": "f857e4d8b3552c9decaf335ed4c4088cc1d3dac5d5a19b93a13a06ffe2da9adf",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]], uint2 tpg [[threads_per_grid]]) {\n    (void)epsilon;\n    const float k = 0.7978845608028654f;\n    if ((D & 3u) == 0u) {\n        const uint d4 = D >> 2;\n        device const half4* x4 = (device const half4*)x;\n        device const half4* p4 = (device const half4*)parameter;\n        device half4* o4 = (device half4*)out;\n        for (uint row = gid.y; row < B; row += tpg.y) {\n            const uint base = row * d4;\n            for (uint c = gid.x; c < d4; c += tpg.x) {\n                float4 z = float4(x4[base + c]) + float4(p4[c]);\n                float4 z3 = z * z * z;\n                float4 y = 0.5f * z * (1.0f + tanh(k * (z + 0.044715f * z3)));\n                o4[base + c] = half4(y);\n            }\n        }\n    } else {\n        for (uint row = gid.y; row < B; row += tpg.y) {\n            const uint base = row * D;\n            for (uint col = gid.x; col < D; col += tpg.x) {\n                float z = float(x[base + col]) + float(parameter[col]);\n                float z3 = z * z * z;\n                float y = 0.5f * z * (1.0f + tanh(k * (z + 0.044715f * z3)));\n                out[base + col] = half(y);\n            }\n        }\n    }\n}\n",
+          "threads": [
+            256,
+            256,
+            1
+          ],
+          "group_size": [
+            64,
+            4,
+            1
+          ],
+          "hypothesis": "Vectorized half4 loads with 2D indexing reduce memory instructions and avoid division while FP32 tanh GELU preserves accuracy for 256x1024."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "promoted"
+}

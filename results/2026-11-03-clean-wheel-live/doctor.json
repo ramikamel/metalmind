@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "python_version": "3.14.6",
+  "torch_version": "2.15.0",
+  "os_version": "27.2",
+  "architecture": "arm64",
+  "capabilities": {
+    "mps_built": true,
+    "mps_available": true,
+    "compile_shader": true,
+    "timed_events": true
+  },
+  "unavailable_reason": null,
+  "shader_health_passed": true
+}

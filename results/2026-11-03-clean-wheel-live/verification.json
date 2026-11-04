@@ -1,0 +1,8 @@
+{
+  "wheel_sha256": "e21e394436ed52e9e45c05903a555f49b71495cf1b5ed7075a06a011f6a4b4b0",
+  "source_sha256": "4d5fa2de66193754a1d40f57f3f83f68e4a607cc7f2fbc330abe463b21ebc790",
+  "fresh_virtualenv_outside_checkout": true,
+  "model_requests": 2,
+  "optimization_outcome": "promoted",
+  "offline_gpu_reuse": "passed"
+}

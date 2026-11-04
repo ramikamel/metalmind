@@ -30,6 +30,8 @@ fixture answers, benchmark scores or acceptance decisions.
 - [Three-minute silent walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
 - [Terminal recording and captions](../demo/README.md)
 - [Function pilot](../results/2026-11-02-fp32-pilot/README.md)
+- [Separate FP16 results and reuse audit](../results/2026-11-03-assumed-fp16-pilot/README.md)
+- [Fresh-wheel live acceptance check](../results/2026-11-03-clean-wheel-live/README.md)
 - [Completed checked-mode campaign](../results/2026-11-03-checked-fp32-full/README.md)
 - [Workflow reuse-cost estimate](../results/2026-11-03-workflow-amortization/README.md)
 - [Whole-module compiler comparison](../results/2026-11-02-module-baselines/README.md)
@@ -44,6 +46,12 @@ signatures. Medium bias/GELU reached 1.547× and 1.553× against PyTorch Inducto
 fullgraph in independent confirmations. A separate eager matmul-plus-activation
 workflow reached 1.153× in one session. Its median saving was 29.1 µs per call,
 which makes the value of reusing a verified artifact visible.
+
+A separate assumed-domain FP16 pilot promoted six of nine signatures
+across bias/GELU, RMSNorm and softmax. Medium softmax reached 2.641×
+and 2.544× against its fastest verified baseline. Each promoted artifact
+dispatched on new in-domain values and used PyTorch fallback on a changed
+shape, FP32 inputs and gradient mode.
 
 All 108 jobs in a separate checked-mode comparison fell back to PyTorch.
 At module level, the regional rewrite passed eight private correctness cases

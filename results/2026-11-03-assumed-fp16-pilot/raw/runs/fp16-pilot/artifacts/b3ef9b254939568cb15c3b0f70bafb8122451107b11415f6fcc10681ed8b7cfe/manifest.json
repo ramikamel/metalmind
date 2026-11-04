@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "artifact_id": "b3ef9b254939568cb15c3b0f70bafb8122451107b11415f6fcc10681ed8b7cfe",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "softmax:large",
+    "family": "softmax",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          128,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        128,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "softmax",
+    "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "6b0cb79a8490b7b480f2c154f82d6c49059f95fcd487df85ffa76c8e0c0869f5",
+    "workload_hash": "61cbd06e9ea7846f52294e92a52d93c5a23ad0198585106ecab616cbb28c3884",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint row [[threadgroup_position_in_grid]], uint tid [[thread_position_in_threadgroup]], uint tptg [[threads_per_threadgroup]], uint sg_id [[simdgroup_index_in_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint sg_size [[threads_per_simdgroup]]) {\n    (void)epsilon;\n    if (row >= B) return;\n    device const half* in_row = x + (uint)row * D;\n    device half* out_row = out + (uint)row * D;\n    threadgroup float sbuf[32];\n    uint num_sg = tptg / sg_size;\n    float vals[32];\n    uint cnt = 0;\n    float local_max = -1.0e30f;\n    for (uint i = tid; i < D; i += tptg) {\n        float v = float(in_row[i]);\n        if (cnt < 32) vals[cnt] = v;\n        cnt++;\n        local_max = fmax(local_max, v);\n    }\n    float sg_max = simd_max(local_max);\n    if (lane == 0) sbuf[sg_id] = sg_max;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (sg_id == 0) {\n        float v = (lane < num_sg) ? sbuf[lane] : -1.0e30f;\n        v = simd_max(v);\n        if (lane == 0) sbuf[0] = v;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float row_max = sbuf[0];\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    bool cached = (cnt <= 32);\n    float local_sum = 0.0f;\n    if (cached) {\n        for (uint k = 0; k < cnt; k++) {\n            float e = exp2((vals[k] - row_max) * 1.4426950408889634f);\n            vals[k] = e;\n            local_sum += e;\n        }\n    } else {\n        for (uint i = tid; i < D; i += tptg) local_sum += exp2((float(in_row[i]) - row_max) * 1.4426950408889634f);\n    }\n    float sg_sum = simd_sum(local_sum);\n    if (lane == 0) sbuf[sg_id] = sg_sum;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (sg_id == 0) {\n        float v = (lane < num_sg) ? sbuf[lane] : 0.0f;\n        v = simd_sum(v);\n        if (lane == 0) sbuf[0] = v;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float inv_sum = 1.0f / sbuf[0];\n    if (cached) {\n        uint k = 0;\n        for (uint i = tid; i < D; i += tptg) {\n            out_row[i] = half(vals[k] * inv_sum);\n            k++;\n        }\n    } else {\n        for (uint i = tid; i < D; i += tptg) out_row[i] = half(exp2((float(in_row[i]) - row_max) * 1.4426950408889634f) * inv_sum);\n    }\n}\n",
+      "threads": [
+        32768,
+        1,
+        1
+      ],
+      "group_size": [
+        256,
+        1,
+        1
+      ],
+      "hypothesis": "Caching each row slice in registers for one read, one exp2 evaluation, and simdgroup reductions will beat the incumbent's three global passes, repeated exp, and full barrier tree."
+    },
+    "parent_id": "0f45073d1871ee082e3a6f6470e5b8123e4a3a83a727d0291007d32691cc88c7",
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "444842e92fc6f80d44a53816d217a2a0b36595f88469c2d7515ba7e1ad8a4070",
+  "evidence_hash": "45eeba5d4fd8774f07213940992cfb1a9e7e51c6cf3d67d89e23bc23f2269708",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

@@ -1,0 +1,5 @@
+{
+  "outcome": "promoted",
+  "reason": "Numerically verified and faster in both independent confirmation sessions",
+  "artifact_path": "runs/fp16-pilot/artifacts/bc69c1dd244e635636f04c7f16e7eb4a9aaec6080fad14af949ff399dfc352e2"
+}

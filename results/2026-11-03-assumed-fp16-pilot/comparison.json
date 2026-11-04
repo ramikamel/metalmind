@@ -1,0 +1,42 @@
+{
+  "campaign_id": "9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93",
+  "domain_mode": "assume",
+  "scope": "complete",
+  "complete": true,
+  "attempted": 9,
+  "planned_jobs": 9,
+  "interpretation": "The recorded jobs support descriptive comparisons only. A partial scope covers the frozen prefix. All attempted jobs enter the promotion denominator. Non-promoted jobs contribute 1.0 to the all-job final speedup, and unattempted jobs are excluded. Winner speedups use the recorded minimum ratio across confirmation comparisons. The Wilson intervals describe promotion rates under a binomial model.",
+  "strategies": {
+    "feedback": {
+      "planned": 9,
+      "attempted": 9,
+      "unattempted": 0,
+      "outcomes": {
+        "promoted": 6,
+        "inconclusive": 3
+      },
+      "model_requests": 18,
+      "evaluations_started": 17,
+      "promoted": 6,
+      "promotion_rate": 0.6666666666666666,
+      "promotion_rate_wilson_95": [
+        0.3542021355803963,
+        0.879416181613089
+      ],
+      "all_attempted_geomean_speedup": 1.3251137000397524,
+      "winner_only_geomean_speedup": 1.5253858594748888
+    }
+  },
+  "matched_feedback_independent": {
+    "planned_pairs": 0,
+    "attempted_pairs": 0,
+    "promotion_outcomes": {
+      "both_promoted": 0,
+      "feedback_only": 0,
+      "independent_only": 0,
+      "neither_promoted": 0
+    },
+    "comparable_search_pairs": 0,
+    "pairs": []
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:medium",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          1024
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "assume",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 120.0,
+    "stagnation_limit": 10,
+    "seed": 20261104,
+    "runs_dir": "runs/fp16-pilot/jobs/9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93/004",
+    "artifacts_dir": "runs/fp16-pilot/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 1,
+  "output_tokens": 4486,
+  "elapsed_seconds": 70.0231264999893,
+  "wall_deadline_utc": 1793755269.600123,
+  "seen": [
+    "192f8ab390787664aea39eb5d7ed612c91cc49c9348c5cdc644c403229bb989d"
+  ],
+  "archive": [
+    {
+      "score": 1.5238305029484116,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "192f8ab390787664aea39eb5d7ed612c91cc49c9348c5cdc644c403229bb989d",
+        "workload_hash": "873f522e9021b487711d4962a05c7b9e419eb82c6a05c5eedab2857aa617f144",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tg [[threadgroup_position_in_grid]], uint3 tid_in_tg [[thread_position_in_threadgroup]], uint3 tgs [[threads_per_threadgroup]]) {\n  uint row = tg.x;\n  if (row >= B) {\n    return;\n  }\n  uint tid = tid_in_tg.x;\n  uint nt = tgs.x;\n  threadgroup float sdata[256];\n  float sum = 0.0f;\n  uint base = row * D;\n  for (uint j = tid; j < D; j += nt) {\n    float v = float(x[base + j]);\n    sum += v * v;\n  }\n  if (tid < 256) {\n    sdata[tid] = sum;\n  }\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  for (uint offset = 128; offset > 0; offset >>= 1) {\n    if (tid < offset) {\n      sdata[tid] += sdata[tid + offset];\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n  }\n  float mean = sdata[0] / float(D);\n  float inv = rsqrt(mean + epsilon);\n  for (uint j = tid; j < D; j += nt) {\n    float v = float(x[base + j]);\n    float w = float(parameter[j]);\n    out[base + j] = half(v * inv * w);\n  }\n}\n",
+          "threads": [
+            65536,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "One 256-thread group per row with strided loads and threadgroup tree reduction minimizes global traffic and should be correct and efficient for 256x1024 RMSNorm."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "promoted"
+}

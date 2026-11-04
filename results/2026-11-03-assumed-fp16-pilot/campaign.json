@@ -1,0 +1,661 @@
+{
+  "campaign_id": "9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93",
+  "manifest_version": 2,
+  "config": {
+    "schema_version": 1,
+    "families": [
+      "bias_gelu",
+      "rmsnorm",
+      "softmax"
+    ],
+    "cases": [
+      "small",
+      "medium",
+      "large"
+    ],
+    "strategies": [
+      "feedback"
+    ],
+    "trials": 1,
+    "dtype": "float16",
+    "domain_mode": "assume",
+    "run_config": {
+      "schema_version": 1,
+      "model": "muse-wonder-1.0",
+      "reasoning_effort": "low",
+      "domain_mode": "assume",
+      "max_candidates": 2,
+      "max_requests": 2,
+      "wall_seconds": 1800.0,
+      "finalization_reserve_seconds": 300.0,
+      "max_output_tokens": 4096,
+      "total_output_tokens": 8192,
+      "request_timeout_seconds": 120.0,
+      "compile_timeout_seconds": 60.0,
+      "execution_timeout_seconds": 120.0,
+      "stagnation_limit": 10,
+      "seed": 20261104,
+      "runs_dir": "runs/fp16-pilot/jobs",
+      "artifacts_dir": "runs/fp16-pilot/artifacts",
+      "warmups": 25,
+      "search_pairs": 10,
+      "confirmation_pairs": 30,
+      "bootstrap_resamples": 10000,
+      "confirmation_cooldown_seconds": 60.0
+    }
+  },
+  "workloads": [
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "workload": {
+        "schema_version": 1,
+        "workload_id": "bias_gelu:small",
+        "family": "bias_gelu",
+        "semantics_version": 1,
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              64,
+              257
+            ],
+            "strides": [
+              257,
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              257
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "output": {
+          "schema_version": 1,
+          "shape": [
+            64,
+            257
+          ],
+          "strides": [
+            257,
+            1
+          ],
+          "dtype": "float16",
+          "device": "mps",
+          "storage_offset": 0
+        },
+        "epsilon": 0.0,
+        "accumulation_dtype": "float32",
+        "reference_id": "bias_gelu",
+        "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+        "policy_version": 1
+      },
+      "policy": {
+        "schema_version": 1,
+        "atol": 0.001,
+        "rtol": 0.01,
+        "max_input": 10.0,
+        "max_parameter": 10.0,
+        "exclude_subnormals": true
+      }
+    },
+    {
+      "family": "bias_gelu",
+      "case": "medium",
+      "workload": {
+        "schema_version": 1,
+        "workload_id": "bias_gelu:medium",
+        "family": "bias_gelu",
+        "semantics_version": 1,
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              1024
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "output": {
+          "schema_version": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "strides": [
+            1024,
+            1
+          ],
+          "dtype": "float16",
+          "device": "mps",
+          "storage_offset": 0
+        },
+        "epsilon": 0.0,
+        "accumulation_dtype": "float32",
+        "reference_id": "bias_gelu",
+        "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+        "policy_version": 1
+      },
+      "policy": {
+        "schema_version": 1,
+        "atol": 0.001,
+        "rtol": 0.01,
+        "max_input": 10.0,
+        "max_parameter": 10.0,
+        "exclude_subnormals": true
+      }
+    },
+    {
+      "family": "bias_gelu",
+      "case": "large",
+      "workload": {
+        "schema_version": 1,
+        "workload_id": "bias_gelu:large",
+        "family": "bias_gelu",
+        "semantics_version": 1,
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              512,
+              4096
+            ],
+            "strides": [
+              4096,
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              4096
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "output": {
+          "schema_version": 1,
+          "shape": [
+            512,
+            4096
+          ],
+          "strides": [
+            4096,
+            1
+          ],
+          "dtype": "float16",
+          "device": "mps",
+          "storage_offset": 0
+        },
+        "epsilon": 0.0,
+        "accumulation_dtype": "float32",
+        "reference_id": "bias_gelu",
+        "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+        "policy_version": 1
+      },
+      "policy": {
+        "schema_version": 1,
+        "atol": 0.001,
+        "rtol": 0.01,
+        "max_input": 10.0,
+        "max_parameter": 10.0,
+        "exclude_subnormals": true
+      }
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "workload": {
+        "schema_version": 1,
+        "workload_id": "rmsnorm:small",
+        "family": "rmsnorm",
+        "semantics_version": 1,
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              64,
+              257
+            ],
+            "strides": [
+              257,
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              257
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "output": {
+          "schema_version": 1,
+          "shape": [
+            64,
+            257
+          ],
+          "strides": [
+            257,
+            1
+          ],
+          "dtype": "float16",
+          "device": "mps",
+          "storage_offset": 0
+        },
+        "epsilon": 1e-05,
+        "accumulation_dtype": "float32",
+        "reference_id": "rmsnorm",
+        "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+        "policy_version": 1
+      },
+      "policy": {
+        "schema_version": 1,
+        "atol": 0.002,
+        "rtol": 0.02,
+        "max_input": 100.0,
+        "max_parameter": 10.0,
+        "exclude_subnormals": true
+      }
+    },
+    {
+      "family": "rmsnorm",
+      "case": "medium",
+      "workload": {
+        "schema_version": 1,
+        "workload_id": "rmsnorm:medium",
+        "family": "rmsnorm",
+        "semantics_version": 1,
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              1024
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "output": {
+          "schema_version": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "strides": [
+            1024,
+            1
+          ],
+          "dtype": "float16",
+          "device": "mps",
+          "storage_offset": 0
+        },
+        "epsilon": 1e-05,
+        "accumulation_dtype": "float32",
+        "reference_id": "rmsnorm",
+        "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+        "policy_version": 1
+      },
+      "policy": {
+        "schema_version": 1,
+        "atol": 0.002,
+        "rtol": 0.02,
+        "max_input": 100.0,
+        "max_parameter": 10.0,
+        "exclude_subnormals": true
+      }
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "workload": {
+        "schema_version": 1,
+        "workload_id": "rmsnorm:large",
+        "family": "rmsnorm",
+        "semantics_version": 1,
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              512,
+              4096
+            ],
+            "strides": [
+              4096,
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          },
+          {
+            "schema_version": 1,
+            "shape": [
+              4096
+            ],
+            "strides": [
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "output": {
+          "schema_version": 1,
+          "shape": [
+            512,
+            4096
+          ],
+          "strides": [
+            4096,
+            1
+          ],
+          "dtype": "float16",
+          "device": "mps",
+          "storage_offset": 0
+        },
+        "epsilon": 1e-05,
+        "accumulation_dtype": "float32",
+        "reference_id": "rmsnorm",
+        "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+        "policy_version": 1
+      },
+      "policy": {
+        "schema_version": 1,
+        "atol": 0.002,
+        "rtol": 0.02,
+        "max_input": 100.0,
+        "max_parameter": 10.0,
+        "exclude_subnormals": true
+      }
+    },
+    {
+      "family": "softmax",
+      "case": "small",
+      "workload": {
+        "schema_version": 1,
+        "workload_id": "softmax:small",
+        "family": "softmax",
+        "semantics_version": 1,
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              64,
+              257
+            ],
+            "strides": [
+              257,
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "output": {
+          "schema_version": 1,
+          "shape": [
+            64,
+            257
+          ],
+          "strides": [
+            257,
+            1
+          ],
+          "dtype": "float16",
+          "device": "mps",
+          "storage_offset": 0
+        },
+        "epsilon": 0.0,
+        "accumulation_dtype": "float32",
+        "reference_id": "softmax",
+        "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+        "policy_version": 1
+      },
+      "policy": {
+        "schema_version": 1,
+        "atol": 0.002,
+        "rtol": 0.02,
+        "max_input": 80.0,
+        "max_parameter": null,
+        "exclude_subnormals": true
+      }
+    },
+    {
+      "family": "softmax",
+      "case": "medium",
+      "workload": {
+        "schema_version": 1,
+        "workload_id": "softmax:medium",
+        "family": "softmax",
+        "semantics_version": 1,
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              256,
+              1024
+            ],
+            "strides": [
+              1024,
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "output": {
+          "schema_version": 1,
+          "shape": [
+            256,
+            1024
+          ],
+          "strides": [
+            1024,
+            1
+          ],
+          "dtype": "float16",
+          "device": "mps",
+          "storage_offset": 0
+        },
+        "epsilon": 0.0,
+        "accumulation_dtype": "float32",
+        "reference_id": "softmax",
+        "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+        "policy_version": 1
+      },
+      "policy": {
+        "schema_version": 1,
+        "atol": 0.002,
+        "rtol": 0.02,
+        "max_input": 80.0,
+        "max_parameter": null,
+        "exclude_subnormals": true
+      }
+    },
+    {
+      "family": "softmax",
+      "case": "large",
+      "workload": {
+        "schema_version": 1,
+        "workload_id": "softmax:large",
+        "family": "softmax",
+        "semantics_version": 1,
+        "inputs": [
+          {
+            "schema_version": 1,
+            "shape": [
+              128,
+              4096
+            ],
+            "strides": [
+              4096,
+              1
+            ],
+            "dtype": "float16",
+            "device": "mps",
+            "storage_offset": 0
+          }
+        ],
+        "output": {
+          "schema_version": 1,
+          "shape": [
+            128,
+            4096
+          ],
+          "strides": [
+            4096,
+            1
+          ],
+          "dtype": "float16",
+          "device": "mps",
+          "storage_offset": 0
+        },
+        "epsilon": 0.0,
+        "accumulation_dtype": "float32",
+        "reference_id": "softmax",
+        "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+        "policy_version": 1
+      },
+      "policy": {
+        "schema_version": 1,
+        "atol": 0.002,
+        "rtol": 0.02,
+        "max_input": 80.0,
+        "max_parameter": null,
+        "exclude_subnormals": true
+      }
+    }
+  ],
+  "jobs": 9,
+  "execution": {
+    "execution_version": 1,
+    "source_sha256": "4d5fa2de66193754a1d40f57f3f83f68e4a607cc7f2fbc330abe463b21ebc790",
+    "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+    "job_order": [
+      {
+        "family": "softmax",
+        "case": "small",
+        "strategy": "feedback",
+        "trial": 0
+      },
+      {
+        "family": "bias_gelu",
+        "case": "medium",
+        "strategy": "feedback",
+        "trial": 0
+      },
+      {
+        "family": "softmax",
+        "case": "medium",
+        "strategy": "feedback",
+        "trial": 0
+      },
+      {
+        "family": "bias_gelu",
+        "case": "small",
+        "strategy": "feedback",
+        "trial": 0
+      },
+      {
+        "family": "rmsnorm",
+        "case": "medium",
+        "strategy": "feedback",
+        "trial": 0
+      },
+      {
+        "family": "softmax",
+        "case": "large",
+        "strategy": "feedback",
+        "trial": 0
+      },
+      {
+        "family": "bias_gelu",
+        "case": "large",
+        "strategy": "feedback",
+        "trial": 0
+      },
+      {
+        "family": "rmsnorm",
+        "case": "large",
+        "strategy": "feedback",
+        "trial": 0
+      },
+      {
+        "family": "rmsnorm",
+        "case": "small",
+        "strategy": "feedback",
+        "trial": 0
+      }
+    ],
+    "max_model_requests": 18
+  }
+}
