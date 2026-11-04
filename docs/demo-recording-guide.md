@@ -7,7 +7,7 @@ from the saved experiments.
 
 ## Set up the screen
 
-- Open the [README flowchart](../README.md#system-flow), the [softmax repair report](../results/2026-11-04-muse-prompt-ab/README.md#focused-softmax-repair), and [RESULTS.md](../RESULTS.md) in that order. Open the README on GitHub to see the rendered Mermaid diagram.
+- Open the [README flowchart](../README.md#system-flow), the [softmax repair report](../results/2026-11-04-muse-prompt-ab/README.md#focused-softmax-repair), and [RESULTS.md](../RESULTS.md) in that order. Open the README on GitHub and fit the whole flowchart in the recording frame.
 - In the repair report, pre-open the [original rejection](../results/2026-11-04-muse-prompt-ab/runs/float16-softmax-medium/tuned/jobs/684bde683ba747d7a0fd1c6e29fcd3cd/private-verification.json) and the [winning Metal source](../results/2026-11-04-muse-prompt-ab/focused-repair/artifacts/3c43a8a180ea90c420d51020d22d580ecbd0440f2b978423440489beeba03fd4/kernel.metal). Scroll the kernel to the SIMD reductions so they are visible when you switch tabs.
 - Use one browser window and one terminal window. Increase text size enough to read the labels in a playback window. Close unrelated tabs, hide notifications, and keep the environment file and API key outside the recording.
 - Confirm the submission portal's current video fields before choosing an upload format or cutting the video to a different length. [Submission portal](https://cerebralvalley.ai/e/meta-ai-developer-hackathon/hackathon/submit)

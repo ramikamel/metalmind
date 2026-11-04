@@ -7,24 +7,7 @@ correctness and performance confirmation; otherwise PyTorch remains the fallback
 
 ## System flow
 
-```mermaid
-flowchart TD
-    A["Supported PyTorch function or registered workload"] --> B["Local analyzer records the exact tensor signature"]
-    B --> C["Local controller tracks the remaining search budget"]
-    C --> D["Muse Wonder API proposes Metal source and launch dimensions"]
-    D --> E{"Local worker compiles and passes public correctness checks?"}
-    E -->|Yes| F["Measure against verified PyTorch baselines"]
-    E -->|No| G["Record failure or timing feedback"]
-    F --> G
-    G -->|Budget remains| C
-    G -->|Search ends| H{"Best eligible candidate passes private checks and both timing sessions?"}
-    H -->|Yes| I["Save kernel, signature, and evidence as a promoted artifact"]
-    H -->|No| P["Keep the original PyTorch function"]
-    I --> J["Load and verify the artifact offline"]
-    J --> K{"Artifact and call satisfy the runtime guards?"}
-    K -->|Yes| M["Dispatch the Metal kernel"]
-    K -->|No| P
-```
+![MetalMind system flow: Muse Wonder proposes Metal kernels, MetalMind tests them and feeds back the results, and verified kernels run offline with PyTorch as the fallback.](docs/system-flow.svg)
 
 A promoted artifact can be reused without a model request. Checked mode scans
 tensor values before dispatch. With caller-guaranteed bounds, the wrapper

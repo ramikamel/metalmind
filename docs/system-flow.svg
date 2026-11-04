@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 262" width="840" height="262" role="img" aria-labelledby="title desc">
+  <title id="title">MetalMind system flow</title>
+  <desc id="desc">Muse Wonder proposes a Metal kernel for a PyTorch tensor signature. MetalMind compiles, checks, and benchmarks the kernel on Apple Silicon, feeds results into the next proposal, and saves only candidates that pass independent confirmation. The saved kernel runs offline when its runtime guards pass. Otherwise, the original PyTorch function runs.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" markerWidth="6" markerHeight="6" refX="9" refY="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6fa2f3"/>
+    </marker>
+    <marker id="fallback" viewBox="0 0 10 10" markerWidth="6" markerHeight="6" refX="9" refY="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#a5b3c6"/>
+    </marker>
+  </defs>
+  <rect x="0.5" y="0.5" width="839" height="261" rx="16" fill="#111925" stroke="#35445a"/>
+  <g fill="#192637" stroke="#405575">
+    <rect x="21.5" y="20.5" width="236" height="132" rx="11"/>
+    <rect x="301.5" y="20.5" width="236" height="132" rx="11"/>
+    <rect x="581.5" y="20.5" width="236" height="132" rx="11"/>
+  </g>
+  <g fill="none" stroke="#6fa2f3" stroke-width="2.2" marker-end="url(#arrow)">
+    <path d="M 258 86 H 297"/>
+    <path d="M 538 86 H 577"/>
+    <path d="M 327 153 V 190 H 139 V 156" stroke-dasharray="4 4"/>
+  </g>
+  <g fill="none" stroke="#a5b3c6" stroke-width="2" marker-end="url(#fallback)">
+    <path d="M 419 153 V 205"/>
+    <path d="M 699 153 V 205"/>
+  </g>
+  <rect x="300.5" y="208.5" width="517" height="35" rx="9" fill="#222e40" stroke="#56667d"/>
+  <g font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif">
+    <g fill="#8db8fc" font-size="15" font-weight="700">
+      <text x="38" y="50">01</text>
+      <text x="318" y="50">02</text>
+      <text x="598" y="50">03</text>
+    </g>
+    <g fill="#f2f6fd" font-size="21" font-weight="700">
+      <text x="68" y="51">Propose</text>
+      <text x="348" y="51">Test &amp; select</text>
+      <text x="628" y="51">Reuse offline</text>
+    </g>
+    <g fill="#d5dfed" font-size="16">
+      <text x="38" y="81">Read PyTorch tensor spec</text>
+      <text x="38" y="105">Muse Wonder drafts</text>
+      <text x="38" y="129">a Metal kernel</text>
+      <text x="318" y="81">Compile, check, benchmark</text>
+      <text x="318" y="105">Confirm independently</text>
+      <text x="318" y="129">Save only verified wins</text>
+      <text x="598" y="81">Load the saved artifact</text>
+      <text x="598" y="105">Check runtime guards</text>
+      <text x="598" y="129">Run the Metal kernel</text>
+    </g>
+    <text x="233" y="179" fill="#a8c9ff" font-size="15" text-anchor="middle">Feedback for next try</text>
+    <text x="559" y="232" fill="#f2f6fd" font-size="16" text-anchor="middle">Run PyTorch if no candidate wins or a runtime guard fails</text>
+  </g>
+</svg>
