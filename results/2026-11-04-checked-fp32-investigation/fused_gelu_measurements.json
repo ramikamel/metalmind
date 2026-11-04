@@ -1,0 +1,351 @@
+{
+  "artifact_id": "4dcaef145f78d601f4a67a731131c026ddccd7e8e2fcad2f93677565707fcf0e",
+  "public_fixtures": 10,
+  "boundary_cases": 60,
+  "model_requests": 0,
+  "hardware": {
+    "model": "Apple M3 Pro",
+    "cores": "14",
+    "metal_family": "spdisplays_metal4",
+    "recommended_working_set": 14302248960
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "unavailable": [],
+  "sessions": [
+    {
+      "old_checked": {
+        "status": "valid",
+        "baseline_ms": 1.044680007680654,
+        "candidate_ms": 0.3476741562735697,
+        "summary": {
+          "schema_version": 1,
+          "speedup": 3.0712467330302795,
+          "lower": 2.9894905171516872,
+          "upper": 3.079965658633954,
+          "pairs": 10
+        },
+        "seed": 202611501,
+        "series": {
+          "schema_version": 1,
+          "baseline_ms": [
+            1.0903144534495368,
+            1.0669179687283759,
+            1.086755859432742,
+            1.0641484373081767,
+            1.0430130155327788,
+            1.046346999828529,
+            1.041390624777705,
+            1.0381237029832846,
+            1.0369492188146978,
+            1.0311692653885984
+          ],
+          "candidate_ms": [
+            0.3573938906811236,
+            0.3464550782155129,
+            0.3532610626280075,
+            0.35769726582657313,
+            0.34889323433162645,
+            0.3399134061510267,
+            0.33785676532716025,
+            0.35239453109170427,
+            0.3364908902767638,
+            0.33630859388722456
+          ],
+          "repetitions": 64,
+          "order": [
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first"
+          ]
+        }
+      },
+      "original_eager": {
+        "status": "valid",
+        "baseline_ms": 0.4043580702273175,
+        "candidate_ms": 0.3398463554731279,
+        "summary": {
+          "schema_version": 1,
+          "speedup": 1.1947570276752892,
+          "lower": 1.1548602918612154,
+          "upper": 1.2071047469898042,
+          "pairs": 10
+        },
+        "seed": 202611501,
+        "series": {
+          "schema_version": 1,
+          "baseline_ms": [
+            0.4021790391561808,
+            0.40339225006391644,
+            0.40704621869736,
+            0.3966425781527505,
+            0.4007203749551991,
+            0.4117701796531037,
+            0.40679036715118855,
+            0.40526203906665614,
+            0.40428742954645713,
+            0.4044287109081779
+          ],
+          "candidate_ms": [
+            0.3366409453064989,
+            0.33362141402903944,
+            0.3618639298110793,
+            0.3428030624945677,
+            0.3704088514950854,
+            0.3445595702942228,
+            0.3369967421349429,
+            0.3333997422032553,
+            0.3412109374494321,
+            0.33848177349682373
+          ],
+          "repetitions": 128,
+          "order": [
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first"
+          ]
+        }
+      },
+      "torch_compile_inductor_fullgraph": {
+        "status": "valid",
+        "baseline_ms": 0.1265655937459087,
+        "candidate_ms": 0.3366857109767807,
+        "summary": {
+          "schema_version": 1,
+          "speedup": 0.37607808510698637,
+          "lower": 0.3620046662330797,
+          "upper": 0.37833528834638547,
+          "pairs": 10
+        },
+        "seed": 202611501,
+        "series": {
+          "schema_version": 1,
+          "baseline_ms": [
+            0.12666683198858664,
+            0.12766146096510056,
+            0.12650797657443036,
+            0.12720605468530266,
+            0.12261458596185548,
+            0.122850425782417,
+            0.12662321091738704,
+            0.12219254688261572,
+            0.12367349995656696,
+            0.13037971882567945
+          ],
+          "candidate_ms": [
+            0.3380818671985253,
+            0.33630875782364456,
+            0.3349737968392219,
+            0.33563134763880953,
+            0.3362446288974752,
+            0.341868003943091,
+            0.33543196479968174,
+            0.3370626641299168,
+            0.3457449531651946,
+            0.3451881523233169
+          ],
+          "repetitions": 256,
+          "order": [
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first"
+          ]
+        }
+      }
+    },
+    {
+      "old_checked": {
+        "status": "valid",
+        "baseline_ms": 1.0415468827886798,
+        "candidate_ms": 0.3509449845751078,
+        "summary": {
+          "schema_version": 1,
+          "speedup": 3.0013505033129446,
+          "lower": 2.9083797054670346,
+          "upper": 3.324857522035847,
+          "pairs": 10
+        },
+        "seed": 202611502,
+        "series": {
+          "schema_version": 1,
+          "baseline_ms": [
+            1.0470533907209756,
+            0.9910794215102214,
+            1.036040374856384,
+            1.0206126407865668,
+            1.0659746094461298,
+            1.054733062574087,
+            1.0351113282922597,
+            1.137011719038128,
+            1.5253496094373986,
+            1.033595703120227
+          ],
+          "candidate_ms": [
+            0.331886062213016,
+            0.3444433591539564,
+            0.35152734380972106,
+            0.3519947968015913,
+            0.35623957819552743,
+            0.35036262534049456,
+            0.3230052188882837,
+            0.3253385466450709,
+            0.42607485920598265,
+            0.35538540623747394
+          ],
+          "repetitions": 64,
+          "order": [
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first"
+          ]
+        }
+      },
+      "original_eager": {
+        "status": "valid",
+        "baseline_ms": 0.4044278983883487,
+        "candidate_ms": 0.33840103913007624,
+        "summary": {
+          "schema_version": 1,
+          "speedup": 1.1934823285354401,
+          "lower": 1.1806832765930844,
+          "upper": 1.2011212668777094,
+          "pairs": 10
+        },
+        "seed": 202611502,
+        "series": {
+          "schema_version": 1,
+          "baseline_ms": [
+            0.40332747676075087,
+            0.40464648441229656,
+            0.4048981170399202,
+            0.39696484373052954,
+            0.3991686171502806,
+            0.40459277352056233,
+            0.40427441399515374,
+            0.40458138278154365,
+            0.40426855457553756,
+            0.4052499998579151
+          ],
+          "candidate_ms": [
+            0.34160514064751624,
+            0.33848144539661007,
+            0.3345735624407098,
+            0.33798144545471587,
+            0.3383206328635424,
+            0.3379313125151384,
+            0.33916829693225736,
+            0.3388037109743891,
+            0.3389189453173458,
+            0.3358147812377865
+          ],
+          "repetitions": 128,
+          "order": [
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first"
+          ]
+        }
+      },
+      "torch_compile_inductor_fullgraph": {
+        "status": "valid",
+        "baseline_ms": 0.1249567069976365,
+        "candidate_ms": 0.3379616699135113,
+        "summary": {
+          "schema_version": 1,
+          "speedup": 0.37042417769928243,
+          "lower": 0.3627940148910769,
+          "upper": 0.3762364653312645,
+          "pairs": 10
+        },
+        "seed": 202611502,
+        "series": {
+          "schema_version": 1,
+          "baseline_ms": [
+            0.1227399101253468,
+            0.12659000776693574,
+            0.12270019533389132,
+            0.1314536133349975,
+            0.12750471876188385,
+            0.1228603515528448,
+            0.12715023046894203,
+            0.12332340622833726,
+            0.12321517192503961,
+            0.1268647461074579
+          ],
+          "candidate_ms": [
+            0.339097656251397,
+            0.3377143553962014,
+            0.33820898443082115,
+            0.3361230468499343,
+            0.33955989454170776,
+            0.3365766601746145,
+            0.33681038280519715,
+            0.3369446641272589,
+            0.33996696095073276,
+            0.33834196096904634
+          ],
+          "repetitions": 256,
+          "order": [
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first"
+          ]
+        }
+      }
+    }
+  ]
+}

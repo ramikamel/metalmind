@@ -1,0 +1,1192 @@
+{
+  "rows": [
+    {
+      "workload": "bias_gelu:small",
+      "comparisons": {
+        "original_eager": {
+          "status": "valid",
+          "baseline_ms": 0.012423420912455185,
+          "candidate_ms": 0.136971395505725,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.09062873111222321,
+            "lower": 0.09015656708350714,
+            "upper": 0.0915542850685901,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.012326740204571252,
+              0.012677978531883127,
+              0.012603353468421119,
+              0.012085285163720982,
+              0.01240063477325748,
+              0.012342123056896526,
+              0.01263956636421426,
+              0.012424722683590517,
+              0.012465249994875194,
+              0.012422119141319854
+            ],
+            "candidate_ms": [
+              0.137328857420016,
+              0.1372820624965243,
+              0.13819905467471472,
+              0.1364604492550825,
+              0.13685058593182475,
+              0.13654117776695784,
+              0.13576741406495785,
+              0.13707308005450614,
+              0.1376578769622938,
+              0.1368697109569439
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "torch_compile_inductor_fullgraph": {
+          "status": "valid",
+          "baseline_ms": 0.014791178728046361,
+          "candidate_ms": 0.13751127050909417,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.10800854025329976,
+            "lower": 0.10620344872235836,
+            "upper": 0.1090892245913624,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.015375162092823302,
+              0.014658285124369286,
+              0.014627523455601477,
+              0.014888021439674048,
+              0.014778076206312107,
+              0.015079833985964797,
+              0.014988769578394567,
+              0.014527750010984164,
+              0.014804281249780615,
+              0.01470703125505679
+            ],
+            "candidate_ms": [
+              0.14094116215801478,
+              0.1398588867118633,
+              0.13645141604001765,
+              0.13643099026694472,
+              0.13685791014950155,
+              0.13724690626304437,
+              0.13777563475514398,
+              0.13813541795570927,
+              0.1380525703211788,
+              0.13613094142783666
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        }
+      },
+      "unavailable": []
+    },
+    {
+      "workload": "bias_gelu:medium",
+      "comparisons": {
+        "original_eager": {
+          "status": "valid",
+          "baseline_ms": 0.05251489255897468,
+          "candidate_ms": 0.13761971095505032,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.38123457253615534,
+            "lower": 0.3779867429704905,
+            "upper": 0.3862251403124505,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.05227026366583232,
+              0.05248103906296819,
+              0.052548746054981166,
+              0.05263199801675,
+              0.05235945508275108,
+              0.05271370508808104,
+              0.05265535355647444,
+              0.052219156259525334,
+              0.05245100976480899,
+              0.05264681055905385
+            ],
+            "candidate_ms": [
+              0.1382859707064199,
+              0.138111572255184,
+              0.13738989258627043,
+              0.13750455860872535,
+              0.13881705859830618,
+              0.13284895896958915,
+              0.1367189120742296,
+              0.1377348633013753,
+              0.13459855074415827,
+              0.13949788478839764
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "torch_compile_inductor_fullgraph": {
+          "status": "valid",
+          "baseline_ms": 0.05360880467719653,
+          "candidate_ms": 0.1387817792704027,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.38614966593991495,
+            "lower": 0.384229335375193,
+            "upper": 0.3883158336855972,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.053602050797962875,
+              0.0535851230551998,
+              0.05314005471745986,
+              0.05364339256175299,
+              0.053595947292706114,
+              0.05361555855643019,
+              0.053819417985323525,
+              0.05314453125038199,
+              0.054185302701625915,
+              0.0545939941503093
+            ],
+            "candidate_ms": [
+              0.13932413867223659,
+              0.13874381443201855,
+              0.13663427733945355,
+              0.13814371681064586,
+              0.13881974410878684,
+              0.1378984375151049,
+              0.13906323243872976,
+              0.13828124997417035,
+              0.1416879882754074,
+              0.1422720546884193
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        }
+      },
+      "unavailable": []
+    },
+    {
+      "workload": "bias_gelu:large",
+      "comparisons": {
+        "original_eager": {
+          "status": "valid",
+          "baseline_ms": 0.3899181327824408,
+          "candidate_ms": 0.22090348431902385,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 1.764343278165788,
+            "lower": 1.742079243542816,
+            "upper": 1.9558841253250192,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.389941406183425,
+              0.38999478897494555,
+              0.39031477331263886,
+              0.3886865235926962,
+              0.38963118754509196,
+              0.3889775389325223,
+              0.38986718732303416,
+              0.3898948593814566,
+              0.3962454375141533,
+              0.3906692734290118
+            ],
+            "candidate_ms": [
+              0.22278906249084685,
+              0.21619108588311065,
+              0.22405110144063656,
+              0.2233782577150123,
+              0.22064648442210455,
+              0.19044075770580093,
+              0.22116048421594314,
+              0.187851562486685,
+              0.20259146867829259,
+              0.22667545317744953
+            ],
+            "repetitions": 128,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "torch_compile_inductor_fullgraph": {
+          "status": "valid",
+          "baseline_ms": 0.3027119961416247,
+          "candidate_ms": 0.19227058987780765,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 1.5776619987180132,
+            "lower": 1.4950466888435314,
+            "upper": 1.603952596141951,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.302292480455435,
+              0.3043370742261686,
+              0.30262500001754233,
+              0.30279899226570706,
+              0.3021796875373184,
+              0.30190576183031226,
+              0.30296305078536534,
+              0.3028256835477805,
+              0.30194205862699164,
+              0.30447281642409507
+            ],
+            "candidate_ms": [
+              0.21212451167684776,
+              0.19964436717145873,
+              0.20647167968945723,
+              0.1999251289817039,
+              0.19315787892537628,
+              0.1867239609509852,
+              0.18930810551864852,
+              0.18837890627310117,
+              0.1886010741145583,
+              0.19138330083023902
+            ],
+            "repetitions": 256,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        }
+      },
+      "unavailable": []
+    },
+    {
+      "workload": "rmsnorm:small",
+      "comparisons": {
+        "original_eager": {
+          "status": "valid",
+          "baseline_ms": 0.028891601544955847,
+          "candidate_ms": 0.1360558261751521,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.21358802845497368,
+            "lower": 0.21066546639846953,
+            "upper": 0.21839472523665426,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.02905013087683983,
+              0.029022378896570444,
+              0.028888589838516054,
+              0.029069662105030147,
+              0.02889461325139564,
+              0.028721761736960616,
+              0.028157470694623044,
+              0.02850333788728676,
+              0.028896972651182296,
+              0.028548501916247915
+            ],
+            "candidate_ms": [
+              0.13603181838561795,
+              0.13710335349514935,
+              0.13814062498340718,
+              0.13607983396468626,
+              0.13616276174843733,
+              0.1330820312546166,
+              0.1300536289363663,
+              0.12842228318277193,
+              0.1307735996078918,
+              0.13761328125383443
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "functional_rms_norm": {
+          "status": "valid",
+          "baseline_ms": 0.00602132223548324,
+          "candidate_ms": 0.13678686525508965,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.04408021023918228,
+            "lower": 0.0437443487908905,
+            "upper": 0.04446252859627614,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.00597623636622302,
+              0.006108236277668766,
+              0.0059836425521098136,
+              0.00515177345050688,
+              0.006055257813386561,
+              0.006027343715686584,
+              0.006002847669606126,
+              0.006121011722370895,
+              0.0060324707078507345,
+              0.006015300755279895
+            ],
+            "candidate_ms": [
+              0.13758105467331916,
+              0.1366886386904298,
+              0.13565380857016862,
+              0.13745377538043613,
+              0.1359621581968895,
+              0.1364387207445361,
+              0.1368264961456589,
+              0.13766674805992807,
+              0.13694360353611046,
+              0.1367472343645204
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "torch_compile_inductor_fullgraph": {
+          "status": "valid",
+          "baseline_ms": 0.014642985348700677,
+          "candidate_ms": 0.13670792580455782,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.10614763621345828,
+            "lower": 0.10402884827515102,
+            "upper": 0.10778646750799808,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.014101724616466527,
+              0.014680175809189677,
+              0.014785400423988904,
+              0.013951742175777326,
+              0.0143277988513546,
+              0.014605794888211676,
+              0.014692300794649782,
+              0.014763996091460285,
+              0.014464925754964497,
+              0.014763671913442522
+            ],
+            "candidate_ms": [
+              0.14387809176241717,
+              0.13870190429088325,
+              0.13602107816268472,
+              0.13649015232886086,
+              0.13652970505972917,
+              0.13731184958487574,
+              0.13685864257695357,
+              0.13744449802288727,
+              0.13655720903216206,
+              0.1364239082590757
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        }
+      },
+      "unavailable": []
+    },
+    {
+      "workload": "rmsnorm:medium",
+      "comparisons": {
+        "original_eager": {
+          "status": "valid",
+          "baseline_ms": 0.0925957031370217,
+          "candidate_ms": 0.1384208164267875,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.6692626782979981,
+            "lower": 0.6584853904478991,
+            "upper": 0.6852791269297123,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.0922385253829816,
+              0.09279508594772778,
+              0.09219213865208076,
+              0.09241105078672263,
+              0.09262207032634251,
+              0.09279809569306963,
+              0.09286873438441035,
+              0.08821557617011422,
+              0.09256933594770089,
+              0.09467553707054321
+            ],
+            "candidate_ms": [
+              0.14953092579617078,
+              0.1390651035535484,
+              0.13939754296643514,
+              0.13841699222894022,
+              0.13630916407691984,
+              0.13766617968258288,
+              0.13842464062463478,
+              0.1266595859874542,
+              0.1321069335631364,
+              0.1457235507587029
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "functional_rms_norm": {
+          "status": "valid",
+          "baseline_ms": 0.010946248039545026,
+          "candidate_ms": 0.1386814374768619,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.07898182673528954,
+            "lower": 0.07842549234252427,
+            "upper": 0.07943332157716934,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.010947915995984658,
+              0.010722250010530843,
+              0.01094710154347922,
+              0.010984048799400625,
+              0.01094539453561083,
+              0.010872720736188057,
+              0.010777099589631689,
+              0.011070556638514972,
+              0.011109375009255018,
+              0.010910238302130892
+            ],
+            "candidate_ms": [
+              0.13882698436873397,
+              0.13958349609310972,
+              0.13944856641501246,
+              0.13861198044651246,
+              0.1383680019557687,
+              0.1372023925796384,
+              0.13778084377236155,
+              0.1390362949109658,
+              0.13858113675269124,
+              0.13875089450721134
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "torch_compile_inductor_fullgraph": {
+          "status": "valid",
+          "baseline_ms": 0.0344672031076243,
+          "candidate_ms": 0.13861779686408227,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.2483675787856383,
+            "lower": 0.24332066485955872,
+            "upper": 0.25090808129062875,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.034943441448831436,
+              0.0349532890595583,
+              0.03445996088657921,
+              0.03376798633780709,
+              0.03526058003444632,
+              0.03451595114256634,
+              0.03447444532866939,
+              0.03443855860041367,
+              0.03375594138788074,
+              0.03431510543805416
+            ],
+            "candidate_ms": [
+              0.1412070312767355,
+              0.13907942576452115,
+              0.1379374179464321,
+              0.1374143066641409,
+              0.13715047265350222,
+              0.13756412693055609,
+              0.14136531638087035,
+              0.13815616796364338,
+              0.14199698824768348,
+              0.14244376558281147
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        }
+      },
+      "unavailable": []
+    },
+    {
+      "workload": "rmsnorm:large",
+      "comparisons": {
+        "original_eager": {
+          "status": "valid",
+          "baseline_ms": 0.7454833983047138,
+          "candidate_ms": 0.23073242186910647,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 3.239793484817615,
+            "lower": 3.1655336020933573,
+            "upper": 3.4914994166974855,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.7430039063365257,
+              0.7454296874129795,
+              0.7472610627701215,
+              0.7363255158452375,
+              0.7436810001308913,
+              0.746455734315532,
+              0.743552077892673,
+              0.7537545470768237,
+              0.745537109196448,
+              0.753572265693947
+            ],
+            "candidate_ms": [
+              0.2347167965126573,
+              0.23285546876650187,
+              0.22860937497171108,
+              0.2330397032892506,
+              0.22642317208010354,
+              0.2137923124791996,
+              0.2121992188222066,
+              0.19971745314251166,
+              0.25289909353887197,
+              0.2346946562283847
+            ],
+            "repetitions": 64,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "functional_rms_norm": {
+          "status": "valid",
+          "baseline_ms": 0.1265094414293344,
+          "candidate_ms": 0.18790714455008128,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.6719009061611557,
+            "lower": 0.6688821833528503,
+            "upper": 0.6786826186227403,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.12651009376440925,
+              0.12491373831835517,
+              0.12626285547412408,
+              0.1261938476773139,
+              0.12650878909425955,
+              0.1263526992261177,
+              0.1265159492049861,
+              0.12703271488589962,
+              0.12711148826838325,
+              0.1266821288936626
+            ],
+            "candidate_ms": [
+              0.1992270508708316,
+              0.18666780465537158,
+              0.1892498398774478,
+              0.18578825006443367,
+              0.1876305351515839,
+              0.18602229681619065,
+              0.18818375394857867,
+              0.1894345703021827,
+              0.18729150383478554,
+              0.18865494928377302
+            ],
+            "repetitions": 256,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "torch_compile_inductor_fullgraph": {
+          "status": "valid",
+          "baseline_ms": 0.1530499667978802,
+          "candidate_ms": 0.19073103908340272,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.8074083357176545,
+            "lower": 0.7887890868779637,
+            "upper": 0.8172009746445077,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.15024495303350704,
+              0.1503227539387808,
+              0.15081331639521522,
+              0.1529423827832943,
+              0.1513121758307534,
+              0.16211148818001675,
+              0.1579397811610761,
+              0.15628222649866075,
+              0.15315755081246607,
+              0.15430143355388282
+            ],
+            "candidate_ms": [
+              0.20107324223772594,
+              0.18922330468740256,
+              0.19042675785385654,
+              0.18877067191169772,
+              0.1869440078507978,
+              0.1915804024292811,
+              0.19326920312323637,
+              0.1910353203129489,
+              0.19015901568764093,
+              0.19702457814219088
+            ],
+            "repetitions": 256,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        }
+      },
+      "unavailable": []
+    },
+    {
+      "workload": "softmax:small",
+      "comparisons": {
+        "original_eager": {
+          "status": "valid",
+          "baseline_ms": 0.006819824221793169,
+          "candidate_ms": 0.13588586426749316,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.05072474254488529,
+            "lower": 0.048573772933240895,
+            "upper": 0.051337783466168685,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.006795654314828425,
+              0.006742919936186809,
+              0.00680265429764404,
+              0.006868816399219213,
+              0.006600748065466178,
+              0.007107501915015746,
+              0.00698641019880597,
+              0.006836587886027701,
+              0.006938964816072257,
+              0.006803060557558638
+            ],
+            "candidate_ms": [
+              0.1401398125153719,
+              0.14080411716577146,
+              0.13681119918373952,
+              0.13526700973898187,
+              0.13589119532753102,
+              0.1361688652536941,
+              0.1358805332074553,
+              0.13492431639861024,
+              0.13516292187887302,
+              0.1335265292823351
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "torch_compile_inductor_fullgraph": {
+          "status": "valid",
+          "baseline_ms": 0.014656697260306828,
+          "candidate_ms": 0.13549137403856548,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.1081465364220881,
+            "lower": 0.10721049509107487,
+            "upper": 0.10893734655910547,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.014782388689127401,
+              0.014803710939759185,
+              0.014792886759096291,
+              0.014401205078229395,
+              0.014430744158744346,
+              0.014588867145448603,
+              0.014625406265622587,
+              0.014024414042523858,
+              0.014687988254991069,
+              0.014734212868461327
+            ],
+            "candidate_ms": [
+              0.13788191796493265,
+              0.13529565433145763,
+              0.13687768552017587,
+              0.13046386720816372,
+              0.13461181640650466,
+              0.1351004238472342,
+              0.13471166994349915,
+              0.13568709374567334,
+              0.13572428514407875,
+              0.13585278321670557
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        }
+      },
+      "unavailable": []
+    },
+    {
+      "workload": "softmax:medium",
+      "comparisons": {
+        "original_eager": {
+          "status": "valid",
+          "baseline_ms": 0.017973306654539556,
+          "candidate_ms": 0.13640742969300845,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.1319174997503997,
+            "lower": 0.12787631522315018,
+            "upper": 0.13791034717783607,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.01808658788604589,
+              0.017779052768673864,
+              0.017750814436112705,
+              0.018023925747456815,
+              0.013827554653289553,
+              0.01794156838741401,
+              0.0180485840246547,
+              0.01705452535816221,
+              0.02038867182818649,
+              0.018005044921665103
+            ],
+            "candidate_ms": [
+              0.13613696290804,
+              0.13491153902123187,
+              0.13706656835665854,
+              0.12165275194320202,
+              0.13509895899233015,
+              0.13808732035158755,
+              0.1366778964779769,
+              0.127926189406935,
+              0.14181575585325845,
+              0.14309765629150206
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "torch_compile_inductor_fullgraph": {
+          "status": "valid",
+          "baseline_ms": 0.04013411427195024,
+          "candidate_ms": 0.138596313462358,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.2893743561444363,
+            "lower": 0.2861293164732063,
+            "upper": 0.291933125695535,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.04166316597320474,
+              0.04025943940177967,
+              0.04027547072382731,
+              0.04036979294141929,
+              0.039583576153745526,
+              0.04024723244810957,
+              0.03993709378846688,
+              0.040020996095790906,
+              0.039904785126054776,
+              0.039207437509958254
+            ],
+            "candidate_ms": [
+              0.1420082187451044,
+              0.13838907813124024,
+              0.13865380856259435,
+              0.13776538088450252,
+              0.13991292183845871,
+              0.13838590427894815,
+              0.13853881836212167,
+              0.13922111128295,
+              0.1389264335784901,
+              0.13766894534228413
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        }
+      },
+      "unavailable": []
+    },
+    {
+      "workload": "softmax:large",
+      "comparisons": {
+        "original_eager": {
+          "status": "valid",
+          "baseline_ms": 0.030483072265496958,
+          "candidate_ms": 0.14592907714927605,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.20925934006222166,
+            "lower": 0.20805733070630716,
+            "upper": 0.21061509572928042,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.030160644541865622,
+              0.030415771504976874,
+              0.02859000585431204,
+              0.03047574807624187,
+              0.030744058562959253,
+              0.03069010352874102,
+              0.030490396454752045,
+              0.03095808784792098,
+              0.030474691413928667,
+              0.030832437460048823
+            ],
+            "candidate_ms": [
+              0.14468595509242732,
+              0.14598120117170765,
+              0.14518269921381943,
+              0.14194889450891424,
+              0.14644335936964126,
+              0.14643522268897868,
+              0.1468293456809988,
+              0.1475100917787131,
+              0.1458557129012661,
+              0.14587695312684446
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        },
+        "torch_compile_inductor_fullgraph": {
+          "status": "valid",
+          "baseline_ms": 0.053070312503678,
+          "candidate_ms": 0.1463789052422726,
+          "summary": {
+            "schema_version": 1,
+            "speedup": 0.36140524990006484,
+            "lower": 0.35670943659573073,
+            "upper": 0.3679297349514896,
+            "pairs": 10
+          },
+          "seed": 11347,
+          "series": {
+            "schema_version": 1,
+            "baseline_ms": [
+              0.05355216603675217,
+              0.052020263694885216,
+              0.05137207034522362,
+              0.052844400386220514,
+              0.05304606054323813,
+              0.05322078516201145,
+              0.05457780076767449,
+              0.053094564464117866,
+              0.053310628914005065,
+              0.05282259178329696
+            ],
+            "candidate_ms": [
+              0.14554663084709318,
+              0.1457801093351918,
+              0.1309396972715149,
+              0.14697770114935338,
+              0.14555485159917225,
+              0.14925415041489032,
+              0.14833756443977109,
+              0.15074202343612342,
+              0.14944498832392128,
+              0.14540852924938008
+            ],
+            "repetitions": 512,
+            "order": [
+              "candidate_first",
+              "candidate_first",
+              "baseline_first",
+              "baseline_first",
+              "baseline_first",
+              "candidate_first",
+              "baseline_first",
+              "candidate_first",
+              "candidate_first",
+              "baseline_first"
+            ]
+          }
+        }
+      },
+      "unavailable": []
+    }
+  ],
+  "model_requests": 0,
+  "hardware": {
+    "model": "Apple M3 Pro",
+    "cores": "14",
+    "metal_family": "spdisplays_metal4",
+    "recommended_working_set": 14302248960
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  }
+}

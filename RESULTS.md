@@ -67,6 +67,13 @@ medium FP32 bias/GELU, the checked call took about 0.41 ms versus 0.024 ms with
 caller-guaranteed bounds. [Checked campaign evidence](results/2026-11-03-checked-fp32-full/README.md) ·
 [Same-kernel diagnostic](results/2026-11-03-hackathon-extension/README.md#what-checked-mode-costs-on-the-same-kernel)
 
+Three follow-up prototypes reduced checked-wrapper latency and preserved
+PyTorch fallback on invalid inputs. The best large bias/GELU prototype
+ran about 3× as fast as the previous checked wrapper and still lost to
+Inductor. A standalone Metal value check took longer than the fastest
+verified PyTorch call in eight of nine FP32 signatures.
+[Checked FP32 investigation](results/2026-11-04-checked-fp32-investigation/README.md)
+
 ## Verification and source data
 
 The release passed 195 local tests, including real Metal checks, and
