@@ -32,6 +32,10 @@ bias/GELU and small RMSNorm lost a timing window to baseline drift. Large
 RMSNorm passed private verification, then reached the confirmation worker
 deadline. The Metal health check passed before the final job resumed.
 
+A [separate zero-request recheck](../2026-11-03-fp16-confirmation-recheck/README.md)
+later promoted two of the three saved candidates. The original pilot table
+preserves the outcomes measured under its original timing protocol.
+
 The all-job geometric mean of the worst confirmed ratios was **1.325×**,
 with a factor of 1.0 assigned to each fallback. This is a normalized summary
 of the nine jobs. The design uses one strategy and one trial per signature.

@@ -1,0 +1,129 @@
+{
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "assume",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 300.0,
+    "stagnation_limit": 10,
+    "seed": 20272108,
+    "runs_dir": "/Users/rami/github/metalmind/runs/fp16-recheck.wyEYdA5h/jobs",
+    "artifacts_dir": "/Users/rami/github/metalmind/runs/fp16-recheck.wyEYdA5h/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "phase": "terminal",
+  "elapsed_seconds": 0,
+  "wall_deadline_utc": 1793766071.471339,
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:small",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          64,
+          257
+        ],
+        "strides": [
+          257,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          257
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        64,
+        257
+      ],
+      "strides": [
+        257,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "requests": 0,
+  "evaluated": 0,
+  "output_tokens": 0,
+  "archive": [
+    {
+      "score": 1.125236969273205,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "0e7bbb0be5fc09cee5c8ac4233a58c3c01436fe4dfd3c59e2ec6cf009849c274",
+        "workload_hash": "6839c2d0f87dc1c932e75067757291ece0ad1fef3c54370d0cc9217fa9f02852",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint thread_id [[thread_index_in_threadgroup]], uint group_id [[threadgroup_position_in_grid]]) {\n    uint row = group_id;\n    if (row >= B) return;\n    threadgroup float partial[256];\n    device const half* row_x = x + uint(row) * D;\n    float sum = 0.0f;\n    for (uint c = thread_id; c < D; c += 256u) {\n        float v = float(row_x[c]);\n        sum += v * v;\n    }\n    partial[thread_id] = sum;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    for (uint stride = 128u; stride > 0u; stride >>= 1u) {\n        if (thread_id < stride) {\n            partial[thread_id] += partial[thread_id + stride];\n        }\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n    }\n    float denom = partial[0] / float(D) + epsilon;\n    float scale = rsqrt(denom);\n    device half* row_out = out + uint(row) * D;\n    for (uint c = thread_id; c < D; c += 256u) {\n        float v = float(row_x[c]) * scale * float(parameter[c]);\n        row_out[c] = half(v);\n    }\n}\n",
+          "threads": [
+            16384,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "One 256-thread threadgroup per row with threadgroup reduction minimizes global memory passes for B=64,D=257 RMSNorm."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "source_run": "runs/fp16-pilot/jobs/9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93/008/304c913a4b6646bcb0f2f89826d06620",
+  "outcome": "promoted"
+}

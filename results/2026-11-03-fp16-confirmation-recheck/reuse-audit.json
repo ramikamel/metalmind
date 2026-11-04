@@ -1,0 +1,26 @@
+[
+  {
+    "artifact_id": "2ac4beac521acab8715aabf3d908246fb91f9ea6bb6ed5c9ad3af8cac1ee49b7",
+    "dtype": "float16",
+    "domain_mode": "assume",
+    "new_values_match": true,
+    "changed_shape_fallback": true,
+    "fp32_input_fallback": true,
+    "gradient_fallback": true,
+    "observed_kernel_dispatches": 1,
+    "max_absolute_error": 0.0,
+    "model_requests": 0
+  },
+  {
+    "artifact_id": "81dd8a63e61eda5aab95729970e7ec3aea94389679deda86a265112dd63b80d4",
+    "dtype": "float16",
+    "domain_mode": "assume",
+    "new_values_match": true,
+    "changed_shape_fallback": true,
+    "fp32_input_fallback": true,
+    "gradient_fallback": true,
+    "observed_kernel_dispatches": 1,
+    "max_absolute_error": 2.384185791015625e-07,
+    "model_requests": 0
+  }
+]

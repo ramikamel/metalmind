@@ -101,5 +101,6 @@ latch GPU health; `doctor --smoke` must pass before more GPU evaluation.
 
 [Measured module development runs](../results/2026-11-02-module-optimizer/README.md)
 retain the initial no-win and the final reviewed result. These measurements cover
-one residual-activation module and signature on one chip. Broader graph coverage, training, and the full strategy campaign remain research
-work. The compiler counterexample is now measured and enforced by the gate.
+one residual-activation module and signature on one chip. Broader graph
+coverage and training remain research work. The separate [function strategy
+comparison](../results/2026-11-03-checked-fp32-full/README.md) is complete. The compiler counterexample is now measured and enforced by the gate.

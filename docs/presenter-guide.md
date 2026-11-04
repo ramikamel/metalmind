@@ -78,6 +78,61 @@ In the recorded example the region helped against ordinary execution, and the
 compiled whole module was faster, so MetalMind kept the original module.
 [Architecture](architecture.md) · [Module comparison](../results/2026-11-02-module-baselines/README.md)
 
+## What it does with real PyTorch code
+
+### One function
+
+Here is a supported function. It converts the input to FP32 before doing
+softmax and converts the finished result back to FP16.
+
+```python
+def row_softmax(x):
+    return torch.softmax(x.float(), dim=-1).half()
+```
+
+Given an FP16 example with shape `(256, 1024)`, MetalMind recognizes the
+calculation. It asks Muse Wonder to write a Metal implementation of row
+softmax for that signature. It compares the proposed implementation with
+PyTorch and keeps the original callable available for fallback. A winning
+artifact can accept new values of the same shape and dtype. A new shape or
+dtype needs its own optimization to use a custom kernel.
+
+You can see the recognition step without making a model request:
+
+```sh
+.venv/bin/metalmind analyze --function examples.fp16_workloads:row_softmax \
+  --workload softmax --case medium --dtype float16
+```
+
+### One region inside a larger module
+
+The repository's module example has a forward pass like this:
+
+```python
+def forward(self, x):
+    activation = F.gelu(x + self.bias, approximate="tanh")
+    return activation + x * 0.25
+```
+
+MetalMind can identify the bias/GELU region in this supported flat FP32
+module. If you supply a matching, previously promoted artifact, it can
+try replacing that region with one Metal call. PyTorch still runs the
+multiply and residual addition. The module path checks the complete
+output and times the entire forward pass, including the unchanged
+operations. In this actual example, the rewrite lost to compiled PyTorch,
+so MetalMind returned the original module.
+
+```sh
+.venv/bin/metalmind analyze-module --factory examples.module_workloads:make_cpu_demo
+```
+
+A larger script can call an optimized function at a chosen point and keep
+running all its other code normally. Automatic module analysis has a
+narrower boundary. It handles supported pure regions in simple flat FP32
+inference modules. Arbitrary programs with nested layers, Python loops,
+training, or dynamic control flow fall outside that automatic workflow.
+[Function examples](../examples/fp16_workloads.py) · [Module example](../examples/module_workloads.py)
+
 ## The numbers you can say out loud
 
 | Experiment | Safe wording |
@@ -117,6 +172,12 @@ separate screenshot of the later results.
 | **2:06** | “The rewrite beat ordinary PyTorch, but the compiled whole module was faster. MetalMind kept the original module. The acceptance rule is based on the best verified baseline we can run.” |
 | **2:24** | “Here the saved kernel runs on new values without a model request. It matches PyTorch, and changing the shape or using gradients switches the call back to PyTorch.” |
 | **2:42** | “A later FP16 pilot produced six verified wins, including medium softmax at about two and a half times the fastest verified baseline with guaranteed input bounds. Our separate checked-mode FP32 run kept PyTorch on all 108 jobs.” |
+
+The [FP16 confirmation follow-up](../results/2026-11-03-fp16-confirmation-recheck/README.md)
+later promoted small bias/GELU and small RMSNorm from the original saved
+kernels. Large RMSNorm remained inconclusive after repeated baseline drift.
+Use “six of nine” when describing the original pilot and “eight across the
+pilot and follow-up” when describing the combined evidence.
 
 ## If you want a live terminal moment
 

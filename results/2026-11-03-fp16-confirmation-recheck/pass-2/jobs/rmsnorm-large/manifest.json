@@ -1,0 +1,129 @@
+{
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "assume",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 8192,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 450.0,
+    "stagnation_limit": 10,
+    "seed": 20283108,
+    "runs_dir": "/Users/rami/github/metalmind/runs/fp16-recheck-warm.Tmmj8tFA/jobs",
+    "artifacts_dir": "/Users/rami/github/metalmind/runs/fp16-recheck-warm.Tmmj8tFA/artifacts",
+    "warmups": 100,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 120.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "phase": "terminal",
+  "elapsed_seconds": 0,
+  "wall_deadline_utc": 1793766800.381464,
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:large",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "requests": 0,
+  "evaluated": 0,
+  "output_tokens": 0,
+  "archive": [
+    {
+      "score": 1.2608827070380697,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "e40789fd3da1fce5d888e0ea15c14a2bf11f3dbe897a0cc873673fe93c876e61",
+        "workload_hash": "b6bf5e6a30a18684680ed2ac2631f209a908f2eb6222d8c1dc6255561b897696",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 gid [[thread_position_in_grid]], uint3 tg_pos [[threadgroup_position_in_grid]], uint3 tid [[thread_position_in_threadgroup]], uint3 tg_size [[threads_per_threadgroup]]) {\n    uint row = tg_pos.x;\n    if (row >= B) return;\n    uint lid = tid.x;\n    uint nthreads = tg_size.x;\n    uint base = row * D;\n    threadgroup float sdata[256];\n    threadgroup float snorm;\n    if (D == 4096u && nthreads == 256u) {\n        device const half4* x4 = reinterpret_cast<device const half4*>(x + base);\n        device const half4* p4 = reinterpret_cast<device const half4*>(parameter);\n        device half4* o4 = reinterpret_cast<device half4*>(out + base);\n        float4 v0 = float4(x4[lid]);\n        float4 v1 = float4(x4[lid + 256u]);\n        float4 v2 = float4(x4[lid + 512u]);\n        float4 v3 = float4(x4[lid + 768u]);\n        float sum = dot(v0, v0) + dot(v1, v1) + dot(v2, v2) + dot(v3, v3);\n        sdata[lid] = sum;\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n        for (uint stride = 128u; stride > 0u; stride >>= 1u) {\n            if (lid < stride) sdata[lid] += sdata[lid + stride];\n            threadgroup_barrier(mem_flags::mem_threadgroup);\n        }\n        if (lid == 0u) snorm = rsqrt(sdata[0] * (1.0f / 4096.0f) + epsilon);\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n        float norm = snorm;\n        o4[lid] = half4(v0 * norm * float4(p4[lid]));\n        o4[lid + 256u] = half4(v1 * norm * float4(p4[lid + 256u]));\n        o4[lid + 512u] = half4(v2 * norm * float4(p4[lid + 512u]));\n        o4[lid + 768u] = half4(v3 * norm * float4(p4[lid + 768u]));\n        return;\n    }\n    float sum = 0.0f;\n    uint D4 = D / 4u;\n    if (D4 > 0u) {\n        device const half4* x4 = reinterpret_cast<device const half4*>(x + base);\n        for (uint i = lid; i < D4; i += nthreads) {\n            float4 v = float4(x4[i]);\n            sum += dot(v, v);\n        }\n    }\n    for (uint i = D4 * 4u + lid; i < D; i += nthreads) {\n        float v = float(x[base + i]);\n        sum += v * v;\n    }\n    sdata[lid] = sum;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    for (uint stride = nthreads >> 1u; stride > 0u; stride >>= 1u) {\n        if (lid < stride && lid + stride < 256u) sdata[lid] += sdata[lid + stride];\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n    }\n    if (lid == 0u) snorm = rsqrt(sdata[0] / float(D) + epsilon);\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float norm = snorm;\n    if (D4 > 0u) {\n        device const half4* x4 = reinterpret_cast<device const half4*>(x + base);\n        device const half4* p4 = reinterpret_cast<device const half4*>(parameter);\n        device half4* o4 = reinterpret_cast<device half4*>(out + base);\n        for (uint i = lid; i < D4; i += nthreads) {\n            float4 v = float4(x4[i]);\n            float4 p = float4(p4[i]);\n            o4[i] = half4(v * norm * p);\n        }\n    }\n    for (uint i = D4 * 4u + lid; i < D; i += nthreads) {\n        float v = float(x[base + i]);\n        float p = float(parameter[i]);\n        out[base + i] = half(v * norm * p);\n    }\n}\n",
+          "threads": [
+            131072,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "For D=4096, caching each thread's four half4 row elements in registers eliminates the second global read of x, reducing memory traffic and latency versus the incumbent."
+        },
+        "parent_id": "0d7f8c6a754b9b58c6ebf5b2ea6cd706129eefec81d7f4f4e7b565eb14bdcc8a",
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "source_run": "runs/fp16-pilot/jobs/9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93/007/d065bdd45ddb4b4d85264452acc08f1c",
+  "outcome": "inconclusive"
+}

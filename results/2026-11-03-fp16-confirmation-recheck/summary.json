@@ -1,0 +1,301 @@
+{
+  "model_requests": 0,
+  "rows": [
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "original_outcome": "inconclusive",
+      "original_run_path": "runs/fp16-pilot/jobs/9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93/003/d26a184772f342d4afae08dbbed0d8b3",
+      "candidate_id": "d4f2227258b78f1465c8dd6ae00f42ffbac254f7a006b7e63beef052589c1a2d",
+      "outcome": "inconclusive",
+      "reason": "Confirmation did not yield stable valid measurements",
+      "run_path": "pass-1/jobs/bias_gelu-small",
+      "artifact_path": null,
+      "model_requests": 0,
+      "pass": 1,
+      "confirmations": [
+        {
+          "status": "valid",
+          "reason": null,
+          "comparisons": [
+            {
+              "baseline": "original_eager",
+              "schema_version": 1,
+              "speedup": 1.6378178062534494,
+              "lower": 1.598183769163136,
+              "upper": 1.6704469742088217,
+              "pairs": 30
+            },
+            {
+              "baseline": "torch_compile_inductor_fullgraph",
+              "schema_version": 1,
+              "speedup": 1.9302343974390088,
+              "lower": 1.8964338837830605,
+              "upper": 1.961141033002273,
+              "pairs": 30
+            }
+          ]
+        },
+        {
+          "status": "runtime_error",
+          "reason": "BenchmarkUnstable: baseline drift exceeded 10%; entire window invalid",
+          "comparisons": []
+        }
+      ],
+      "private_cases": 22,
+      "execution_timeout_seconds": 300.0,
+      "warmups": 25,
+      "cooldown_seconds": 60.0
+    },
+    {
+      "family": "rmsnorm",
+      "case": "small",
+      "original_outcome": "inconclusive",
+      "original_run_path": "runs/fp16-pilot/jobs/9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93/008/304c913a4b6646bcb0f2f89826d06620",
+      "candidate_id": "0e7bbb0be5fc09cee5c8ac4233a58c3c01436fe4dfd3c59e2ec6cf009849c274",
+      "outcome": "promoted",
+      "reason": "Numerically verified and faster in both independent confirmation sessions",
+      "run_path": "pass-1/jobs/rmsnorm-small",
+      "artifact_path": "pass-1/artifacts/2ac4beac521acab8715aabf3d908246fb91f9ea6bb6ed5c9ad3af8cac1ee49b7",
+      "model_requests": 0,
+      "pass": 1,
+      "confirmations": [
+        {
+          "status": "valid",
+          "reason": null,
+          "comparisons": [
+            {
+              "baseline": "original_eager",
+              "schema_version": 1,
+              "speedup": 2.630028126431058,
+              "lower": 2.572089887200386,
+              "upper": 2.660852697244326,
+              "pairs": 30
+            },
+            {
+              "baseline": "functional_rms_norm",
+              "schema_version": 1,
+              "speedup": 1.1364540914736512,
+              "lower": 1.1217009551104893,
+              "upper": 1.1426346105820535,
+              "pairs": 30
+            },
+            {
+              "baseline": "torch_compile_inductor_fullgraph",
+              "schema_version": 1,
+              "speedup": 1.7461114918925846,
+              "lower": 1.7071735828868941,
+              "upper": 1.780030769729711,
+              "pairs": 30
+            }
+          ]
+        },
+        {
+          "status": "valid",
+          "reason": null,
+          "comparisons": [
+            {
+              "baseline": "original_eager",
+              "schema_version": 1,
+              "speedup": 2.657165018223334,
+              "lower": 2.589068868769165,
+              "upper": 2.690379676389618,
+              "pairs": 30
+            },
+            {
+              "baseline": "functional_rms_norm",
+              "schema_version": 1,
+              "speedup": 1.1349906975295603,
+              "lower": 1.1208786346379438,
+              "upper": 1.1528374825062797,
+              "pairs": 30
+            },
+            {
+              "baseline": "torch_compile_inductor_fullgraph",
+              "schema_version": 1,
+              "speedup": 1.7384041199798927,
+              "lower": 1.7023888971441026,
+              "upper": 1.8179336903866528,
+              "pairs": 30
+            }
+          ]
+        }
+      ],
+      "private_cases": 22,
+      "execution_timeout_seconds": 300.0,
+      "warmups": 25,
+      "cooldown_seconds": 60.0
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "original_outcome": "inconclusive",
+      "original_run_path": "runs/fp16-pilot/jobs/9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93/007/d065bdd45ddb4b4d85264452acc08f1c",
+      "candidate_id": "e40789fd3da1fce5d888e0ea15c14a2bf11f3dbe897a0cc873673fe93c876e61",
+      "outcome": "inconclusive",
+      "reason": "Confirmation did not yield stable valid measurements",
+      "run_path": "pass-1/jobs/rmsnorm-large",
+      "artifact_path": null,
+      "model_requests": 0,
+      "pass": 1,
+      "confirmations": [
+        {
+          "status": "valid",
+          "reason": null,
+          "comparisons": [
+            {
+              "baseline": "original_eager",
+              "schema_version": 1,
+              "speedup": 16.919507325116285,
+              "lower": 16.65264138052416,
+              "upper": 17.148837617127224,
+              "pairs": 30
+            },
+            {
+              "baseline": "functional_rms_norm",
+              "schema_version": 1,
+              "speedup": 5.471482299185714,
+              "lower": 5.414363063927929,
+              "upper": 5.597064407417218,
+              "pairs": 30
+            },
+            {
+              "baseline": "torch_compile_inductor_fullgraph",
+              "schema_version": 1,
+              "speedup": 1.2470123266426496,
+              "lower": 1.2186819759401943,
+              "upper": 1.2664122540296234,
+              "pairs": 30
+            }
+          ]
+        },
+        {
+          "status": "runtime_error",
+          "reason": "BenchmarkUnstable: baseline drift exceeded 10%; entire window invalid",
+          "comparisons": []
+        }
+      ],
+      "private_cases": 22,
+      "execution_timeout_seconds": 300.0,
+      "warmups": 25,
+      "cooldown_seconds": 60.0
+    },
+    {
+      "family": "bias_gelu",
+      "case": "small",
+      "original_outcome": "inconclusive",
+      "original_run_path": "runs/fp16-pilot/jobs/9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93/003/d26a184772f342d4afae08dbbed0d8b3",
+      "candidate_id": "d4f2227258b78f1465c8dd6ae00f42ffbac254f7a006b7e63beef052589c1a2d",
+      "outcome": "promoted",
+      "reason": "Numerically verified and faster in both independent confirmation sessions",
+      "run_path": "pass-2/jobs/bias_gelu-small",
+      "artifact_path": "pass-2/artifacts/81dd8a63e61eda5aab95729970e7ec3aea94389679deda86a265112dd63b80d4",
+      "model_requests": 0,
+      "pass": 2,
+      "confirmations": [
+        {
+          "status": "valid",
+          "reason": null,
+          "comparisons": [
+            {
+              "baseline": "original_eager",
+              "schema_version": 1,
+              "speedup": 1.6599093135483078,
+              "lower": 1.6264022425199338,
+              "upper": 1.675702773256654,
+              "pairs": 30
+            },
+            {
+              "baseline": "torch_compile_inductor_fullgraph",
+              "schema_version": 1,
+              "speedup": 1.9457295350906612,
+              "lower": 1.9285804894215812,
+              "upper": 1.9931768834665418,
+              "pairs": 30
+            }
+          ]
+        },
+        {
+          "status": "valid",
+          "reason": null,
+          "comparisons": [
+            {
+              "baseline": "original_eager",
+              "schema_version": 1,
+              "speedup": 1.6894810447187107,
+              "lower": 1.6557826141755148,
+              "upper": 1.7192968763727587,
+              "pairs": 30
+            },
+            {
+              "baseline": "torch_compile_inductor_fullgraph",
+              "schema_version": 1,
+              "speedup": 1.9337071417385274,
+              "lower": 1.9196458429803993,
+              "upper": 1.9591338066662707,
+              "pairs": 30
+            }
+          ]
+        }
+      ],
+      "private_cases": 22,
+      "execution_timeout_seconds": 450.0,
+      "warmups": 100,
+      "cooldown_seconds": 120.0
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "original_outcome": "inconclusive",
+      "original_run_path": "runs/fp16-pilot/jobs/9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93/007/d065bdd45ddb4b4d85264452acc08f1c",
+      "candidate_id": "e40789fd3da1fce5d888e0ea15c14a2bf11f3dbe897a0cc873673fe93c876e61",
+      "outcome": "inconclusive",
+      "reason": "Confirmation did not yield stable valid measurements",
+      "run_path": "pass-2/jobs/rmsnorm-large",
+      "artifact_path": null,
+      "model_requests": 0,
+      "pass": 2,
+      "confirmations": [
+        {
+          "status": "valid",
+          "reason": null,
+          "comparisons": [
+            {
+              "baseline": "original_eager",
+              "schema_version": 1,
+              "speedup": 18.01891723055245,
+              "lower": 17.781143984247134,
+              "upper": 19.116438832773184,
+              "pairs": 30
+            },
+            {
+              "baseline": "functional_rms_norm",
+              "schema_version": 1,
+              "speedup": 6.261776358867971,
+              "lower": 6.181129234674136,
+              "upper": 6.365786075154796,
+              "pairs": 30
+            },
+            {
+              "baseline": "torch_compile_inductor_fullgraph",
+              "schema_version": 1,
+              "speedup": 1.2496190240398768,
+              "lower": 1.2402794702551718,
+              "upper": 1.256609500914474,
+              "pairs": 30
+            }
+          ]
+        },
+        {
+          "status": "runtime_error",
+          "reason": "BenchmarkUnstable: baseline drift exceeded 10%; entire window invalid",
+          "comparisons": []
+        }
+      ],
+      "private_cases": 22,
+      "execution_timeout_seconds": 450.0,
+      "warmups": 100,
+      "cooldown_seconds": 120.0
+    }
+  ]
+}
