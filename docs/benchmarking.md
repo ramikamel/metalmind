@@ -19,10 +19,12 @@ and lower 95% bound above 1.0 in both confirmation sessions, separated by at lea
 60 seconds. A private numerical gate precedes confirmation. Drift beyond 10%
 invalidates the window; no individual unfavorable samples are removed.
 
-Checked mode scans input domains and includes scan/synchronization cost. Assumed
-mode requires caller-guaranteed numerical bounds; its numbers are labeled
-separately. The first tiny checked-mode kernel was slower despite being correct;
-that run is development data and does not establish a general performance claim.
+Checked mode scans input domains and includes scan and synchronization costs.
+The scan uses IEEE magnitude bits so FP32 subnormals stored on the GPU cannot
+pass as zero under MPS floating-point comparisons. Assumed-domain mode requires
+caller-guaranteed numerical bounds and its numbers are labeled separately.
+The first tiny checked-mode kernel was slower despite passing correctness.
+That development run does not establish a general performance claim.
 
 ## Frozen FP32 comparison
 

@@ -1,4 +1,6 @@
 """All-element equivalence plus input, output, and repeated-run integrity."""
+import struct
+
 import torch
 from metalmind.contracts import VerificationSummary
 from metalmind.runtime.abi import bind_kernel_args
@@ -20,10 +22,19 @@ def compare_outputs(actual,expected,policy):
 
 
 def inputs_in_domain(workload,inputs):
-    policy=policy_for(workload)
-    for i,t in enumerate(inputs):
-        limit=policy.max_input if i==0 else policy.max_parameter
-        if not bool((torch.isfinite(t)&(t.abs()<=limit)&((t==0)|(t.abs()>=torch.finfo(t.dtype).tiny))).all().item()):
+    policy = policy_for(workload)
+    for index, tensor in enumerate(inputs):
+        limit = policy.max_input if index == 0 else policy.max_parameter
+        if tensor.dtype == torch.float32:
+            integer_dtype, encoding, normal_min = torch.int32, "<f", 1 << 23
+        else:
+            integer_dtype, encoding, normal_min = torch.int16, "<e", 1 << 10
+        limit_bits = int.from_bytes(struct.pack(encoding, limit), "little")
+        # MPS float comparisons can treat stored subnormals as zero. Inspect the
+        # IEEE magnitude bits, where all NaNs and infinities exceed the limit.
+        magnitude = tensor.view(integer_dtype) & torch.iinfo(integer_dtype).max
+        valid = (magnitude <= limit_bits) & ((magnitude == 0) | (magnitude >= normal_min))
+        if not bool(valid.all().item()):
             return False
     return True
 

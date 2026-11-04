@@ -52,8 +52,12 @@ def test_checked_domain_rejects_invalid_mps_input_contents(dtype):
     bias = good.to("mps")
     assert inputs_in_domain(spec, (x, bias))
 
+    smallest_normal = torch.finfo(dtype).tiny
+    boundary = torch.tensor([smallest_normal, -smallest_normal, 10.0], dtype=dtype).to("mps")
+    assert inputs_in_domain(spec, (boundary.repeat(2, 1), boundary))
+
     for invalid in (float("nan"), float("inf"), -float("inf"), 10.125, -10.125,
-                    torch.finfo(dtype).tiny / 2):
+                    smallest_normal / 2, -smallest_normal / 2):
         bad = good.clone()
         bad[0] = invalid
         assert not inputs_in_domain(spec, (bad.repeat(2, 1).to("mps"), bias)), invalid
