@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "artifact_id": "514299ac30f371076455df11fd6962cd3e8d75e0844c6fd9b65de8056dc52fc6",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:large",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "056e614c2f17479367a7e30feaaf5f483f532d2b47ca766c5a97f15c245dfe7e",
+    "workload_hash": "b6bf5e6a30a18684680ed2ac2631f209a908f2eb6222d8c1dc6255561b897696",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tg_pos [[threadgroup_position_in_grid]], uint3 tid3 [[thread_position_in_threadgroup]], uint3 tg_dim [[threads_per_threadgroup]]) {\n    uint row = tg_pos.x;\n    uint tid = tid3.x;\n    uint tg_size = tg_dim.x;\n    if (row >= B) {\n        return;\n    }\n    uint base = row * D;\n    float sum = 0.0f;\n    if ((D & 3u) == 0u) {\n        device const half4* x4 = reinterpret_cast<device const half4*>(x + base);\n        uint d4 = D >> 2u;\n        for (uint i = tid; i < d4; i += tg_size) {\n            half4 v = x4[i];\n            float a = float(v.x);\n            float b = float(v.y);\n            float c = float(v.z);\n            float d = float(v.w);\n            sum += a * a + b * b + c * c + d * d;\n        }\n    } else {\n        for (uint i = tid; i < D; i += tg_size) {\n            float v = float(x[base + i]);\n            sum += v * v;\n        }\n    }\n    threadgroup float partial[256];\n    threadgroup float inv_shared;\n    partial[tid] = sum;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    for (uint stride = 128u; stride > 0u; stride >>= 1u) {\n        if (tid < stride) {\n            partial[tid] += partial[tid + stride];\n        }\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n    }\n    if (tid == 0u) {\n        inv_shared = rsqrt(partial[0] / float(D) + epsilon);\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float inv = inv_shared;\n    if ((D & 3u) == 0u) {\n        device const half4* x4 = reinterpret_cast<device const half4*>(x + base);\n        device const half4* p4 = reinterpret_cast<device const half4*>(parameter);\n        device half4* o4 = reinterpret_cast<device half4*>(out + base);\n        uint d4 = D >> 2u;\n        for (uint i = tid; i < d4; i += tg_size) {\n            half4 v = x4[i];\n            half4 p = p4[i];\n            o4[i] = half4(half(float(v.x) * inv * float(p.x)), half(float(v.y) * inv * float(p.y)), half(float(v.z) * inv * float(p.z)), half(float(v.w) * inv * float(p.w)));\n        }\n    } else {\n        for (uint i = tid; i < D; i += tg_size) {\n            float v = float(x[base + i]);\n            float p = float(parameter[i]);\n            out[base + i] = half(v * inv * p);\n        }\n    }\n}\n",
+      "threads": [
+        131072,
+        1,
+        1
+      ],
+      "group_size": [
+        256,
+        1,
+        1
+      ],
+      "hypothesis": "One 256-thread group per row with half4 vectorized loads and threadgroup tree reduction will be faster than a scalar implementation while remaining correct for D=4096."
+    },
+    "parent_id": null,
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "c0ab27073eb2a43d4bbd11eaab53bdeb3e88b5eae9a8873e3fb1524b7bf725a9",
+  "evidence_hash": "f08e85a6491864231a701f4b5b73df8c23d71f294ae40fe66e0ea6980b4b49f2",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

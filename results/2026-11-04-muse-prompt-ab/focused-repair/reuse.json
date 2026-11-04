@@ -1,0 +1,12 @@
+{
+  "artifact_id": "3c43a8a180ea90c420d51020d22d580ecbd0440f2b978423440489beeba03fd4",
+  "dtype": "float16",
+  "domain_mode": "assume",
+  "new_values_match": true,
+  "changed_shape_fallback": true,
+  "fp32_input_fallback": true,
+  "gradient_fallback": true,
+  "observed_kernel_dispatches": 1,
+  "max_absolute_error": 9.5367431640625e-07,
+  "model_requests": 0
+}

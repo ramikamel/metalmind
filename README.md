@@ -65,7 +65,7 @@ confirmation sessions against the fastest verified PyTorch baseline.
 
 | Benchmark | Final result |
 | --- | --- |
-| FP16 functions with caller-guaranteed bounds | **9 of 9 signatures promoted**. Medium softmax reached **2.641× / 2.544×** vs eager PyTorch. |
+| FP16 functions with caller-guaranteed bounds | **9 of 9 signatures promoted**. Medium softmax reached **3.098× / 3.183×** vs eager PyTorch. |
 | FP32 functions with caller-guaranteed bounds | **4 of 9 signatures promoted**. Medium bias/GELU reached **1.589× / 1.568×** vs Inductor. |
 | Default checked FP32 campaign | **0 of 108 jobs promoted**. PyTorch handled every case. |
 | Complete fixed FP16 attention block | **1.058× / 1.067×** vs Inductor, including both matrix multiplications. |
@@ -132,6 +132,7 @@ successful `metalmind doctor --smoke` health check.
 - [Progress and verified results](docs/progress.md)
 - [Architecture](docs/architecture.md)
 - [Environment](docs/environment.md)
+- [Muse prompt tuning experiment](results/2026-11-04-muse-prompt-ab/README.md)
 - [Measurement methodology](docs/benchmarking.md)
 - [Offline evidence showcase](demo/evidence-showcase.html)
 - [Judging rehearsal](docs/judging-rehearsal.md)

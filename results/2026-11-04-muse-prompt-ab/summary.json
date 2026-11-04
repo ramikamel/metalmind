@@ -1,0 +1,227 @@
+{
+  "rows": [
+    {
+      "arm": "current",
+      "family": "bias_gelu",
+      "case": "small",
+      "dtype": "float32",
+      "requests": 2,
+      "evaluated": 2,
+      "numerically_valid": 1,
+      "valid_timed": 1,
+      "evaluation_outcomes": {
+        "runtime_error": 1,
+        "valid": 1
+      },
+      "outcome": "no_win",
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "search_score": 0.9629081460062321,
+      "run_path": "runs/float32-bias_gelu-small/current/jobs/7978a5fe44194866a0f07edce9e3141d",
+      "artifact_path": null,
+      "confirmation": [],
+      "model_input_tokens": 991,
+      "model_output_tokens": 5536
+    },
+    {
+      "arm": "tuned",
+      "family": "bias_gelu",
+      "case": "small",
+      "dtype": "float32",
+      "requests": 2,
+      "evaluated": 2,
+      "numerically_valid": 2,
+      "valid_timed": 2,
+      "evaluation_outcomes": {
+        "valid": 2
+      },
+      "outcome": "no_win",
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "search_score": 0.8821420427666222,
+      "run_path": "runs/float32-bias_gelu-small/tuned/jobs/6a006f1f81e74a179832e9af166422eb",
+      "artifact_path": null,
+      "confirmation": [],
+      "model_input_tokens": 1522,
+      "model_output_tokens": 5978
+    },
+    {
+      "arm": "tuned",
+      "family": "softmax",
+      "case": "medium",
+      "dtype": "float16",
+      "requests": 2,
+      "evaluated": 2,
+      "numerically_valid": 2,
+      "valid_timed": 2,
+      "evaluation_outcomes": {
+        "valid": 2
+      },
+      "outcome": "failed",
+      "reason": "Private verification did not pass; gate is closed",
+      "search_score": 2.7646835002547334,
+      "run_path": "runs/float16-softmax-medium/tuned/jobs/684bde683ba747d7a0fd1c6e29fcd3cd",
+      "artifact_path": null,
+      "confirmation": [],
+      "model_input_tokens": 1772,
+      "model_output_tokens": 6464
+    },
+    {
+      "arm": "current",
+      "family": "softmax",
+      "case": "medium",
+      "dtype": "float16",
+      "requests": 2,
+      "evaluated": 2,
+      "numerically_valid": 2,
+      "valid_timed": 2,
+      "evaluation_outcomes": {
+        "valid": 2
+      },
+      "outcome": "promoted",
+      "reason": "Numerically verified and faster in both independent confirmation sessions",
+      "search_score": 2.7353916603469703,
+      "run_path": "runs/float16-softmax-medium/current/jobs/3abbb50bebc6407b8c9157fcaad9d4a7",
+      "artifact_path": "runs/float16-softmax-medium/current/artifacts/b690f67e158381333375f334af06854c92d0112405224453a0f601b0fcb8177f",
+      "confirmation": [
+        {
+          "baseline": "original_eager",
+          "schema_version": 1,
+          "speedup": 2.7134858516457645,
+          "lower": 2.5953770974708052,
+          "upper": 2.749524851614426,
+          "pairs": 30
+        },
+        {
+          "baseline": "torch_compile_inductor_fullgraph",
+          "schema_version": 1,
+          "speedup": 2.7412184929295904,
+          "lower": 2.7030617510116706,
+          "upper": 2.76336592977298,
+          "pairs": 30
+        }
+      ],
+      "model_input_tokens": 2067,
+      "model_output_tokens": 7733
+    },
+    {
+      "arm": "current",
+      "family": "rmsnorm",
+      "case": "medium",
+      "dtype": "float32",
+      "requests": 2,
+      "evaluated": 2,
+      "numerically_valid": 2,
+      "valid_timed": 2,
+      "evaluation_outcomes": {
+        "valid": 2
+      },
+      "outcome": "no_win",
+      "reason": "Search did not establish the minimum 1.05x public-wrapper gain",
+      "search_score": 0.5429749430964822,
+      "run_path": "runs/float32-rmsnorm-medium/current/jobs/86f3d75dd36c4d8483191f8295f82ca3",
+      "artifact_path": null,
+      "confirmation": [],
+      "model_input_tokens": 2530,
+      "model_output_tokens": 8044
+    },
+    {
+      "arm": "tuned",
+      "family": "rmsnorm",
+      "case": "medium",
+      "dtype": "float32",
+      "requests": 2,
+      "evaluated": 2,
+      "numerically_valid": 0,
+      "valid_timed": 0,
+      "evaluation_outcomes": {
+        "compile_error": 2
+      },
+      "outcome": "budget_exhausted",
+      "reason": "No verified measured candidate was selected",
+      "search_score": null,
+      "run_path": "runs/float32-rmsnorm-medium/tuned/jobs/b4710af7c18747bbbab96b84955f6862",
+      "artifact_path": null,
+      "confirmation": [],
+      "model_input_tokens": 1719,
+      "model_output_tokens": 6764
+    },
+    {
+      "arm": "tuned",
+      "family": "rmsnorm",
+      "case": "large",
+      "dtype": "float16",
+      "requests": 2,
+      "evaluated": 2,
+      "numerically_valid": 1,
+      "valid_timed": 1,
+      "evaluation_outcomes": {
+        "runtime_error": 1,
+        "valid": 1
+      },
+      "outcome": "promoted",
+      "reason": "Numerically verified and faster in both independent confirmation sessions",
+      "search_score": 1.235420737279229,
+      "run_path": "runs/float16-rmsnorm-large/tuned/jobs/66fa45627e7a4a61823280b92e619110",
+      "artifact_path": "runs/float16-rmsnorm-large/tuned/artifacts/65c78f31d4362b107b1b3a5c78ad6a76fdd7e3a0e3ca9de480b8cd7fec4af6da",
+      "confirmation": [
+        {
+          "baseline": "torch_compile_inductor_fullgraph",
+          "schema_version": 1,
+          "speedup": 1.2262368708640992,
+          "lower": 1.2204147467780468,
+          "upper": 1.2379663861187573,
+          "pairs": 30
+        },
+        {
+          "baseline": "torch_compile_inductor_fullgraph",
+          "schema_version": 1,
+          "speedup": 1.227665098955736,
+          "lower": 1.2078881656589604,
+          "upper": 1.2361294366869249,
+          "pairs": 30
+        }
+      ],
+      "model_input_tokens": 1303,
+      "model_output_tokens": 9456
+    },
+    {
+      "arm": "current",
+      "family": "rmsnorm",
+      "case": "large",
+      "dtype": "float16",
+      "requests": 2,
+      "evaluated": 2,
+      "numerically_valid": 1,
+      "valid_timed": 1,
+      "evaluation_outcomes": {
+        "valid": 1,
+        "compile_error": 1
+      },
+      "outcome": "promoted",
+      "reason": "Numerically verified and faster in both independent confirmation sessions",
+      "search_score": 1.2196928534649185,
+      "run_path": "runs/float16-rmsnorm-large/current/jobs/dd98b1915c134d98898830b4235158fa",
+      "artifact_path": "runs/float16-rmsnorm-large/current/artifacts/514299ac30f371076455df11fd6962cd3e8d75e0844c6fd9b65de8056dc52fc6",
+      "confirmation": [
+        {
+          "baseline": "torch_compile_inductor_fullgraph",
+          "schema_version": 1,
+          "speedup": 1.2019206665735787,
+          "lower": 1.1945155702965873,
+          "upper": 1.213917825639648,
+          "pairs": 30
+        },
+        {
+          "baseline": "torch_compile_inductor_fullgraph",
+          "schema_version": 1,
+          "speedup": 1.2142078602982709,
+          "lower": 1.2082977563904025,
+          "upper": 1.2250784908908894,
+          "pairs": 30
+        }
+      ],
+      "model_input_tokens": 2594,
+      "model_output_tokens": 7828
+    }
+  ],
+  "requests": 16
+}

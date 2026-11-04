@@ -1,0 +1,120 @@
+{
+  "candidate_id": "0fe3f69ce16cb97618d33528341c3a2c7e98d3dc75e4a3c4d7acd20d20f84e76",
+  "manual_control_id": "19f7e7f416a893986dc1e59786e505adff8b44fac54e76479240fc084d076173",
+  "source_run": "runs/float16-softmax-medium/tuned/jobs/684bde683ba747d7a0fd1c6e29fcd3cd",
+  "model_requests": 0,
+  "results": {
+    "original": [
+      {
+        "schema_version": 1,
+        "status": "incorrect",
+        "verification": {
+          "schema_version": 1,
+          "passed": false,
+          "cases": 0,
+          "max_absolute_error": 0.0,
+          "max_relative_error": 0.0,
+          "rmse": 0.0,
+          "mismatches": 0,
+          "reason": "nondeterministic output"
+        },
+        "elapsed_ms": [],
+        "reason": null,
+        "device_fault": false,
+        "timing": null
+      },
+      {
+        "schema_version": 1,
+        "status": "incorrect",
+        "verification": {
+          "schema_version": 1,
+          "passed": false,
+          "cases": 0,
+          "max_absolute_error": 0.0,
+          "max_relative_error": 0.0,
+          "rmse": 0.0,
+          "mismatches": 0,
+          "reason": "nondeterministic output"
+        },
+        "elapsed_ms": [],
+        "reason": null,
+        "device_fault": false,
+        "timing": null
+      },
+      {
+        "schema_version": 1,
+        "status": "incorrect",
+        "verification": {
+          "schema_version": 1,
+          "passed": false,
+          "cases": 0,
+          "max_absolute_error": 0.0,
+          "max_relative_error": 0.0,
+          "rmse": 0.0,
+          "mismatches": 0,
+          "reason": "nondeterministic output"
+        },
+        "elapsed_ms": [],
+        "reason": null,
+        "device_fault": false,
+        "timing": null
+      }
+    ],
+    "barrier_control": [
+      {
+        "schema_version": 1,
+        "status": "valid",
+        "verification": {
+          "schema_version": 1,
+          "passed": true,
+          "cases": 22,
+          "max_absolute_error": 3.814697265625e-06,
+          "max_relative_error": 0.000970873786407767,
+          "rmse": 1.785486197908588e-08,
+          "mismatches": 0,
+          "reason": null
+        },
+        "elapsed_ms": [],
+        "reason": null,
+        "device_fault": false,
+        "timing": null
+      },
+      {
+        "schema_version": 1,
+        "status": "valid",
+        "verification": {
+          "schema_version": 1,
+          "passed": true,
+          "cases": 22,
+          "max_absolute_error": 3.814697265625e-06,
+          "max_relative_error": 0.000970873786407767,
+          "rmse": 1.785486197908588e-08,
+          "mismatches": 0,
+          "reason": null
+        },
+        "elapsed_ms": [],
+        "reason": null,
+        "device_fault": false,
+        "timing": null
+      },
+      {
+        "schema_version": 1,
+        "status": "valid",
+        "verification": {
+          "schema_version": 1,
+          "passed": true,
+          "cases": 22,
+          "max_absolute_error": 3.814697265625e-06,
+          "max_relative_error": 0.000970873786407767,
+          "rmse": 1.785486197908588e-08,
+          "mismatches": 0,
+          "reason": null
+        },
+        "elapsed_ms": [],
+        "reason": null,
+        "device_fault": false,
+        "timing": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "artifact_id": "3c43a8a180ea90c420d51020d22d580ecbd0440f2b978423440489beeba03fd4",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "softmax:medium",
+    "family": "softmax",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "softmax",
+    "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "128ffc9ccdea1da89e5a7dede0115f9611aea0a456ab40b70243f7c63c5662d3",
+    "workload_hash": "6f2148c219724a119cd21afd070e96ab6b230d1a12a19e6b0343548369b3a476",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint row [[threadgroup_position_in_grid]], uint tid [[thread_position_in_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint W [[threads_per_simdgroup]], uint T [[threads_per_threadgroup]]) {\n    (void)epsilon;\n    (void)lane;\n    (void)W;\n    if (row >= B) return;\n    uint base = row * D;\n    if (D == 1024u && T == 32u) {\n        device const half4* xv = (device const half4*)(x + base);\n        half4 vals[8];\n        float lm = -3.4028235e38f;\n        for (uint k = 0u; k < 8u; ++k) {\n            half4 h = xv[tid + 32u * k];\n            vals[k] = h;\n            lm = max(lm, max(max(float(h.x), float(h.y)), max(float(h.z), float(h.w))));\n        }\n        float rmax = simd_max(lm);\n        float ev[32];\n        float ls = 0.0f;\n        for (uint k = 0u; k < 8u; ++k) {\n            half4 h = vals[k];\n            float e0 = exp(float(h.x) - rmax);\n            float e1 = exp(float(h.y) - rmax);\n            float e2 = exp(float(h.z) - rmax);\n            float e3 = exp(float(h.w) - rmax);\n            uint o = 4u * k;\n            ev[o] = e0;\n            ev[o + 1u] = e1;\n            ev[o + 2u] = e2;\n            ev[o + 3u] = e3;\n            ls += ((e0 + e1) + (e2 + e3));\n        }\n        float rs = simd_sum(ls);\n        float inv = (rs > 0.0f) ? (1.0f / rs) : 0.0f;\n        device half4* ov = (device half4*)(out + base);\n        for (uint k = 0u; k < 8u; ++k) {\n            uint o = 4u * k;\n            ov[tid + 32u * k] = half4(half(ev[o] * inv), half(ev[o + 1u] * inv), half(ev[o + 2u] * inv), half(ev[o + 3u] * inv));\n        }\n        return;\n    }\n    float lm = -3.4028235e38f;\n    for (uint j = tid; j < D; j += T) lm = max(lm, float(x[base + j]));\n    float rmax = simd_max(lm);\n    float ls = 0.0f;\n    for (uint j = tid; j < D; j += T) ls += exp(float(x[base + j]) - rmax);\n    float rs = simd_sum(ls);\n    float inv = (rs > 0.0f) ? (1.0f / rs) : 0.0f;\n    for (uint j = tid; j < D; j += T) out[base + j] = half(exp(float(x[base + j]) - rmax) * inv);\n}\n",
+      "threads": [
+        8192,
+        1,
+        1
+      ],
+      "group_size": [
+        32,
+        1,
+        1
+      ],
+      "hypothesis": "One SIMD group per row with coalesced half4 loads and register reuse eliminates all threadgroup barriers and distinct shared max/sum scratch synchronization, reducing latency for 256x1024 while keeping FP32 simd reductions."
+    },
+    "parent_id": "015a2e58a78f981a79935700174c72a6afc1d7a09a36b21a516b5e0512a33552",
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "cec83dcbf30a79e7c5ac8795fbf4ea31ab262212025da2b45fd15ca07d0e8109",
+  "evidence_hash": "0c43c92aeb6b21acba79089d1d480484cf4ca8715b485f426eba232dbffe6bff",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

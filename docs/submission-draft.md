@@ -45,7 +45,9 @@ show fallback on a changed shape, dtype and gradient mode.
 On a 14-core Apple M3 Pro, MetalMind promoted four of nine FP32 signatures
 and all nine FP16 signatures with caller-guaranteed input bounds. Medium
 FP32 bias/GELU measured 1.589× / 1.568× versus Inductor. Medium FP16
-softmax measured 2.641× / 2.544× versus eager PyTorch.
+softmax measured 3.098× / 3.183× versus eager PyTorch after Muse received
+specific synchronization feedback. The demo and attention measurement
+use an earlier verified softmax artifact. [Prompt experiment](../results/2026-11-04-muse-prompt-ab/README.md)
 
 Large FP16 RMSNorm measured 1.252× / 1.268× versus Inductor after Muse
 Wonder used the earlier kernel source and benchmark feedback to propose a new

@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:large",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "medium",
+    "domain_mode": "assume",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1500.0,
+    "finalization_reserve_seconds": 600.0,
+    "max_output_tokens": 8192,
+    "total_output_tokens": 16384,
+    "request_timeout_seconds": 180.0,
+    "compile_timeout_seconds": 90.0,
+    "execution_timeout_seconds": 300.0,
+    "stagnation_limit": 10,
+    "seed": 202611070,
+    "runs_dir": "/Users/rami/github/metalmind/runs/muse-prompt-ab.1G9GdJzK/runs/float16-rmsnorm-large/tuned/jobs",
+    "artifacts_dir": "/Users/rami/github/metalmind/runs/muse-prompt-ab.1G9GdJzK/runs/float16-rmsnorm-large/tuned/artifacts",
+    "warmups": 100,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 9456,
+  "elapsed_seconds": 97.13680654199561,
+  "wall_deadline_utc": 1793806453.439967,
+  "seen": [
+    "25b3d9fbb20f7e535cfea067f98b1c7ffdc8cfc9c30b64b68949c0b7740e6dee",
+    "53b5a9d8522f6e6c8ab8bdbbafd49ddfd8e78e36814845caf844c75c3b7b415d"
+  ],
+  "archive": [
+    {
+      "score": 1.235420737279229,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "25b3d9fbb20f7e535cfea067f98b1c7ffdc8cfc9c30b64b68949c0b7740e6dee",
+        "workload_hash": "b6bf5e6a30a18684680ed2ac2631f209a908f2eb6222d8c1dc6255561b897696",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint tg_id [[threadgroup_position_in_grid]], uint tid [[thread_position_in_threadgroup]], uint tg_size [[threads_per_threadgroup]], uint simd_lane [[thread_index_in_simdgroup]], uint simd_id [[simdgroup_index_in_threadgroup]], uint simd_width [[threads_per_simdgroup]]) {\n    if (tg_id >= B) {\n        return;\n    }\n    uint row = tg_id;\n    uint vecD = D >> 2;\n    device const half4* x4 = reinterpret_cast<device const half4*>(x);\n    device const half4* p4 = reinterpret_cast<device const half4*>(parameter);\n    device half4* o4 = reinterpret_cast<device half4*>(out);\n    uint rowVec = row * vecD;\n    uint rowBase = row * D;\n    float4 regs[4];\n    float sum = 0.0f;\n    for (uint k = 0; k < 4; ++k) {\n        uint vi = tid + k * tg_size;\n        if (vi < vecD) {\n            float4 v = float4(x4[rowVec + vi]);\n            regs[k] = v;\n            sum += v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;\n        } else {\n            regs[k] = float4(0.0f);\n        }\n    }\n    for (uint vi = tid + 4 * tg_size; vi < vecD; vi += tg_size) {\n        float4 v = float4(x4[rowVec + vi]);\n        sum += v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;\n    }\n    for (uint col = (vecD << 2) + tid; col < D; col += tg_size) {\n        float v = float(x[rowBase + col]);\n        sum += v * v;\n    }\n    threadgroup float shared_mem[32];\n    float lane_sum = simd_sum(sum);\n    if (simd_lane == 0) {\n        shared_mem[simd_id] = lane_sum;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    uint num_simd = (tg_size + simd_width - 1) / simd_width;\n    if (simd_id == 0) {\n        float v = (simd_lane < num_simd) ? shared_mem[simd_lane] : 0.0f;\n        float total = simd_sum(v);\n        if (simd_lane == 0) {\n            shared_mem[0] = total;\n        }\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float inv = rsqrt(shared_mem[0] / float(D) + epsilon);\n    for (uint k = 0; k < 4; ++k) {\n        uint vi = tid + k * tg_size;\n        if (vi < vecD) {\n            float4 v = regs[k];\n            float4 p = float4(p4[vi]);\n            float4 y = v * inv * p;\n            o4[rowVec + vi] = half4(half(y.x), half(y.y), half(y.z), half(y.w));\n        }\n    }\n    for (uint vi = tid + 4 * tg_size; vi < vecD; vi += tg_size) {\n        float4 v = float4(x4[rowVec + vi]);\n        float4 p = float4(p4[vi]);\n        float4 y = v * inv * p;\n        o4[rowVec + vi] = half4(half(y.x), half(y.y), half(y.z), half(y.w));\n    }\n    for (uint col = (vecD << 2) + tid; col < D; col += tg_size) {\n        float v = float(x[rowBase + col]);\n        float p = float(parameter[col]);\n        out[rowBase + col] = half(v * inv * p);\n    }\n}\n",
+          "threads": [
+            131072,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "One 256-thread threadgroup per row caching four half4 values per thread in registers, with SIMD plus shared-memory reduction and one rsqrt, eliminates the second global X read and maximizes coalesced bandwidth."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "promoted"
+}

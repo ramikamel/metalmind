@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "artifact_id": "65c78f31d4362b107b1b3a5c78ad6a76fdd7e3a0e3ca9de480b8cd7fec4af6da",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:large",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "25b3d9fbb20f7e535cfea067f98b1c7ffdc8cfc9c30b64b68949c0b7740e6dee",
+    "workload_hash": "b6bf5e6a30a18684680ed2ac2631f209a908f2eb6222d8c1dc6255561b897696",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint tg_id [[threadgroup_position_in_grid]], uint tid [[thread_position_in_threadgroup]], uint tg_size [[threads_per_threadgroup]], uint simd_lane [[thread_index_in_simdgroup]], uint simd_id [[simdgroup_index_in_threadgroup]], uint simd_width [[threads_per_simdgroup]]) {\n    if (tg_id >= B) {\n        return;\n    }\n    uint row = tg_id;\n    uint vecD = D >> 2;\n    device const half4* x4 = reinterpret_cast<device const half4*>(x);\n    device const half4* p4 = reinterpret_cast<device const half4*>(parameter);\n    device half4* o4 = reinterpret_cast<device half4*>(out);\n    uint rowVec = row * vecD;\n    uint rowBase = row * D;\n    float4 regs[4];\n    float sum = 0.0f;\n    for (uint k = 0; k < 4; ++k) {\n        uint vi = tid + k * tg_size;\n        if (vi < vecD) {\n            float4 v = float4(x4[rowVec + vi]);\n            regs[k] = v;\n            sum += v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;\n        } else {\n            regs[k] = float4(0.0f);\n        }\n    }\n    for (uint vi = tid + 4 * tg_size; vi < vecD; vi += tg_size) {\n        float4 v = float4(x4[rowVec + vi]);\n        sum += v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;\n    }\n    for (uint col = (vecD << 2) + tid; col < D; col += tg_size) {\n        float v = float(x[rowBase + col]);\n        sum += v * v;\n    }\n    threadgroup float shared_mem[32];\n    float lane_sum = simd_sum(sum);\n    if (simd_lane == 0) {\n        shared_mem[simd_id] = lane_sum;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    uint num_simd = (tg_size + simd_width - 1) / simd_width;\n    if (simd_id == 0) {\n        float v = (simd_lane < num_simd) ? shared_mem[simd_lane] : 0.0f;\n        float total = simd_sum(v);\n        if (simd_lane == 0) {\n            shared_mem[0] = total;\n        }\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float inv = rsqrt(shared_mem[0] / float(D) + epsilon);\n    for (uint k = 0; k < 4; ++k) {\n        uint vi = tid + k * tg_size;\n        if (vi < vecD) {\n            float4 v = regs[k];\n            float4 p = float4(p4[vi]);\n            float4 y = v * inv * p;\n            o4[rowVec + vi] = half4(half(y.x), half(y.y), half(y.z), half(y.w));\n        }\n    }\n    for (uint vi = tid + 4 * tg_size; vi < vecD; vi += tg_size) {\n        float4 v = float4(x4[rowVec + vi]);\n        float4 p = float4(p4[vi]);\n        float4 y = v * inv * p;\n        o4[rowVec + vi] = half4(half(y.x), half(y.y), half(y.z), half(y.w));\n    }\n    for (uint col = (vecD << 2) + tid; col < D; col += tg_size) {\n        float v = float(x[rowBase + col]);\n        float p = float(parameter[col]);\n        out[rowBase + col] = half(v * inv * p);\n    }\n}\n",
+      "threads": [
+        131072,
+        1,
+        1
+      ],
+      "group_size": [
+        256,
+        1,
+        1
+      ],
+      "hypothesis": "One 256-thread threadgroup per row caching four half4 values per thread in registers, with SIMD plus shared-memory reduction and one rsqrt, eliminates the second global X read and maximizes coalesced bandwidth."
+    },
+    "parent_id": null,
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "467ef6dc1cc16bf23abf47e462d18317792a9b400f7cbd32e7fa74fe3c643b74",
+  "evidence_hash": "cdb798d7d0003da388782831dbb373f9a36f5181663f24282e88ca7f143789cc",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

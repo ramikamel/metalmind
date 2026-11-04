@@ -25,7 +25,7 @@ cases was PyTorch.
 | RMSNorm, medium | 256 × 1024 | Inductor | 1.541× / 1.530× | Promoted |
 | RMSNorm, large | 512 × 4096 | Inductor | 1.252× / 1.268× | Promoted |
 | Softmax, small | 64 × 257 | Eager PyTorch | 1.113× / 1.119× | Promoted |
-| Softmax, medium | 256 × 1024 | Eager PyTorch | 2.641× / 2.544× | Promoted |
+| Softmax, medium | 256 × 1024 | Eager PyTorch | 3.098× / 3.183× | Promoted |
 | Softmax, large | 128 × 4096 | Inductor | 1.428× / 1.420× | Promoted |
 
 ### FP32 with caller-guaranteed input bounds
@@ -53,9 +53,10 @@ cases was PyTorch.
 | FP32 residual module rewrite | Eager PyTorch | 1.123× / 1.112× |
 | FP32 residual module rewrite | Inductor | 0.426× / 0.433× |
 
-The FP16 attention benchmark timed a fixed, manually integrated block including
-both matrix multiplications. The FP32 residual rewrite lost to compiled PyTorch,
-so MetalMind kept the original module. The FP32 matmul and bias/GELU measurement
+The FP16 attention benchmark used an earlier medium softmax artifact in a
+fixed, manually integrated block. Timing included both matrix multiplications.
+The FP32 residual rewrite lost to compiled PyTorch, so MetalMind kept the
+original module. The FP32 matmul and bias/GELU measurement
 used one session against eager PyTorch.
 
 ## Default checked mode
@@ -73,4 +74,5 @@ The release passed 195 local tests, including real Metal checks, and
 [FP32 confirmations](results/2026-11-03-hackathon-extension/fp32-revalidation/README.md) ·
 [FP16 measurements](results/2026-11-03-assumed-fp16-pilot/README.md) ·
 [FP16 artifact checks and workflow evidence](results/2026-11-03-hackathon-extension/README.md) ·
-[FP32 module evidence](results/2026-11-02-module-baselines/README.md)
+[FP32 module evidence](results/2026-11-02-module-baselines/README.md) ·
+[Prompt tuning and strongest FP16 softmax evidence](results/2026-11-04-muse-prompt-ab/README.md)

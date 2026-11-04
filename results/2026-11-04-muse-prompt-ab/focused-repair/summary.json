@@ -1,0 +1,27 @@
+{
+  "requests": 2,
+  "evaluated": 2,
+  "outcome": "promoted",
+  "reason": "Numerically verified and faster in both independent confirmation sessions",
+  "search_score": 3.069954682160792,
+  "confirmation": [
+    {
+      "baseline": "original_eager",
+      "schema_version": 1,
+      "speedup": 3.0984090084571,
+      "lower": 2.9585764886569583,
+      "upper": 3.190486957803155,
+      "pairs": 30
+    },
+    {
+      "baseline": "original_eager",
+      "schema_version": 1,
+      "speedup": 3.1827498560159064,
+      "lower": 3.130813185519158,
+      "upper": 3.233630999751485,
+      "pairs": 30
+    }
+  ],
+  "run_path": "jobs/d8ab56447aae4a99aca6124654db6b94",
+  "artifact_path": "artifacts/3c43a8a180ea90c420d51020d22d580ecbd0440f2b978423440489beeba03fd4"
+}
