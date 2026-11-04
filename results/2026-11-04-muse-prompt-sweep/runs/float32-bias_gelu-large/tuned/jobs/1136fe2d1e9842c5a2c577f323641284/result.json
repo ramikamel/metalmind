@@ -1,0 +1,5 @@
+{
+  "outcome": "promoted",
+  "reason": "Numerically verified and faster in both independent confirmation sessions",
+  "artifact_path": "/Users/rami/github/metalmind/runs/muse-prompt-sweep.sg3xeDrH/runs/float32-bias_gelu-large/tuned/artifacts/442ba772cb83f234825e58d17adb4e285e155534a03ac8c1a5c0846476a4c649"
+}

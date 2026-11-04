@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "artifact_id": "442ba772cb83f234825e58d17adb4e285e155534a03ac8c1a5c0846476a4c649",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:large",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "17f0fa7a460bd6ef5b961df8849eb37549a839cb4427fa70c631589404c740e2",
+    "workload_hash": "f5c2684354f47ebdacdc7350d43d80786bfafbe3c19f5487b2b5b0b26313c8ce",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    uint colBlock = gid.x;\n    uint rowBase = gid.y * 4u;\n    uint colBase = colBlock * 4u;\n    if (colBase >= D || rowBase >= B) return;\n    if ((D & 3u) != 0u) {\n        for (uint r = 0u; r < 4u; ++r) {\n            uint row = rowBase + r;\n            if (row >= B) break;\n            uint base = row * D + colBase;\n            for (uint j = 0u; j < 4u; ++j) {\n                uint col = colBase + j;\n                if (col >= D) break;\n                float z = x[base + j] + parameter[col];\n                float z2 = z * z;\n                float u = 0.7978845608028654f * z * (1.0f + 0.044715f * z2);\n                float y = 0.5f * z * (1.0f + tanh(u));\n                out[base + j] = y;\n            }\n        }\n        return;\n    }\n    float4 bias = ((device const float4*)(parameter))[colBlock];\n    for (uint r = 0u; r < 4u; ++r) {\n        uint row = rowBase + r;\n        if (row >= B) break;\n        uint offset = row * D + colBase;\n        float4 xv = ((device const float4*)(x + offset))[0];\n        float4 z = xv + bias;\n        float4 z2 = z * z;\n        float4 u = 0.7978845608028654f * z * (1.0f + 0.044715f * z2);\n        float4 y = 0.5f * z * (1.0f + tanh(u));\n        ((device float4*)(out + offset))[0] = y;\n    }\n}\n",
+      "threads": [
+        1024,
+        128,
+        1
+      ],
+      "group_size": [
+        256,
+        1,
+        1
+      ],
+      "hypothesis": "Reusing one coalesced float4 bias load across four rows and vectorizing the fused GELU per row reduces bias traffic and thread overhead versus one scalar element per thread."
+    },
+    "parent_id": null,
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "969e9a6d2463b7b00ad48d1e33fcd21aa5a05f9cbd045ebf5e3276d30c4cf478",
+  "evidence_hash": "7ee8358a05a88b3cb411b8c3e9e9b13f104c53c33eaf9d4637be674b5ec8786a",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

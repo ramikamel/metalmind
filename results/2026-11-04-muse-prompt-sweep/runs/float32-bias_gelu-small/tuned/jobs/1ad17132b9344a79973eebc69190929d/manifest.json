@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:small",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          64,
+          257
+        ],
+        "strides": [
+          257,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          257
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        64,
+        257
+      ],
+      "strides": [
+        257,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "medium",
+    "domain_mode": "assume",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1500.0,
+    "finalization_reserve_seconds": 600.0,
+    "max_output_tokens": 8192,
+    "total_output_tokens": 16384,
+    "request_timeout_seconds": 180.0,
+    "compile_timeout_seconds": 90.0,
+    "execution_timeout_seconds": 300.0,
+    "stagnation_limit": 10,
+    "seed": 202611470,
+    "runs_dir": "/Users/rami/github/metalmind/runs/muse-prompt-sweep.sg3xeDrH/runs/float32-bias_gelu-small/tuned/jobs",
+    "artifacts_dir": "/Users/rami/github/metalmind/runs/muse-prompt-sweep.sg3xeDrH/runs/float32-bias_gelu-small/tuned/artifacts",
+    "warmups": 100,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 10549,
+  "elapsed_seconds": 120.61249916700763,
+  "wall_deadline_utc": 1793807617.857721,
+  "seen": [
+    "e22f9899e49e8a76921c9c7aa64f253192fe125d2207bfc6e8a574f45607f64f",
+    "e5e1685f045a9b0c434aeb75083b67f47244d379e2e4cf154a6bc3408ba7e31a"
+  ],
+  "archive": [
+    {
+      "score": 0.9174067218642805,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "e22f9899e49e8a76921c9c7aa64f253192fe125d2207bfc6e8a574f45607f64f",
+        "workload_hash": "0c4845e365a8a11f642bbb1582f91373eba2829de2ef745bf5f99e253d8e70e9",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    if (gid.x >= D) return;\n    uint row_base = gid.y * 4u;\n    if (row_base >= B) return;\n    uint col = gid.x;\n    float p = parameter[col];\n    for (uint i = 0u; i < 4u; ++i) {\n        uint row = row_base + i;\n        if (row >= B) return;\n        uint idx = row * D + col;\n        float z = x[idx] + p;\n        float z2 = z * z;\n        float u = 0.7978845608028654f * z * (1.0f + 0.044715f * z2);\n        float uc = clamp(u, -10.0f, 10.0f);\n        float e = exp2(-2.885390081777927f * uc);\n        out[idx] = z / (1.0f + e);\n    }\n}\n",
+          "threads": [
+            257,
+            16,
+            1
+          ],
+          "group_size": [
+            32,
+            4,
+            1
+          ],
+          "hypothesis": "Replacing tanh with a clamped exp2 sigmoid identity and reusing each loaded bias for 4 rows per thread reduces transcendental and parameter-load work, lowering latency on the 64x257 shape."
+        },
+        "parent_id": "e5e1685f045a9b0c434aeb75083b67f47244d379e2e4cf154a6bc3408ba7e31a",
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 0.902916387925443,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "e5e1685f045a9b0c434aeb75083b67f47244d379e2e4cf154a6bc3408ba7e31a",
+        "workload_hash": "0c4845e365a8a11f642bbb1582f91373eba2829de2ef745bf5f99e253d8e70e9",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]], uint2 grid_dim [[threads_per_grid]]) {\n    if (gid.y >= B) return;\n    uint row_offset = gid.y * D;\n    for (uint col = gid.x; col < D; col += grid_dim.x) {\n        float z = x[row_offset + col] + parameter[col];\n        float z2 = z * z;\n        float u = 0.7978845608028654f * (z + 0.044715f * z * z2);\n        out[row_offset + col] = 0.5f * z * (1.0f + tanh(u));\n    }\n}\n",
+          "threads": [
+            256,
+            64,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "One 256-thread group per row, with thread 0 also handling column 256, avoids division/modulo and redundant threads while keeping coalesced access for the 64x257 shape."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

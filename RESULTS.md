@@ -20,27 +20,27 @@ cases was PyTorch.
 | --- | --- | --- | ---: | --- |
 | Bias/GELU, small | 64 × 257 | Eager PyTorch | 1.660× / 1.689× | Promoted |
 | Bias/GELU, medium | 256 × 1024 | Inductor | 1.657× / 1.651× | Promoted |
-| Bias/GELU, large | 512 × 4096 | Inductor | 1.240× / 1.242× | Promoted |
-| RMSNorm, small | 64 × 257 | Functional RMSNorm | 1.136× / 1.135× | Promoted |
-| RMSNorm, medium | 256 × 1024 | Inductor | 1.541× / 1.530× | Promoted |
+| Bias/GELU, large | 512 × 4096 | Inductor | 1.857× / 1.765× | Promoted |
+| RMSNorm, small | 64 × 257 | Functional RMSNorm | 1.249× / 1.245× | Promoted |
+| RMSNorm, medium | 256 × 1024 | Inductor | 2.168× / 2.181× | Promoted |
 | RMSNorm, large | 512 × 4096 | Inductor | 1.252× / 1.268× | Promoted |
-| Softmax, small | 64 × 257 | Eager PyTorch | 1.113× / 1.119× | Promoted |
+| Softmax, small | 64 × 257 | Eager PyTorch | 1.151× / 1.164× | Promoted |
 | Softmax, medium | 256 × 1024 | Eager PyTorch | 3.098× / 3.183× | Promoted |
-| Softmax, large | 128 × 4096 | Inductor | 1.428× / 1.420× | Promoted |
+| Softmax, large | 128 × 4096 | Inductor | 2.834× / 2.808× | Promoted |
 
 ### FP32 with caller-guaranteed input bounds
 
 | Workload | Shape | PyTorch baseline | Speedup | Outcome |
 | --- | --- | --- | ---: | --- |
 | Bias/GELU, small | 64 × 257 | Eager PyTorch | 0.923× in search | Kept PyTorch |
-| Bias/GELU, medium | 256 × 1024 | Inductor | 1.589× / 1.568× | Promoted |
+| Bias/GELU, medium | 256 × 1024 | Inductor | 2.006× / 1.887× | Promoted |
 | Bias/GELU, large | 512 × 4096 | Inductor | 1.080× / 1.084× | Promoted |
-| RMSNorm, small | 64 × 257 | Functional RMSNorm | 0.381× in search | Kept PyTorch |
-| RMSNorm, medium | 256 × 1024 | Functional RMSNorm | 0.618× in search | Kept PyTorch |
-| RMSNorm, large | 512 × 4096 | Functional RMSNorm | 0.942× in search | Kept PyTorch |
-| Softmax, small | 64 × 257 | Eager PyTorch | 0.495× in search | Kept PyTorch |
+| RMSNorm, small | 64 × 257 | Functional RMSNorm | 0.480× in search | Kept PyTorch |
+| RMSNorm, medium | 256 × 1024 | Functional RMSNorm | 0.655× in search | Kept PyTorch |
+| RMSNorm, large | 512 × 4096 | Functional RMSNorm | 0.946× in search | Kept PyTorch |
+| Softmax, small | 64 × 257 | Eager PyTorch | 0.527× in search | Kept PyTorch |
 | Softmax, medium | 256 × 1024 | Eager PyTorch | 1.216× / 1.228× | Promoted |
-| Softmax, large | 128 × 4096 | Eager PyTorch | 1.173× / 1.181× | Promoted |
+| Softmax, large | 128 × 4096 | Eager PyTorch | 1.282× / 1.277× | Promoted |
 
 ## Whole-workflow benchmarks
 
@@ -82,4 +82,5 @@ The release passed 195 local tests, including real Metal checks, and
 [FP16 measurements](results/2026-11-03-assumed-fp16-pilot/README.md) ·
 [FP16 artifact checks and workflow evidence](results/2026-11-03-hackathon-extension/README.md) ·
 [FP32 module evidence](results/2026-11-02-module-baselines/README.md) ·
-[Prompt tuning and strongest FP16 softmax evidence](results/2026-11-04-muse-prompt-ab/README.md)
+[Prompt tuning and focused FP16 softmax evidence](results/2026-11-04-muse-prompt-ab/README.md) ·
+[Full 18-signature tuned prompt sweep](results/2026-11-04-muse-prompt-sweep/README.md)

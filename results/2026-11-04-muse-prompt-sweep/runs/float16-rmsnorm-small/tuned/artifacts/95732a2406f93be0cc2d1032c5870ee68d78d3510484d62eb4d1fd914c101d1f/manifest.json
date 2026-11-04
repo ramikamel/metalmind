@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "artifact_id": "95732a2406f93be0cc2d1032c5870ee68d78d3510484d62eb4d1fd914c101d1f",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:small",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          64,
+          257
+        ],
+        "strides": [
+          257,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          257
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        64,
+        257
+      ],
+      "strides": [
+        257,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "041c8425353f58b4d84a1e3ca2785401fb726f3b9e4f45bd5bf4d45a23000e4a",
+    "workload_hash": "6839c2d0f87dc1c932e75067757291ece0ad1fef3c54370d0cc9217fa9f02852",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint tg_pos [[threadgroup_position_in_grid]], uint tid [[thread_index_in_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint sg_id [[simdgroup_index_in_threadgroup]], uint sg_width [[threads_per_simdgroup]], uint tg_threads [[threads_per_threadgroup]]) {\n  if (tg_pos >= B) {\n    return;\n  }\n  uint row = tg_pos;\n  uint base = row * D;\n  float v0 = 0.0f;\n  float v1 = 0.0f;\n  uint c0 = tid;\n  uint c1 = tid + tg_threads;\n  if (c0 < D) {\n    v0 = float(x[base + c0]);\n  }\n  if (c1 < D) {\n    v1 = float(x[base + c1]);\n  }\n  float sum = v0 * v0 + v1 * v1;\n  for (uint col = tid + 2u * tg_threads; col < D; col += tg_threads) {\n    float v = float(x[base + col]);\n    sum += v * v;\n  }\n  float sg_sum = simd_sum(sum);\n  threadgroup float partial[256];\n  if (lane == 0u) {\n    partial[sg_id] = sg_sum;\n  }\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  if (sg_id == 0u) {\n    uint sgs_per_tg = tg_threads / sg_width;\n    float p = (lane < sgs_per_tg) ? partial[lane] : 0.0f;\n    float total = simd_sum(p);\n    if (lane == 0u) {\n      partial[0] = rsqrt(total / float(D) + epsilon);\n    }\n  }\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  float scale = partial[0];\n  if (c0 < D) {\n    out[base + c0] = half(v0 * scale * float(parameter[c0]));\n  }\n  if (c1 < D) {\n    out[base + c1] = half(v1 * scale * float(parameter[c1]));\n  }\n  for (uint col = tid + 2u * tg_threads; col < D; col += tg_threads) {\n    float v = float(x[base + col]);\n    out[base + col] = half(v * scale * float(parameter[col]));\n  }\n}\n",
+      "threads": [
+        16384,
+        1,
+        1
+      ],
+      "group_size": [
+        256,
+        1,
+        1
+      ],
+      "hypothesis": "One 256-thread threadgroup per row, with each value cached in a register and SIMD partial sums merged through threadgroup memory, reduces sequential per-lane loads and eliminates the second input pass compared with one SIMD group per row."
+    },
+    "parent_id": "e3095074a26ab9a0611e55771d8c068fafb79bd4dd530779d2717ea7b83bc23e",
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "7b4aa42bd3775ef3019239d2b9465ea6f2e9cf4e6069eb6f82fb32a2ccb0c83a",
+  "evidence_hash": "f0b6b323b842f84a5baafbaef380aad475e7a3e942a44f60ba277464dcfb9f9b",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

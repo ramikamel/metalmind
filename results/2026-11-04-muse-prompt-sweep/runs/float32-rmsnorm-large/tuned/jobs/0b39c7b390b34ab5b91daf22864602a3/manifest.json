@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:large",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "medium",
+    "domain_mode": "assume",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1500.0,
+    "finalization_reserve_seconds": 600.0,
+    "max_output_tokens": 8192,
+    "total_output_tokens": 16384,
+    "request_timeout_seconds": 180.0,
+    "compile_timeout_seconds": 90.0,
+    "execution_timeout_seconds": 300.0,
+    "stagnation_limit": 10,
+    "seed": 202611490,
+    "runs_dir": "/Users/rami/github/metalmind/runs/muse-prompt-sweep.sg3xeDrH/runs/float32-rmsnorm-large/tuned/jobs",
+    "artifacts_dir": "/Users/rami/github/metalmind/runs/muse-prompt-sweep.sg3xeDrH/runs/float32-rmsnorm-large/tuned/artifacts",
+    "warmups": 100,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 10430,
+  "elapsed_seconds": 106.5473659169802,
+  "wall_deadline_utc": 1793807844.5357618,
+  "seen": [
+    "36aed7d0b22427737aaf3d29e110ddfa690c11b6fc008cd413f2f34893985fbc",
+    "8ca71a3c8fc9f76a2fead9e191c005fd8cd17eaf9d3bb15224734543850eaf6a"
+  ],
+  "archive": [
+    {
+      "score": 0.9458245752793057,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "36aed7d0b22427737aaf3d29e110ddfa690c11b6fc008cd413f2f34893985fbc",
+        "workload_hash": "f241fe3b0d19878ffa8e269da5d049293bad56b7f4e5bcc5d142ddc68a9c18ed",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 threadgroup_pos [[threadgroup_position_in_grid]], uint3 thread_pos [[thread_position_in_threadgroup]], uint3 threads_per_tg [[threads_per_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint simdgroup_idx [[simdgroup_index_in_threadgroup]], uint threads_per_sg [[threads_per_simdgroup]]) {\n  uint tg = threadgroup_pos.x;\n  uint tid = thread_pos.x;\n  uint nt = threads_per_tg.x;\n  threadgroup float scratch[256];\n  if (D == 4096u && nt == 256u) {\n    uint row0 = tg * 2u;\n    if (row0 >= B) return;\n    uint row1 = row0 + 1u;\n    bool has1 = row1 < B;\n    uint base0 = row0 * 1024u;\n    uint base1 = has1 ? row1 * 1024u : base0;\n    float4 v0 = ((device const float4*)x)[base0 + tid];\n    float4 v1 = ((device const float4*)x)[base0 + tid + 256u];\n    float4 v2 = ((device const float4*)x)[base0 + tid + 512u];\n    float4 v3 = ((device const float4*)x)[base0 + tid + 768u];\n    float4 u0 = float4(0.0f);\n    float4 u1 = float4(0.0f);\n    float4 u2 = float4(0.0f);\n    float4 u3 = float4(0.0f);\n    if (has1) {\n      u0 = ((device const float4*)x)[base1 + tid];\n      u1 = ((device const float4*)x)[base1 + tid + 256u];\n      u2 = ((device const float4*)x)[base1 + tid + 512u];\n      u3 = ((device const float4*)x)[base1 + tid + 768u];\n    }\n    float acc0 = dot(v0, v0) + dot(v1, v1) + dot(v2, v2) + dot(v3, v3);\n    float acc1 = dot(u0, u0) + dot(u1, u1) + dot(u2, u2) + dot(u3, u3);\n    float s0 = simd_sum(acc0);\n    float s1 = simd_sum(acc1);\n    if (lane == 0u) {\n      scratch[simdgroup_idx] = s0;\n      scratch[128u + simdgroup_idx] = s1;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    uint num_sg = (nt + threads_per_sg - 1u) / threads_per_sg;\n    float total0 = 0.0f;\n    float total1 = 0.0f;\n    for (uint i = 0u; i < num_sg; ++i) {\n      total0 += scratch[i];\n      total1 += scratch[128u + i];\n    }\n    float inv0 = rsqrt(total0 / float(D) + epsilon);\n    float inv1 = rsqrt(total1 / float(D) + epsilon);\n    float4 w0 = ((device const float4*)parameter)[tid];\n    ((device float4*)out)[base0 + tid] = v0 * inv0 * w0;\n    if (has1) ((device float4*)out)[base1 + tid] = u0 * inv1 * w0;\n    float4 w1 = ((device const float4*)parameter)[tid + 256u];\n    ((device float4*)out)[base0 + tid + 256u] = v1 * inv0 * w1;\n    if (has1) ((device float4*)out)[base1 + tid + 256u] = u1 * inv1 * w1;\n    float4 w2 = ((device const float4*)parameter)[tid + 512u];\n    ((device float4*)out)[base0 + tid + 512u] = v2 * inv0 * w2;\n    if (has1) ((device float4*)out)[base1 + tid + 512u] = u2 * inv1 * w2;\n    float4 w3 = ((device const float4*)parameter)[tid + 768u];\n    ((device float4*)out)[base0 + tid + 768u] = v3 * inv0 * w3;\n    if (has1) ((device float4*)out)[base1 + tid + 768u] = u3 * inv1 * w3;\n    return;\n  }\n  uint row = tg;\n  if (row >= B) return;\n  float acc = 0.0f;\n  uint base = row * D;\n  if ((D & 3u) == 0u) {\n    uint vec_d = D >> 2;\n    uint base_vec = row * vec_d;\n    for (uint i = tid; i < vec_d; i += nt) {\n      float4 v = ((device const float4*)x)[base_vec + i];\n      acc += dot(v, v);\n    }\n  } else {\n    for (uint i = tid; i < D; i += nt) {\n      float v = x[base + i];\n      acc += v * v;\n    }\n  }\n  float sg_sum = simd_sum(acc);\n  if (lane == 0u) scratch[simdgroup_idx] = sg_sum;\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  uint num_sg = (nt + threads_per_sg - 1u) / threads_per_sg;\n  float total = 0.0f;\n  for (uint i = 0u; i < num_sg; ++i) total += scratch[i];\n  float inv = rsqrt(total / float(D) + epsilon);\n  if ((D & 3u) == 0u) {\n    uint vec_d = D >> 2;\n    uint base_vec = row * vec_d;\n    for (uint i = tid; i < vec_d; i += nt) {\n      float4 v = ((device const float4*)x)[base_vec + i];\n      float4 w = ((device const float4*)parameter)[i];\n      ((device float4*)out)[base_vec + i] = v * inv * w;\n    }\n  } else {\n    for (uint i = tid; i < D; i += nt) {\n      out[base + i] = x[base + i] * inv * parameter[i];\n    }\n  }\n}\n",
+          "threads": [
+            65536,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "Processing two rows per 256-thread threadgroup shares each parameter float4 across both rows, keeps x values in registers, and uses a single threadgroup barrier with redundant per-thread reduction, reducing parameter traffic and synchronization versus one row per threadgroup."
+        },
+        "parent_id": "8ca71a3c8fc9f76a2fead9e191c005fd8cd17eaf9d3bb15224734543850eaf6a",
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 0.9210582673825025,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "8ca71a3c8fc9f76a2fead9e191c005fd8cd17eaf9d3bb15224734543850eaf6a",
+        "workload_hash": "f241fe3b0d19878ffa8e269da5d049293bad56b7f4e5bcc5d142ddc68a9c18ed",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 threadgroup_pos [[threadgroup_position_in_grid]], uint3 thread_pos [[thread_position_in_threadgroup]], uint3 threads_per_tg [[threads_per_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint simdgroup_idx [[simdgroup_index_in_threadgroup]], uint threads_per_sg [[threads_per_simdgroup]]) {\n  uint row = threadgroup_pos.x;\n  if (row >= B) return;\n  uint tid = thread_pos.x;\n  uint nt = threads_per_tg.x;\n  threadgroup float scratch[256];\n  if (D == 4096u && nt == 256u) {\n    uint base_vec = row * 1024u;\n    float4 v0 = ((device const float4*)x)[base_vec + tid];\n    float4 v1 = ((device const float4*)x)[base_vec + tid + 256u];\n    float4 v2 = ((device const float4*)x)[base_vec + tid + 512u];\n    float4 v3 = ((device const float4*)x)[base_vec + tid + 768u];\n    float acc = dot(v0, v0) + dot(v1, v1) + dot(v2, v2) + dot(v3, v3);\n    float sg_sum = simd_sum(acc);\n    if (lane == 0u) scratch[simdgroup_idx] = sg_sum;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (tid == 0u) {\n      uint num_sg = (nt + threads_per_sg - 1u) / threads_per_sg;\n      float total = 0.0f;\n      for (uint i = 0u; i < num_sg; ++i) total += scratch[i];\n      scratch[0] = rsqrt(total / float(D) + epsilon);\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float inv = scratch[0];\n    float4 w0 = ((device const float4*)parameter)[tid];\n    float4 w1 = ((device const float4*)parameter)[tid + 256u];\n    float4 w2 = ((device const float4*)parameter)[tid + 512u];\n    float4 w3 = ((device const float4*)parameter)[tid + 768u];\n    ((device float4*)out)[base_vec + tid] = v0 * inv * w0;\n    ((device float4*)out)[base_vec + tid + 256u] = v1 * inv * w1;\n    ((device float4*)out)[base_vec + tid + 512u] = v2 * inv * w2;\n    ((device float4*)out)[base_vec + tid + 768u] = v3 * inv * w3;\n    return;\n  }\n  float acc = 0.0f;\n  uint base = row * D;\n  if ((D & 3u) == 0u) {\n    uint vec_d = D >> 2;\n    uint base_vec = row * vec_d;\n    for (uint i = tid; i < vec_d; i += nt) {\n      float4 v = ((device const float4*)x)[base_vec + i];\n      acc += dot(v, v);\n    }\n  } else {\n    for (uint i = tid; i < D; i += nt) {\n      float v = x[base + i];\n      acc += v * v;\n    }\n  }\n  float sg_sum = simd_sum(acc);\n  if (lane == 0u) scratch[simdgroup_idx] = sg_sum;\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  if (tid == 0u) {\n    uint num_sg = (nt + threads_per_sg - 1u) / threads_per_sg;\n    float total = 0.0f;\n    for (uint i = 0u; i < num_sg; ++i) total += scratch[i];\n    scratch[0] = rsqrt(total / float(D) + epsilon);\n  }\n  threadgroup_barrier(mem_flags::mem_threadgroup);\n  float inv = scratch[0];\n  if ((D & 3u) == 0u) {\n    uint vec_d = D >> 2;\n    uint base_vec = row * vec_d;\n    for (uint i = tid; i < vec_d; i += nt) {\n      float4 v = ((device const float4*)x)[base_vec + i];\n      float4 w = ((device const float4*)parameter)[i];\n      ((device float4*)out)[base_vec + i] = v * inv * w;\n    }\n  } else {\n    for (uint i = tid; i < D; i += nt) {\n      out[base + i] = x[base + i] * inv * parameter[i];\n    }\n  }\n}\n",
+          "threads": [
+            131072,
+            1,
+            1
+          ],
+          "group_size": [
+            256,
+            1,
+            1
+          ],
+          "hypothesis": "One threadgroup per row holding four float4 values per thread in registers enables a single input pass; SIMD plus shared-memory reduction then applies one rsqrt and vectorized weights, minimizing memory traffic and barriers."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "no_win"
+}

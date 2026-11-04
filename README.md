@@ -66,7 +66,7 @@ confirmation sessions against the fastest verified PyTorch baseline.
 | Benchmark | Final result |
 | --- | --- |
 | FP16 functions with caller-guaranteed bounds | **9 of 9 signatures promoted**. Medium softmax reached **3.098× / 3.183×** vs eager PyTorch. |
-| FP32 functions with caller-guaranteed bounds | **4 of 9 signatures promoted**. Medium bias/GELU reached **1.589× / 1.568×** vs Inductor. |
+| FP32 functions with caller-guaranteed bounds | **4 of 9 signatures promoted**. Medium bias/GELU reached **2.006× / 1.887×** vs Inductor. |
 | Default checked FP32 campaign | **0 of 108 jobs promoted**. PyTorch handled every case. |
 | Complete fixed FP16 attention block | **1.058× / 1.067×** vs Inductor, including both matrix multiplications. |
 | FP32 residual module | PyTorch retained. The rewrite lost to Inductor. |

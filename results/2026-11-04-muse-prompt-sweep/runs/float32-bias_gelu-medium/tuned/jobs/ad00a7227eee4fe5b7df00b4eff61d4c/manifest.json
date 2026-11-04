@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:medium",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          1024
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "medium",
+    "domain_mode": "assume",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1500.0,
+    "finalization_reserve_seconds": 600.0,
+    "max_output_tokens": 8192,
+    "total_output_tokens": 16384,
+    "request_timeout_seconds": 180.0,
+    "compile_timeout_seconds": 90.0,
+    "execution_timeout_seconds": 300.0,
+    "stagnation_limit": 10,
+    "seed": 202611590,
+    "runs_dir": "/Users/rami/github/metalmind/runs/muse-prompt-sweep.sg3xeDrH/runs/float32-bias_gelu-medium/tuned/jobs",
+    "artifacts_dir": "/Users/rami/github/metalmind/runs/muse-prompt-sweep.sg3xeDrH/runs/float32-bias_gelu-medium/tuned/artifacts",
+    "warmups": 100,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 10498,
+  "elapsed_seconds": 107.4278125000128,
+  "wall_deadline_utc": 1793809750.281575,
+  "seen": [
+    "69a386c77e137e56b1032a240455e8f7afd7e292e71adc6e9b5efaedd45056b5",
+    "d1e573131590e97b1a7b6250efb68abc065873b43ae4c878b126f1adf671d071"
+  ],
+  "archive": [
+    {
+      "score": 1.8822614472316457,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "d1e573131590e97b1a7b6250efb68abc065873b43ae4c878b126f1adf671d071",
+        "workload_hash": "524c5a2e7965ab8d49096975fed8eea2c6c060c8512f339e1d4710ab36a46d7d",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]], uint2 grid [[threads_per_grid]]) {\n    (void)epsilon;\n    if ((D & 3u) == 0u && D != 0u) {\n        uint blocks = D >> 2;\n        device const float4* x4 = (device const float4*)x;\n        device const float4* p4 = (device const float4*)parameter;\n        device float4* o4 = (device float4*)out;\n        for (uint row = gid.y; row < B; row += grid.y) {\n            uint rowBase = row * blocks;\n            for (uint col4 = gid.x; col4 < blocks; col4 += grid.x) {\n                uint idx4 = rowBase + col4;\n                float4 z = x4[idx4] + p4[col4];\n                float4 poly = z + 0.044715f * z * z * z;\n                float4 inner = 0.7978845608028654f * poly;\n                float4 e = fast::exp2(2.885390081777927f * inner);\n                float4 y = z * (1.0f - 1.0f / (e + 1.0f));\n                o4[idx4] = y;\n            }\n        }\n    } else if (D != 0u) {\n        uint tid = gid.y * grid.x + gid.x;\n        uint stride = grid.x * grid.y;\n        uint total = B * D;\n        for (uint idx = tid; idx < total; idx += stride) {\n            uint col = idx % D;\n            float z = x[idx] + parameter[col];\n            float poly = z + 0.044715f * z * z * z;\n            float inner = 0.7978845608028654f * poly;\n            float e = fast::exp2(2.885390081777927f * inner);\n            out[idx] = z * (1.0f - 1.0f / (e + 1.0f));\n        }\n    }\n}\n",
+          "threads": [
+            32,
+            256,
+            1
+          ],
+          "group_size": [
+            32,
+            8,
+            1
+          ],
+          "hypothesis": "Using 8192 threads that each process eight strided float4 elements, plus an exp2-based tanh formulation, reduces scheduling and transcendental cost versus one float4 per thread."
+        },
+        "parent_id": "69a386c77e137e56b1032a240455e8f7afd7e292e71adc6e9b5efaedd45056b5",
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 1.6192891919352381,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "69a386c77e137e56b1032a240455e8f7afd7e292e71adc6e9b5efaedd45056b5",
+        "workload_hash": "524c5a2e7965ab8d49096975fed8eea2c6c060c8512f339e1d4710ab36a46d7d",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]], uint2 grid [[threads_per_grid]]) {\n    (void)epsilon;\n    if ((D & 3u) == 0u) {\n        uint row = gid.y;\n        uint col4 = gid.x;\n        uint blocks = D >> 2;\n        if (row >= B || col4 >= blocks) return;\n        uint idx4 = row * blocks + col4;\n        float4 z = ((device const float4*)x)[idx4] + ((device const float4*)parameter)[col4];\n        float4 c = z + 0.044715f * z * z * z;\n        float4 inner = 0.7978845608028654f * c;\n        float4 y;\n        y.x = 0.5f * z.x * (1.0f + tanh(inner.x));\n        y.y = 0.5f * z.y * (1.0f + tanh(inner.y));\n        y.z = 0.5f * z.z * (1.0f + tanh(inner.z));\n        y.w = 0.5f * z.w * (1.0f + tanh(inner.w));\n        ((device float4*)out)[idx4] = y;\n    } else {\n        uint tid = gid.y * grid.x + gid.x;\n        uint base = tid * 4u;\n        uint total = B * D;\n        for (uint i = 0u; i < 4u; ++i) {\n            uint idx = base + i;\n            if (idx >= total) return;\n            uint col = idx % D;\n            float z = x[idx] + parameter[col];\n            float inner = 0.7978845608028654f * (z + 0.044715f * z * z * z);\n            out[idx] = 0.5f * z * (1.0f + tanh(inner));\n        }\n    }\n}\n",
+          "threads": [
+            256,
+            256,
+            1
+          ],
+          "group_size": [
+            32,
+            8,
+            1
+          ],
+          "hypothesis": "One float4 per thread on a 256x256 grid matches the 1024-wide rows exactly, vectorizing bias loads and memory traffic while exposing four independent tanh GELU lanes per thread."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "promoted"
+}

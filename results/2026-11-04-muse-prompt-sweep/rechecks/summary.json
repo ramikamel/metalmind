@@ -1,0 +1,18 @@
+{
+  "model_requests": 0,
+  "attempts": [
+    {
+      "family": "softmax",
+      "case": "medium",
+      "dtype": "float32",
+      "source_run": "47715bf922a24149933574abcb094387",
+      "candidate_id": "50e8737bfd198fabeee15f29d6a27868e4e28327869c1994e0921da8d37242f8",
+      "attempt": 1,
+      "outcome": "inconclusive",
+      "reason": "Confirmation did not yield stable valid measurements",
+      "run_path": "jobs/83fb2b7029a44198b055421a2e73fd40",
+      "artifact_path": null,
+      "model_requests": 0
+    }
+  ]
+}

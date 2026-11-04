@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "softmax:small",
+    "family": "softmax",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          64,
+          257
+        ],
+        "strides": [
+          257,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        64,
+        257
+      ],
+      "strides": [
+        257,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "softmax",
+    "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "medium",
+    "domain_mode": "assume",
+    "max_candidates": 2,
+    "max_requests": 2,
+    "wall_seconds": 1500.0,
+    "finalization_reserve_seconds": 600.0,
+    "max_output_tokens": 8192,
+    "total_output_tokens": 16384,
+    "request_timeout_seconds": 180.0,
+    "compile_timeout_seconds": 90.0,
+    "execution_timeout_seconds": 300.0,
+    "stagnation_limit": 10,
+    "seed": 202611500,
+    "runs_dir": "/Users/rami/github/metalmind/runs/muse-prompt-sweep.sg3xeDrH/runs/float16-softmax-small/tuned/jobs",
+    "artifacts_dir": "/Users/rami/github/metalmind/runs/muse-prompt-sweep.sg3xeDrH/runs/float16-softmax-small/tuned/artifacts",
+    "warmups": 100,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 2,
+  "evaluated": 2,
+  "output_tokens": 8525,
+  "elapsed_seconds": 92.859588583,
+  "wall_deadline_utc": 1793807951.085805,
+  "seen": [
+    "1dad0f36b5de72ae172821f1bd6d8bb9ee6a803a885f8d90562b26515aca67e0",
+    "f3ffa21f38c6fc37d1c638116b45c5c8874adf3b275a6563a8557a2f2280932b"
+  ],
+  "archive": [
+    {
+      "score": 1.166864148561396,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "f3ffa21f38c6fc37d1c638116b45c5c8874adf3b275a6563a8557a2f2280932b",
+        "workload_hash": "05410936784fff2b19973d32afc1eecda7c12f0f0f9f816e697b45d5b4dd26a1",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tgpos [[threadgroup_position_in_grid]], uint3 tg_threads [[threads_per_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint simd_id [[simdgroup_index_in_threadgroup]], uint simd_width [[threads_per_simdgroup]]) {\n    (void)epsilon;\n    uint width = simd_width == 0u ? 1u : simd_width;\n    uint simds_per_group = tg_threads.x / width;\n    if (simds_per_group == 0u) simds_per_group = 1u;\n    uint row = tgpos.x * simds_per_group + simd_id;\n    if (row >= B) return;\n    uint base = row * D;\n    uint iters = (D + width - 1u) / width;\n    const float log2e = 1.4426950408889634f;\n    if (iters <= 9u) {\n        float vals[9];\n        float local_max = -3.4028235e38f;\n        for (uint k = 0u; k < 9u; ++k) {\n            uint col = lane + k * width;\n            float v = -3.4028235e38f;\n            if (col < D) v = float(x[base + col]);\n            vals[k] = v;\n            local_max = max(local_max, v);\n        }\n        float row_max = simd_max(local_max);\n        float local_sum = 0.0f;\n        for (uint k = 0u; k < 9u; ++k) {\n            uint col = lane + k * width;\n            float e = 0.0f;\n            if (col < D) e = exp2((vals[k] - row_max) * log2e);\n            vals[k] = e;\n            local_sum += e;\n        }\n        float row_sum = simd_sum(local_sum);\n        float inv_sum = 1.0f / row_sum;\n        for (uint k = 0u; k < 9u; ++k) {\n            uint col = lane + k * width;\n            if (col < D) out[base + col] = half(vals[k] * inv_sum);\n        }\n    } else {\n        float local_max = -3.4028235e38f;\n        for (uint col = lane; col < D; col += width) local_max = max(local_max, float(x[base + col]));\n        float row_max = simd_max(local_max);\n        float local_sum = 0.0f;\n        for (uint col = lane; col < D; col += width) local_sum += exp2((float(x[base + col]) - row_max) * log2e);\n        float row_sum = simd_sum(local_sum);\n        float inv_sum = 1.0f / row_sum;\n        for (uint col = lane; col < D; col += width) out[base + col] = half(exp2((float(x[base + col]) - row_max) * log2e) * inv_sum);\n    }\n}\n",
+          "threads": [
+            2048,
+            1,
+            1
+          ],
+          "group_size": [
+            128,
+            1,
+            1
+          ],
+          "hypothesis": "Packing 4 one-SIMD-per-row groups per threadgroup, plus FP32 exp2 and a single reciprocal multiply, reduces scheduling and math cost for 64x257 softmax versus the incumbent."
+        },
+        "parent_id": "1dad0f36b5de72ae172821f1bd6d8bb9ee6a803a885f8d90562b26515aca67e0",
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 1.100026738121762,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "1dad0f36b5de72ae172821f1bd6d8bb9ee6a803a885f8d90562b26515aca67e0",
+        "workload_hash": "05410936784fff2b19973d32afc1eecda7c12f0f0f9f816e697b45d5b4dd26a1",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tgpos [[threadgroup_position_in_grid]], uint lane [[thread_index_in_simdgroup]], uint simd_width [[threads_per_simdgroup]]) {\n    (void)epsilon;\n    uint row = tgpos.x;\n    if (row >= B) return;\n    uint base = row * D;\n    uint width = simd_width == 0u ? 1u : simd_width;\n    uint iters = (D + width - 1u) / width;\n    if (iters <= 9u) {\n        float vals[9];\n        float local_max = -3.4028235e38f;\n        for (uint k = 0u; k < 9u; ++k) {\n            uint col = lane + k * width;\n            float v = -3.4028235e38f;\n            if (col < D) v = float(x[base + col]);\n            vals[k] = v;\n            local_max = max(local_max, v);\n        }\n        float row_max = simd_max(local_max);\n        float local_sum = 0.0f;\n        for (uint k = 0u; k < 9u; ++k) {\n            uint col = lane + k * width;\n            float e = 0.0f;\n            if (col < D) e = exp(vals[k] - row_max);\n            vals[k] = e;\n            local_sum += e;\n        }\n        float row_sum = simd_sum(local_sum);\n        for (uint k = 0u; k < 9u; ++k) {\n            uint col = lane + k * width;\n            if (col < D) out[base + col] = half(vals[k] / row_sum);\n        }\n    } else {\n        float local_max = -3.4028235e38f;\n        for (uint col = lane; col < D; col += width) local_max = max(local_max, float(x[base + col]));\n        float row_max = simd_max(local_max);\n        float local_sum = 0.0f;\n        for (uint col = lane; col < D; col += width) local_sum += exp(float(x[base + col]) - row_max);\n        float row_sum = simd_sum(local_sum);\n        for (uint col = lane; col < D; col += width) out[base + col] = half(exp(float(x[base + col]) - row_max) / row_sum);\n    }\n}\n",
+          "threads": [
+            2048,
+            1,
+            1
+          ],
+          "group_size": [
+            32,
+            1,
+            1
+          ],
+          "hypothesis": "One SIMD group per row caching up to 9 FP32 values per lane in registers enables max/sum via SIMD reductions with no threadgroup barriers or extra input passes for the 64x257 shape."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "promoted"
+}

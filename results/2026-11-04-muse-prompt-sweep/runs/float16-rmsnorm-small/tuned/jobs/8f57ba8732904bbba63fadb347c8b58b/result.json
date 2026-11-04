@@ -1,0 +1,5 @@
+{
+  "outcome": "promoted",
+  "reason": "Numerically verified and faster in both independent confirmation sessions",
+  "artifact_path": "/Users/rami/github/metalmind/runs/muse-prompt-sweep.sg3xeDrH/runs/float16-rmsnorm-small/tuned/artifacts/95732a2406f93be0cc2d1032c5870ee68d78d3510484d62eb4d1fd914c101d1f"
+}

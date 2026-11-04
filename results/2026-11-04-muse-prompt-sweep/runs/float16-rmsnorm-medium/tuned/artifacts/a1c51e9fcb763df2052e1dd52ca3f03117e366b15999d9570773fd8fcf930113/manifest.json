@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "artifact_id": "a1c51e9fcb763df2052e1dd52ca3f03117e366b15999d9570773fd8fcf930113",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "rmsnorm:medium",
+    "family": "rmsnorm",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          1024
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 1e-05,
+    "accumulation_dtype": "float32",
+    "reference_id": "rmsnorm",
+    "reference_hash": "bed464a30c87cca758acab364224a220da6f627b78b66d963e900dc12dcc5450",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "62a50db0f11a62cea0f942ff9712a4a3ef0a904fb71396ccfebddf0d759fdc8e",
+    "workload_hash": "873f522e9021b487711d4962a05c7b9e419eb82c6a05c5eedab2857aa617f144",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tg_pos [[threadgroup_position_in_grid]], uint3 tp_tg [[thread_position_in_threadgroup]], uint3 tptg [[threads_per_threadgroup]], uint lid [[thread_index_in_simdgroup]], uint sgid [[simdgroup_index_in_threadgroup]], uint sptg [[simdgroups_per_threadgroup]], uint spsg [[threads_per_simdgroup]]) {\n    uint row = tg_pos.x * sptg + sgid;\n    if (row >= B) {\n        return;\n    }\n    if (D == 1024u && spsg == 32u) {\n        uint base = row * 256u + lid;\n        half4 c0 = ((device const half4*)x)[base];\n        half4 c1 = ((device const half4*)x)[base + 32u];\n        half4 c2 = ((device const half4*)x)[base + 64u];\n        half4 c3 = ((device const half4*)x)[base + 96u];\n        half4 c4 = ((device const half4*)x)[base + 128u];\n        half4 c5 = ((device const half4*)x)[base + 160u];\n        half4 c6 = ((device const half4*)x)[base + 192u];\n        half4 c7 = ((device const half4*)x)[base + 224u];\n        float4 v0 = float4(c0);\n        float4 v1 = float4(c1);\n        float4 v2 = float4(c2);\n        float4 v3 = float4(c3);\n        float4 v4 = float4(c4);\n        float4 v5 = float4(c5);\n        float4 v6 = float4(c6);\n        float4 v7 = float4(c7);\n        float sum = dot(v0, v0) + dot(v1, v1) + dot(v2, v2) + dot(v3, v3) + dot(v4, v4) + dot(v5, v5) + dot(v6, v6) + dot(v7, v7);\n        float scale = rsqrt(simd_sum(sum) / 1024.0f + epsilon);\n        ((device half4*)out)[base] = half4(v0 * scale * float4(((device const half4*)parameter)[lid]));\n        ((device half4*)out)[base + 32u] = half4(v1 * scale * float4(((device const half4*)parameter)[lid + 32u]));\n        ((device half4*)out)[base + 64u] = half4(v2 * scale * float4(((device const half4*)parameter)[lid + 64u]));\n        ((device half4*)out)[base + 96u] = half4(v3 * scale * float4(((device const half4*)parameter)[lid + 96u]));\n        ((device half4*)out)[base + 128u] = half4(v4 * scale * float4(((device const half4*)parameter)[lid + 128u]));\n        ((device half4*)out)[base + 160u] = half4(v5 * scale * float4(((device const half4*)parameter)[lid + 160u]));\n        ((device half4*)out)[base + 192u] = half4(v6 * scale * float4(((device const half4*)parameter)[lid + 192u]));\n        ((device half4*)out)[base + 224u] = half4(v7 * scale * float4(((device const half4*)parameter)[lid + 224u]));\n        return;\n    }\n    float sum = 0.0f;\n    for (uint i = lid; i < D; i += spsg) {\n        float v = float(x[row * D + i]);\n        sum += v * v;\n    }\n    float scale = rsqrt(simd_sum(sum) / float(D) + epsilon);\n    for (uint i = lid; i < D; i += spsg) {\n        out[row * D + i] = half(float(x[row * D + i]) * scale * float(parameter[i]));\n    }\n}\n",
+      "threads": [
+        8192,
+        1,
+        1
+      ],
+      "group_size": [
+        256,
+        1,
+        1
+      ],
+      "hypothesis": "Assigning eight independent rows to the eight SIMD groups in each 256-thread group removes threadgroup barriers and shared-memory reduction while caching eight half4 values per lane, reducing synchronization latency for 256x1024 RMSNorm."
+    },
+    "parent_id": "8b2c698cb3800d4d5cb192bf7c9d07aa933765cddcaabe338e51073934cc732a",
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "036a0c1c4c2fb7826cf204dba19a439910c4e14de85a7f5969baaae9acda864e",
+  "evidence_hash": "41646e2fa8403c168d7f41b72ecc3539f72a8b14c4ebb72e9ec15d3c145d602d",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

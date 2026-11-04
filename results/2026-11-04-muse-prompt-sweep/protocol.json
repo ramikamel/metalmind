@@ -1,0 +1,203 @@
+{
+  "targets": [
+    [
+      "rmsnorm",
+      "small",
+      "float32",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "softmax",
+      "small",
+      "float32",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "bias_gelu",
+      "small",
+      "float32",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "rmsnorm",
+      "medium",
+      "float32",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "rmsnorm",
+      "large",
+      "float32",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "softmax",
+      "small",
+      "float16",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "rmsnorm",
+      "small",
+      "float16",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "bias_gelu",
+      "large",
+      "float32",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "softmax",
+      "large",
+      "float32",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "softmax",
+      "medium",
+      "float32",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "bias_gelu",
+      "large",
+      "float16",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "rmsnorm",
+      "large",
+      "float16",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "softmax",
+      "large",
+      "float16",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "rmsnorm",
+      "medium",
+      "float16",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "bias_gelu",
+      "medium",
+      "float32",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "bias_gelu",
+      "medium",
+      "float16",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "bias_gelu",
+      "small",
+      "float16",
+      [
+        "tuned"
+      ]
+    ],
+    [
+      "softmax",
+      "medium",
+      "float16",
+      [
+        "tuned"
+      ]
+    ]
+  ],
+  "settings": {
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "medium",
+    "domain_mode": "assume",
+    "max_requests": 2,
+    "max_candidates": 2,
+    "max_output_tokens": 8192,
+    "total_output_tokens": 16384,
+    "request_timeout_seconds": 180,
+    "compile_timeout_seconds": 90,
+    "execution_timeout_seconds": 300,
+    "wall_seconds": 1500,
+    "finalization_reserve_seconds": 600,
+    "warmups": 100
+  },
+  "max_total_requests": 36,
+  "pair_seeds": [
+    202611450,
+    202611460,
+    202611470,
+    202611480,
+    202611490,
+    202611500,
+    202611510,
+    202611520,
+    202611530,
+    202611540,
+    202611550,
+    202611560,
+    202611570,
+    202611580,
+    202611590,
+    202611600,
+    202611610,
+    202611620
+  ],
+  "hardware": {
+    "model": "Apple M3 Pro",
+    "cores": "14",
+    "metal_family": "spdisplays_metal4",
+    "recommended_working_set": 14302248960
+  },
+  "source_commit": "3c8901001e233db554513cc14a6720d9cd3446c9",
+  "runtime_source": {
+    "sha256": "dab50186f60f68d4f1693835d406cdf59504c0caff7c687411807c709d8f50df",
+    "file_count": 60,
+    "package_location": "/Users/rami/github/metalmind/src/metalmind",
+    "package_version": "0.1.0"
+  },
+  "primary_outcome": "promotions against all verified baselines",
+  "secondary_outcomes": [
+    "numerically valid candidates",
+    "valid timed candidates",
+    "best search ratio"
+  ]
+}

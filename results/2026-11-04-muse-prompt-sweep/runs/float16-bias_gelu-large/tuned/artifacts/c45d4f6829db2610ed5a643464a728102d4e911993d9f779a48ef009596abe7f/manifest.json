@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "artifact_id": "c45d4f6829db2610ed5a643464a728102d4e911993d9f779a48ef009596abe7f",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:large",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "200e63ec02d3861306ce56f83305a0beef8afa7956b06511eab7fee9253f7eb3",
+    "workload_hash": "c722e89a23dfda974e883dbb56b38bcd13f25124b57341b7ef2f8b58e2208d00",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device const half* parameter, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    uint col = gid.x * 16u;\n    uint row0 = gid.y * 4u;\n    if (row0 >= B || col >= D) return;\n    if (col + 16u <= D && row0 + 4u <= B) {\n        uint pbase4 = col >> 2u;\n        float4 p0 = float4(((device const half4*)parameter)[pbase4]);\n        float4 p1 = float4(((device const half4*)parameter)[pbase4 + 1u]);\n        float4 p2 = float4(((device const half4*)parameter)[pbase4 + 2u]);\n        float4 p3 = float4(((device const half4*)parameter)[pbase4 + 3u]);\n        for (uint r = 0u; r < 4u; ++r) {\n            uint row = row0 + r;\n            uint base4 = (row * D + col) >> 2u;\n            float4 z0 = float4(((device const half4*)x)[base4]) + p0;\n            float4 z1 = float4(((device const half4*)x)[base4 + 1u]) + p1;\n            float4 z2 = float4(((device const half4*)x)[base4 + 2u]) + p2;\n            float4 z3 = float4(((device const half4*)x)[base4 + 3u]) + p3;\n            float4 a0 = 0.7978845608028654f * (z0 + 0.044715f * z0 * z0 * z0);\n            float4 a1 = 0.7978845608028654f * (z1 + 0.044715f * z1 * z1 * z1);\n            float4 a2 = 0.7978845608028654f * (z2 + 0.044715f * z2 * z2 * z2);\n            float4 a3 = 0.7978845608028654f * (z3 + 0.044715f * z3 * z3 * z3);\n            float4 y0 = z0 * (1.0f / (1.0f + exp2(-2.8853900817779268f * a0)));\n            float4 y1 = z1 * (1.0f / (1.0f + exp2(-2.8853900817779268f * a1)));\n            float4 y2 = z2 * (1.0f / (1.0f + exp2(-2.8853900817779268f * a2)));\n            float4 y3 = z3 * (1.0f / (1.0f + exp2(-2.8853900817779268f * a3)));\n            ((device half4*)out)[base4] = half4(y0);\n            ((device half4*)out)[base4 + 1u] = half4(y1);\n            ((device half4*)out)[base4 + 2u] = half4(y2);\n            ((device half4*)out)[base4 + 3u] = half4(y3);\n        }\n    } else {\n        uint rows = min(4u, B - row0);\n        uint cols = min(16u, D - col);\n        for (uint r = 0u; r < rows; ++r) {\n            uint base = (row0 + r) * D + col;\n            for (uint i = 0u; i < cols; ++i) {\n                float z = float(x[base + i]) + float(parameter[col + i]);\n                float a = 0.7978845608028654f * (z + 0.044715f * z * z * z);\n                float y = z * (1.0f / (1.0f + exp2(-2.8853900817779268f * a)));\n                out[base + i] = half(y);\n            }\n        }\n    }\n}\n",
+      "threads": [
+        256,
+        128,
+        1
+      ],
+      "group_size": [
+        32,
+        4,
+        1
+      ],
+      "hypothesis": "Using the identity 0.5*(1+tanh(a))=sigmoid(2a) with exp2, plus loading 16 bias values once and reusing them across 4 rows, reduces transcendental cost and bias-load instructions per output."
+    },
+    "parent_id": "5ae13e4b162e042c44daa27e71088ece2a42a1e021f29205fc91072b8b4bcbac",
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "a83f848f5313dac31775bc01c9754cb3bb96463742d4ac983a329ca85f915607",
+  "evidence_hash": "7fa3cc11fbc4cdb2c46f52bf609b7b825bb09e04b2a556d96ff5c6992832756e",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "artifact_id": "efa9b00a3f8ecba58255cfa59b8210d9a8e15656c7c06f17030d6f32acc698cb",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "softmax:large",
+    "family": "softmax",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          128,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float16",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        128,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float16",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "softmax",
+    "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "fd6ca41b7f647744b69ea1df4d1b372275c63d25e945ecf6b233f7d5d3e2e9a0",
+    "workload_hash": "61cbd06e9ea7846f52294e92a52d93c5a23ad0198585106ecab616cbb28c3884",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const half* x, device half* out, constant uint& B, constant uint& D, constant float& epsilon, uint3 tgid [[threadgroup_position_in_grid]], uint3 ltid [[thread_position_in_threadgroup]], uint3 tgdim [[threads_per_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint sg [[simdgroup_index_in_threadgroup]], uint sgsize [[threads_per_simdgroup]]) {\n    (void)epsilon;\n    uint row = tgid.x;\n    if (row >= B) return;\n    uint tid = ltid.x;\n    uint nsg = tgdim.x / sgsize;\n    threadgroup float smax[32];\n    threadgroup float ssum[32];\n    uint base = row * D;\n    if (D == 4096u) {\n        float vals[32];\n        float lmax = -1.0e30f;\n        for (uint v = 0u; v < 8u; ++v) {\n            uint e = (v << 9u) + (tid << 2u);\n            half4 h = (*(device const half4*)(x + base + e));\n            vals[v * 4u + 0u] = float(h.x);\n            vals[v * 4u + 1u] = float(h.y);\n            vals[v * 4u + 2u] = float(h.z);\n            vals[v * 4u + 3u] = float(h.w);\n            lmax = max(lmax, max(max(float(h.x), float(h.y)), max(float(h.z), float(h.w))));\n        }\n        float r = simd_max(lmax);\n        if (lane == 0u) smax[sg] = r;\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n        if (sg == 0u) {\n            float r2 = (lane < nsg) ? smax[lane] : -1.0e30f;\n            r2 = simd_max(r2);\n            if (lane == 0u) smax[0] = r2;\n        }\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n        float gmax = smax[0];\n        float lsum = 0.0f;\n        for (uint k = 0u; k < 32u; ++k) {\n            vals[k] = exp2((vals[k] - gmax) * 1.4426950408889634f);\n            lsum += vals[k];\n        }\n        float rs = simd_sum(lsum);\n        if (lane == 0u) ssum[sg] = rs;\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n        if (sg == 0u) {\n            float r2 = (lane < nsg) ? ssum[lane] : 0.0f;\n            r2 = simd_sum(r2);\n            if (lane == 0u) ssum[0] = r2;\n        }\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n        float inv = 1.0f / ssum[0];\n        for (uint v = 0u; v < 8u; ++v) {\n            uint e = (v << 9u) + (tid << 2u);\n            half4 o = half4(half(vals[v * 4u + 0u] * inv), half(vals[v * 4u + 1u] * inv), half(vals[v * 4u + 2u] * inv), half(vals[v * 4u + 3u] * inv));\n            (*(device half4*)(out + base + e)) = o;\n        }\n        return;\n    }\n    float lmax = -1.0e30f;\n    for (uint i = tid; i < D; i += tgdim.x) lmax = max(lmax, float(x[base + i]));\n    float r = simd_max(lmax);\n    if (lane == 0u) smax[sg] = r;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (sg == 0u) {\n        float r2 = (lane < nsg) ? smax[lane] : -1.0e30f;\n        r2 = simd_max(r2);\n        if (lane == 0u) smax[0] = r2;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float gmax = smax[0];\n    float lsum = 0.0f;\n    for (uint i = tid; i < D; i += tgdim.x) lsum += exp(float(x[base + i]) - gmax);\n    float rs = simd_sum(lsum);\n    if (lane == 0u) ssum[sg] = rs;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (sg == 0u) {\n        float r2 = (lane < nsg) ? ssum[lane] : 0.0f;\n        r2 = simd_sum(r2);\n        if (lane == 0u) ssum[0] = r2;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float inv = 1.0f / ssum[0];\n    for (uint i = tid; i < D; i += tgdim.x) out[base + i] = half(exp(float(x[base + i]) - gmax) * inv);\n}\n",
+      "threads": [
+        16384,
+        1,
+        1
+      ],
+      "group_size": [
+        128,
+        1,
+        1
+      ],
+      "hypothesis": "Using 128 threads per row holding 32 FP32 values, exp2 instead of exp, distinct max/sum scratch, and only four barriers reduces synchronization and transcendental cost versus the 256-thread incumbent."
+    },
+    "parent_id": "698602120a70630666f4fd26da315b2ffd271e8a2400d8c985e15aae7eed8e0d",
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "60d722871fd77d888b1911b3dfa2f21d1853a20bde676cdaa65fbe5c163485af",
+  "evidence_hash": "f70d56fa69da6b7a983d99805f34c92d21629832874afb1464e80d1a69d78c7f",
+  "domain_mode": "assume",
+  "abi_version": 1
+}
