@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "phase": "terminal",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "softmax:medium",
+    "family": "softmax",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "softmax",
+    "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+    "policy_version": 1
+  },
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "medium",
+    "domain_mode": "assume",
+    "max_candidates": 6,
+    "max_requests": 6,
+    "wall_seconds": 3600.0,
+    "finalization_reserve_seconds": 1100.0,
+    "max_output_tokens": 8192,
+    "total_output_tokens": 49152,
+    "request_timeout_seconds": 180.0,
+    "compile_timeout_seconds": 90.0,
+    "execution_timeout_seconds": 420.0,
+    "stagnation_limit": 10,
+    "seed": 202611031,
+    "runs_dir": "/Users/rami/github/metalmind/runs/hackathon-extension.VScHNRpi/jobs",
+    "artifacts_dir": "/Users/rami/github/metalmind/runs/hackathon-extension.VScHNRpi/artifacts",
+    "warmups": 25,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "requests": 6,
+  "evaluated": 6,
+  "output_tokens": 25401,
+  "elapsed_seconds": 292.56894429199747,
+  "wall_deadline_utc": 1793771179.4053178,
+  "seen": [
+    "01db0161a3e6f1732b94228a698782f704b821c2f85af17cd184cc65c3c663a3",
+    "65d795cfe25dcdd2713592a49efbf649505bef140947763c8c0ded5d4bafcdb7",
+    "7ecb011844851bd69356eba62642a7c86d596eaee3db530aaf932e26c59abe7f",
+    "a6fa4709d8569496e5d2de2f9e686665941fa45a4ba85a314999f15de08e3492",
+    "abeacb7f5870f04a29c1a40fd6bb95710ce72a34a6b57a010c44b0bbf4c7a0e0",
+    "ea4f93db3aa414eaccf2d1d9f0708154c0e2bc7c4aa2ff4de4503ad0bb048ef4"
+  ],
+  "archive": [
+    {
+      "score": 1.1926302820773238,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "65d795cfe25dcdd2713592a49efbf649505bef140947763c8c0ded5d4bafcdb7",
+        "workload_hash": "461b8c004d540d5e390f3bcc82607e9e604c6e9f6317f09d019a790b41b31762",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint tid [[thread_index_in_threadgroup]], uint gid [[threadgroup_position_in_grid]], uint ngroups [[threadgroups_per_grid]], uint tgsize [[threads_per_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint simd_id [[simdgroup_index_in_threadgroup]], uint simd_size [[threads_per_simdgroup]]) {\n  (void)epsilon;\n  (void)tid;\n  uint nsg = (tgsize + simd_size - 1u) / simd_size;\n  uint row0 = gid * nsg + simd_id;\n  uint rowStride = ngroups * nsg;\n  for (uint row = row0; row < B; row += rowStride) {\n    uint base = row * D;\n    if (D == 1024u && simd_size == 32u) {\n      device const float4* x4 = (device const float4*)(x + base);\n      float4 v0 = x4[lane];\n      float4 v1 = x4[lane + 32u];\n      float4 v2 = x4[lane + 64u];\n      float4 v3 = x4[lane + 96u];\n      float4 v4 = x4[lane + 128u];\n      float4 v5 = x4[lane + 160u];\n      float4 v6 = x4[lane + 192u];\n      float4 v7 = x4[lane + 224u];\n      float lm = max(max(v0.x, v0.y), max(v0.z, v0.w));\n      lm = max(lm, max(max(v1.x, v1.y), max(v1.z, v1.w)));\n      lm = max(lm, max(max(v2.x, v2.y), max(v2.z, v2.w)));\n      lm = max(lm, max(max(v3.x, v3.y), max(v3.z, v3.w)));\n      lm = max(lm, max(max(v4.x, v4.y), max(v4.z, v4.w)));\n      lm = max(lm, max(max(v5.x, v5.y), max(v5.z, v5.w)));\n      lm = max(lm, max(max(v6.x, v6.y), max(v6.z, v6.w)));\n      lm = max(lm, max(max(v7.x, v7.y), max(v7.z, v7.w)));\n      float rm = simd_max(lm);\n      float c = 1.4426950408889634f;\n      float4 e0 = exp2((v0 - rm) * c);\n      float4 e1 = exp2((v1 - rm) * c);\n      float4 e2 = exp2((v2 - rm) * c);\n      float4 e3 = exp2((v3 - rm) * c);\n      float4 e4 = exp2((v4 - rm) * c);\n      float4 e5 = exp2((v5 - rm) * c);\n      float4 e6 = exp2((v6 - rm) * c);\n      float4 e7 = exp2((v7 - rm) * c);\n      float ls = ((e0.x + e0.y) + (e0.z + e0.w)) + ((e1.x + e1.y) + (e1.z + e1.w));\n      ls += ((e2.x + e2.y) + (e2.z + e2.w)) + ((e3.x + e3.y) + (e3.z + e3.w));\n      ls += ((e4.x + e4.y) + (e4.z + e4.w)) + ((e5.x + e5.y) + (e5.z + e5.w));\n      ls += ((e6.x + e6.y) + (e6.z + e6.w)) + ((e7.x + e7.y) + (e7.z + e7.w));\n      float inv = 1.0f / simd_sum(ls);\n      device float4* o4 = (device float4*)(out + base);\n      o4[lane] = e0 * inv;\n      o4[lane + 32u] = e1 * inv;\n      o4[lane + 64u] = e2 * inv;\n      o4[lane + 96u] = e3 * inv;\n      o4[lane + 128u] = e4 * inv;\n      o4[lane + 160u] = e5 * inv;\n      o4[lane + 192u] = e6 * inv;\n      o4[lane + 224u] = e7 * inv;\n    } else {\n      float lm = -3.402823466e+38f;\n      for (uint i = lane; i < D; i += simd_size) lm = max(lm, x[base + i]);\n      float rm = simd_max(lm);\n      float ls = 0.0f;\n      for (uint i = lane; i < D; i += simd_size) ls += exp(x[base + i] - rm);\n      float inv = 1.0f / simd_sum(ls);\n      for (uint i = lane; i < D; i += simd_size) out[base + i] = exp(x[base + i] - rm) * inv;\n    }\n  }\n}\n",
+          "threads": [
+            8192,
+            1,
+            1
+          ],
+          "group_size": [
+            128,
+            1,
+            1
+          ],
+          "hypothesis": "One SIMD group per row with register-held float4 values eliminates threadgroup barriers and shared-memory reductions; exp2 via log2e scaling lowers transcendental cost versus the incumbent."
+        },
+        "parent_id": "abeacb7f5870f04a29c1a40fd6bb95710ce72a34a6b57a010c44b0bbf4c7a0e0",
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 1.1738885501231269,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "7ecb011844851bd69356eba62642a7c86d596eaee3db530aaf932e26c59abe7f",
+        "workload_hash": "461b8c004d540d5e390f3bcc82607e9e604c6e9f6317f09d019a790b41b31762",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint tid [[thread_index_in_threadgroup]], uint gid [[threadgroup_position_in_grid]], uint ngroups [[threadgroups_per_grid]], uint tgsize [[threads_per_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint simd_id [[simdgroup_index_in_threadgroup]], uint simd_size [[threads_per_simdgroup]]) {\n  (void)epsilon;\n  if (D == 1024u && simd_size == 32u && tgsize == 128u) {\n    uint row = gid;\n    if (row >= B) return;\n    threadgroup float part[8];\n    threadgroup float shared_rm;\n    threadgroup float shared_inv;\n    uint base = row * D;\n    device const float4* x4 = (device const float4*)(x + base);\n    float4 v0 = x4[tid];\n    float4 v1 = x4[tid + 128u];\n    float lm = max(max(v0.x, v0.y), max(v0.z, v0.w));\n    lm = max(lm, max(max(v1.x, v1.y), max(v1.z, v1.w)));\n    float pm = simd_max(lm);\n    if (lane == 0u) part[simd_id] = pm;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (simd_id == 0u) {\n      float v = (lane < 4u) ? part[lane] : -3.402823466e+38f;\n      float m = simd_max(v);\n      if (lane == 0u) shared_rm = m;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float rm = shared_rm;\n    float c = 1.4426950408889634f;\n    float4 e0 = exp2((v0 - rm) * c);\n    float4 e1 = exp2((v1 - rm) * c);\n    float ls = ((e0.x + e0.y) + (e0.z + e0.w)) + ((e1.x + e1.y) + (e1.z + e1.w));\n    float ps = simd_sum(ls);\n    if (lane == 0u) part[simd_id] = ps;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (simd_id == 0u) {\n      float v = (lane < 4u) ? part[lane] : 0.0f;\n      float s = simd_sum(v);\n      if (lane == 0u) shared_inv = 1.0f / s;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float inv = shared_inv;\n    device float4* o4 = (device float4*)(out + base);\n    o4[tid] = e0 * inv;\n    o4[tid + 128u] = e1 * inv;\n    return;\n  }\n  uint nsg = (tgsize + simd_size - 1u) / simd_size;\n  uint row0 = gid * nsg + simd_id;\n  uint rowStride = ngroups * nsg;\n  for (uint row = row0; row < B; row += rowStride) {\n    uint base = row * D;\n    float lm = -3.402823466e+38f;\n    for (uint i = lane; i < D; i += simd_size) lm = max(lm, x[base + i]);\n    float rm = simd_max(lm);\n    float ls = 0.0f;\n    for (uint i = lane; i < D; i += simd_size) ls += exp(x[base + i] - rm);\n    float inv = 1.0f / simd_sum(ls);\n    for (uint i = lane; i < D; i += simd_size) out[base + i] = exp(x[base + i] - rm) * inv;\n  }\n}\n",
+          "threads": [
+            32768,
+            1,
+            1
+          ],
+          "group_size": [
+            128,
+            1,
+            1
+          ],
+          "hypothesis": "One 128-thread threadgroup per row with four SIMD reductions and two float4 per thread increases parallelism over one SIMD per row, reducing latency for 256x1024 softmax."
+        },
+        "parent_id": "65d795cfe25dcdd2713592a49efbf649505bef140947763c8c0ded5d4bafcdb7",
+        "model": "muse-wonder-1.0"
+      }
+    },
+    {
+      "score": 1.1328759657530778,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "abeacb7f5870f04a29c1a40fd6bb95710ce72a34a6b57a010c44b0bbf4c7a0e0",
+        "workload_hash": "461b8c004d540d5e390f3bcc82607e9e604c6e9f6317f09d019a790b41b31762",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint tid [[thread_index_in_threadgroup]], uint gid [[threadgroup_position_in_grid]], uint ngroups [[threadgroups_per_grid]], uint tgsize [[threads_per_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint simd_id [[simdgroup_index_in_threadgroup]], uint simd_size [[threads_per_simdgroup]]) {\n  (void)epsilon;\n  threadgroup float sh[64];\n  uint nsg = (tgsize + simd_size - 1u) / simd_size;\n  for (uint row = gid; row < B; row += ngroups) {\n    uint base = row * D;\n    if (D == 1024u && tgsize == 128u) {\n      device const float4* x4 = (device const float4*)(x + base);\n      float4 v0 = x4[tid];\n      float4 v1 = x4[tid + 128u];\n      float lm = max(max(v0.x, v0.y), max(v0.z, v0.w));\n      lm = max(lm, max(max(v1.x, v1.y), max(v1.z, v1.w)));\n      float sm = simd_max(lm);\n      if (lane == 0u) sh[simd_id] = sm;\n      threadgroup_barrier(mem_flags::mem_threadgroup);\n      if (simd_id == 0u) {\n        float cand = (lane < nsg) ? sh[lane] : -3.402823466e+38f;\n        float all = simd_max(cand);\n        if (lane == 0u) sh[0] = all;\n      }\n      threadgroup_barrier(mem_flags::mem_threadgroup);\n      float rm = sh[0];\n      float4 e0 = exp(v0 - rm);\n      float4 e1 = exp(v1 - rm);\n      float ls = ((e0.x + e0.y) + (e0.z + e0.w)) + ((e1.x + e1.y) + (e1.z + e1.w));\n      float ss = simd_sum(ls);\n      if (lane == 0u) sh[simd_id] = ss;\n      threadgroup_barrier(mem_flags::mem_threadgroup);\n      if (simd_id == 0u) {\n        float cand = (lane < nsg) ? sh[lane] : 0.0f;\n        float all = simd_sum(cand);\n        if (lane == 0u) sh[0] = all;\n      }\n      threadgroup_barrier(mem_flags::mem_threadgroup);\n      float inv = 1.0f / sh[0];\n      device float4* o4 = (device float4*)(out + base);\n      o4[tid] = e0 * inv;\n      o4[tid + 128u] = e1 * inv;\n    } else {\n      float lm = -3.402823466e+38f;\n      for (uint i = tid; i < D; i += tgsize) lm = max(lm, x[base + i]);\n      float sm = simd_max(lm);\n      if (lane == 0u) sh[simd_id] = sm;\n      threadgroup_barrier(mem_flags::mem_threadgroup);\n      if (simd_id == 0u) {\n        float cand = (lane < nsg) ? sh[lane] : -3.402823466e+38f;\n        float all = simd_max(cand);\n        if (lane == 0u) sh[0] = all;\n      }\n      threadgroup_barrier(mem_flags::mem_threadgroup);\n      float rm = sh[0];\n      float ls = 0.0f;\n      for (uint i = tid; i < D; i += tgsize) ls += exp(x[base + i] - rm);\n      float ss = simd_sum(ls);\n      if (lane == 0u) sh[simd_id] = ss;\n      threadgroup_barrier(mem_flags::mem_threadgroup);\n      if (simd_id == 0u) {\n        float cand = (lane < nsg) ? sh[lane] : 0.0f;\n        float all = simd_sum(cand);\n        if (lane == 0u) sh[0] = all;\n      }\n      threadgroup_barrier(mem_flags::mem_threadgroup);\n      float inv = 1.0f / sh[0];\n      for (uint i = tid; i < D; i += tgsize) out[base + i] = exp(x[base + i] - rm) * inv;\n    }\n  }\n}\n",
+          "threads": [
+            32768,
+            1,
+            1
+          ],
+          "group_size": [
+            128,
+            1,
+            1
+          ],
+          "hypothesis": "128 threads per row caching two float4 values plus simdgroup reductions replace the 256-thread shared-memory tree and its many barriers, reducing softmax latency."
+        },
+        "parent_id": "ea4f93db3aa414eaccf2d1d9f0708154c0e2bc7c4aa2ff4de4503ad0bb048ef4",
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "outcome": "promoted"
+}

@@ -1,0 +1,2291 @@
+{
+  "windows": [
+    {
+      "window": 1,
+      "baseline": "original_eager",
+      "outcome": {
+        "status": "valid",
+        "series": {
+          "schema_version": 1,
+          "baseline_ms": [
+            0.017157389281763358,
+            0.017267191529057868,
+            0.017269088745663908,
+            0.01727659094363787,
+            0.017401697753882672,
+            0.014634017945880373,
+            0.0170843658455766,
+            0.017334096312993097,
+            0.017450469970370364,
+            0.01746399951052524,
+            0.017473978759952047,
+            0.017540674804195078,
+            0.01755760192878597,
+            0.017467157958250823,
+            0.01750544738854387,
+            0.01749252319172001,
+            0.01751967370644536,
+            0.017505732177625077,
+            0.01753979992713539,
+            0.016692194579448483,
+            0.017294306518422786,
+            0.017312754394538388,
+            0.017587005615382623,
+            0.017576309204514473,
+            0.01752239477603723,
+            0.01755753576659913,
+            0.017333928346019434,
+            0.017301686645154746,
+            0.017333028075938728,
+            0.017357996581424118
+          ],
+          "candidate_ms": [
+            0.013817967774443218,
+            0.01406920886282137,
+            0.014168619873800026,
+            0.01443818664625951,
+            0.013276377442750231,
+            0.014081248046693418,
+            0.01398844909594743,
+            0.013545181275276263,
+            0.014495722533425237,
+            0.014611231446082229,
+            0.014139872314800073,
+            0.014164387939885614,
+            0.013816090941531911,
+            0.014074671385699844,
+            0.01406485998600715,
+            0.01404856359954465,
+            0.014052057860425293,
+            0.014168716431228745,
+            0.01407829785193826,
+            0.014639577148756189,
+            0.01393322753884263,
+            0.01377256274359695,
+            0.01390809631374168,
+            0.013782903074854858,
+            0.013699773193209808,
+            0.013795654297155124,
+            0.014225194213679515,
+            0.013358195069201884,
+            0.014036580443743674,
+            0.014399632812356344
+          ],
+          "repetitions": 8192,
+          "order": [
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first"
+          ]
+        }
+      },
+      "blocks": [
+        {
+          "arm": "baseline",
+          "repetitions": 1,
+          "ms": 0.29845799144823104
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 2,
+          "ms": 0.15647899999748915
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4,
+          "ms": 0.10539600043557584
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8,
+          "ms": 0.08475524919049349
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 16,
+          "ms": 0.06914843743288657
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 32,
+          "ms": 0.05943100040894933
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 64,
+          "ms": 0.055316406360361725
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 128,
+          "ms": 0.048968101509672124
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 256,
+          "ms": 0.03158853905915748
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 512,
+          "ms": 0.025318033181065402
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 1024,
+          "ms": 0.02023120117655708
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 2048,
+          "ms": 0.017717529296135126
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.017021657473748064
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01735402429225985
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 1,
+          "ms": 0.31350000062957406
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 2,
+          "ms": 0.12147949746577069
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4,
+          "ms": 0.057895751524483785
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8,
+          "ms": 0.03751562508114148
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 16,
+          "ms": 0.02551306261011632
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 32,
+          "ms": 0.019128906387777533
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 64,
+          "ms": 0.016014968650779338
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 128,
+          "ms": 0.014587242162633629
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 256,
+          "ms": 0.015278484397640568
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 512,
+          "ms": 0.013969402345992421
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 1024,
+          "ms": 0.013855916023430837
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 2048,
+          "ms": 0.013558288578963129
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013237731934623298
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013786844970553602
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.014844080565623585
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01698607385236528
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.016820749879187247
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.016765762328674327
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.015481531738359422
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017157389281763358
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013817967774443218
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017267191529057868
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01406920886282137
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017269088745663908
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014168619873800026
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01443818664625951
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01727659094363787
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013276377442750231
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017401697753882672
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014081248046693418
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.014634017945880373
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.0170843658455766
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01398844909594743
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017334096312993097
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013545181275276263
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017450469970370364
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014495722533425237
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014611231446082229
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01746399951052524
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017473978759952047
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014139872314800073
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014164387939885614
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017540674804195078
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01755760192878597
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013816090941531911
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017467157958250823
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014074671385699844
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01750544738854387
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01406485998600715
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01749252319172001
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01404856359954465
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014052057860425293
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01751967370644536
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014168716431228745
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017505732177625077
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01407829785193826
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01753979992713539
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014639577148756189
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.016692194579448483
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01393322753884263
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017294306518422786
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01377256274359695
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017312754394538388
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01390809631374168
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017587005615382623
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013782903074854858
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017576309204514473
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01752239477603723
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013699773193209808
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01755753576659913
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013795654297155124
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014225194213679515
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017333928346019434
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013358195069201884
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017301686645154746
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017333028075938728
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014036580443743674
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017357996581424118
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014399632812356344
+        }
+      ]
+    },
+    {
+      "window": 1,
+      "baseline": "torch_compile_inductor_fullgraph",
+      "outcome": {
+        "status": "valid",
+        "series": {
+          "schema_version": 1,
+          "baseline_ms": [
+            0.025396952395340122,
+            0.026050913330522008,
+            0.027715708494469027,
+            0.02542438769737032,
+            0.025292887450234502,
+            0.027695068357758146,
+            0.02611274219077586,
+            0.025384083983226446,
+            0.025277425049097246,
+            0.025848714358289726,
+            0.026737935304055327,
+            0.025890024904384745,
+            0.02721327734178658,
+            0.02762559008573362,
+            0.025492258785675403,
+            0.025449544189370954,
+            0.026003794431517235,
+            0.02621775292865891,
+            0.027938059325549602,
+            0.025518127444001948,
+            0.02542338061672922,
+            0.028634938477267724,
+            0.026100860594624464,
+            0.02612488818343195,
+            0.027171132323644542,
+            0.026068949463109448,
+            0.025382710692412047,
+            0.02597134399096035,
+            0.025955810546207658,
+            0.026628356934566
+          ],
+          "candidate_ms": [
+            0.013959818605968621,
+            0.013739583497596186,
+            0.013874816897185838,
+            0.013788960693261743,
+            0.013821350098197627,
+            0.012712453369090326,
+            0.013742167237040803,
+            0.013778137205378016,
+            0.01348113012511476,
+            0.01346052050621438,
+            0.013417633056178602,
+            0.01331950879190913,
+            0.013646433593805796,
+            0.013780558351328409,
+            0.013797963621442477,
+            0.013835418698704416,
+            0.013549977538218627,
+            0.01380187988431203,
+            0.013864898683380034,
+            0.013508768553549544,
+            0.013868794923155292,
+            0.02362133788835763,
+            0.01358536791684628,
+            0.013882212158478069,
+            0.01389809155583066,
+            0.01387642407024714,
+            0.013431732178048605,
+            0.01385464477365872,
+            0.013866943358920025,
+            0.013887461427941616
+          ],
+          "repetitions": 4096,
+          "order": [
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first"
+          ]
+        }
+      },
+      "blocks": [
+        {
+          "arm": "baseline",
+          "repetitions": 1,
+          "ms": 0.22283400176092982
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 2,
+          "ms": 0.10662500426406041
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4,
+          "ms": 0.07295849718502723
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8,
+          "ms": 0.05114587474963628
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 16,
+          "ms": 0.03716931223607389
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 32,
+          "ms": 0.03328643788336194
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 64,
+          "ms": 0.02953254693238705
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 128,
+          "ms": 0.027190750074623793
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 256,
+          "ms": 0.027878417938609346
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 512,
+          "ms": 0.026624105487371708
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 1024,
+          "ms": 0.026221435547313376
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 2048,
+          "ms": 0.026048461919003785
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026047149660257674
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 1,
+          "ms": 0.22679199173580855
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 2,
+          "ms": 0.10208300227532163
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4,
+          "ms": 0.06056249912944622
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8,
+          "ms": 0.03638537600636482
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 16,
+          "ms": 0.024750000193307642
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 32,
+          "ms": 0.01924090611282736
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 64,
+          "ms": 0.016472656170662958
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 128,
+          "ms": 0.015204421856651607
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 256,
+          "ms": 0.015866539058606577
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 512,
+          "ms": 0.014406900390895316
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 1024,
+          "ms": 0.014017130851584625
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 2048,
+          "ms": 0.01395406103199548
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013773498533709017
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013823949219116116
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026151662112283702
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025521453856924836
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026679840090082507
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025477111815774833
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025355234864576914
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025396952395340122
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013959818605968621
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026050913330522008
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013739583497596186
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.027715708494469027
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013874816897185838
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013788960693261743
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02542438769737032
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013821350098197627
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025292887450234502
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.012712453369090326
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.027695068357758146
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02611274219077586
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013742167237040803
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025384083983226446
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013778137205378016
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025277425049097246
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01348113012511476
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01346052050621438
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025848714358289726
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026737935304055327
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013417633056178602
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01331950879190913
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025890024904384745
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02721327734178658
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013646433593805796
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02762559008573362
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013780558351328409
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025492258785675403
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013797963621442477
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025449544189370954
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013835418698704416
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013549977538218627
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026003794431517235
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01380187988431203
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02621775292865891
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013864898683380034
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.027938059325549602
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013508768553549544
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025518127444001948
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013868794923155292
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02542338061672922
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.02362133788835763
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.028634938477267724
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01358536791684628
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026100860594624464
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013882212158478069
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02612488818343195
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.027171132323644542
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01389809155583066
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026068949463109448
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01387642407024714
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013431732178048605
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025382710692412047
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01385464477365872
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02597134399096035
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025955810546207658
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013866943358920025
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026628356934566
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013887461427941616
+        }
+      ]
+    },
+    {
+      "window": 2,
+      "baseline": "original_eager",
+      "outcome": {
+        "status": "valid",
+        "series": {
+          "schema_version": 1,
+          "baseline_ms": [
+            0.014838424682750428,
+            0.015357009887750905,
+            0.01716504418958209,
+            0.016836802124942096,
+            0.017525848390320675,
+            0.017292979004324138,
+            0.01735397338897826,
+            0.01733970129436102,
+            0.017459101318451076,
+            0.01745860290647272,
+            0.017529581786135395,
+            0.017502263304436383,
+            0.017514445067590145,
+            0.017391362547414246,
+            0.017547241210280617,
+            0.01743507897877805,
+            0.017465637206726115,
+            0.01697622680651989,
+            0.017125076293922348,
+            0.01659166979983695,
+            0.017223409058075845,
+            0.01729630529823112,
+            0.017426182983726335,
+            0.017411249755738822,
+            0.017265452148862437,
+            0.01749607336520853,
+            0.01751144409212202,
+            0.01731351733447184,
+            0.01746300756977348,
+            0.017512542724418267
+          ],
+          "candidate_ms": [
+            0.014344279051670128,
+            0.0139792530511329,
+            0.013707036377041959,
+            0.013519251586657788,
+            0.013945154906380708,
+            0.01405664563058906,
+            0.01409412646502517,
+            0.014153147461115623,
+            0.014258860229432457,
+            0.01410026037618195,
+            0.01412114453103186,
+            0.01387769580141196,
+            0.013996281982286973,
+            0.014175557495832436,
+            0.014806508300324595,
+            0.014223861693807294,
+            0.014295232178440642,
+            0.14393865454032095,
+            0.013804204346712368,
+            0.013963231323188552,
+            0.014004699707470536,
+            0.014250040649699258,
+            0.014549229858218382,
+            0.013991119384826334,
+            0.014007985351227603,
+            0.01440458166612757,
+            0.014158650756712632,
+            0.013955271361609789,
+            0.013884033203126478,
+            0.014228195190923998
+          ],
+          "repetitions": 8192,
+          "order": [
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first"
+          ]
+        }
+      },
+      "blocks": [
+        {
+          "arm": "baseline",
+          "repetitions": 1,
+          "ms": 0.2410000015515834
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 2,
+          "ms": 0.10924999514827505
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4,
+          "ms": 0.06426024992833845
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8,
+          "ms": 0.04030724994663615
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 16,
+          "ms": 0.029164062652853318
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 32,
+          "ms": 0.024761718577792635
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 64,
+          "ms": 0.020675125142588513
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 128,
+          "ms": 0.01905435942717304
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 256,
+          "ms": 0.017672687476988358
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 512,
+          "ms": 0.01789916993288898
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 1024,
+          "ms": 0.017946695308523886
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 2048,
+          "ms": 0.017587036133193124
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.017544565917404498
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017207458496315553
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 1,
+          "ms": 0.26124999567400664
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 2,
+          "ms": 0.10622949776006863
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4,
+          "ms": 0.060114500229246914
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8,
+          "ms": 0.036572875615092926
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 16,
+          "ms": 0.025187499886669684
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 32,
+          "ms": 0.019156249891238986
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 64,
+          "ms": 0.016404296957261977
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 128,
+          "ms": 0.015197914080999908
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 256,
+          "ms": 0.015590332054671308
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 512,
+          "ms": 0.014376791028780644
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 1024,
+          "ms": 0.014101725582804647
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 2048,
+          "ms": 0.013921183104059764
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013798482179083749
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014602956055043137
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017208658814382716
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017487594604403967
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017484461425354425
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017448343871961924
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017487401244409284
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014344279051670128
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.014838424682750428
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.015357009887750905
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.0139792530511329
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013707036377041959
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01716504418958209
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.016836802124942096
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013519251586657788
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013945154906380708
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017525848390320675
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01405664563058906
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017292979004324138
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01409412646502517
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01735397338897826
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014153147461115623
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01733970129436102
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014258860229432457
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017459101318451076
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01745860290647272
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01410026037618195
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01412114453103186
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017529581786135395
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01387769580141196
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017502263304436383
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017514445067590145
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013996281982286973
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017391362547414246
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014175557495832436
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017547241210280617
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014806508300324595
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01743507897877805
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014223861693807294
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014295232178440642
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017465637206726115
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.14393865454032095
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01697622680651989
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017125076293922348
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013804204346712368
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01659166979983695
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013963231323188552
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014004699707470536
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017223409058075845
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01729630529823112
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014250040649699258
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014549229858218382
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017426182983726335
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017411249755738822
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013991119384826334
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017265452148862437
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014007985351227603
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01749607336520853
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.01440458166612757
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014158650756712632
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01751144409212202
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01731351733447184
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013955271361609789
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.013884033203126478
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.01746300756977348
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8192,
+          "ms": 0.017512542724418267
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014228195190923998
+        }
+      ]
+    },
+    {
+      "window": 2,
+      "baseline": "torch_compile_inductor_fullgraph",
+      "outcome": {
+        "status": "valid",
+        "series": {
+          "schema_version": 1,
+          "baseline_ms": [
+            0.024203419918933378,
+            0.02572030639669265,
+            0.025110371826286837,
+            0.02514484667770489,
+            0.025239847900593304,
+            0.02792821240404919,
+            0.02648606347932514,
+            0.025779764893485435,
+            0.025517628905902257,
+            0.02592268896250971,
+            0.02750788354433098,
+            0.027827138183056377,
+            0.025835174557897744,
+            0.02648341894584405,
+            0.02758882666142881,
+            0.026570861816566094,
+            0.026673665281862213,
+            0.025360168457666532,
+            0.026068339110452143,
+            0.02593202734146871,
+            0.025948140379483675,
+            0.025833089111415575,
+            0.0267080078124593,
+            0.026991760250894004,
+            0.028020853758192743,
+            0.025758005616438595,
+            0.026053731442488015,
+            0.026162455078804214,
+            0.025564951414480674,
+            0.02593507910120252
+          ],
+          "candidate_ms": [
+            0.013470784423930127,
+            0.01342632031153812,
+            0.013319925781019037,
+            0.01332384228547312,
+            0.013276763915825995,
+            0.013512735836940237,
+            0.013102376218654399,
+            0.013018391847197108,
+            0.013528574463350651,
+            0.013863586424633922,
+            0.0138226420887122,
+            0.013971822021119351,
+            0.013918629882425648,
+            0.01377525854451278,
+            0.013749918700511898,
+            0.013821044923645331,
+            0.013588267087527583,
+            0.013525197267938438,
+            0.013420674562780732,
+            0.013124338622105824,
+            0.013462087160576175,
+            0.01350162743918304,
+            0.013098022460411585,
+            0.013298858643651101,
+            0.0138361308579249,
+            0.013836527585908698,
+            0.013829579589952345,
+            0.013846191407651531,
+            0.013523762937950323,
+            0.01347309374821748
+          ],
+          "repetitions": 4096,
+          "order": [
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "baseline_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first",
+            "candidate_first",
+            "baseline_first"
+          ]
+        }
+      },
+      "blocks": [
+        {
+          "arm": "baseline",
+          "repetitions": 1,
+          "ms": 0.24029199266806245
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 2,
+          "ms": 0.12239599891472608
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4,
+          "ms": 0.07323974932660349
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 8,
+          "ms": 0.04805725075129885
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 16,
+          "ms": 0.03769012437260244
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 32,
+          "ms": 0.03362631287018303
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 64,
+          "ms": 0.029625656225107377
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 128,
+          "ms": 0.02961100005904882
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 256,
+          "ms": 0.02780940627644668
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 512,
+          "ms": 0.02672729493724546
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 1024,
+          "ms": 0.02605582714920729
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 2048,
+          "ms": 0.026096639153649903
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02634313964833268
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 1,
+          "ms": 0.22537499899044633
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 2,
+          "ms": 0.10541699884925038
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4,
+          "ms": 0.0603437474637758
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8,
+          "ms": 0.03706774987222161
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 16,
+          "ms": 0.02449481235089479
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 32,
+          "ms": 0.018936218566523166
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 64,
+          "ms": 0.016470062519147177
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 128,
+          "ms": 0.015138343655962672
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 256,
+          "ms": 0.01538916012577829
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 512,
+          "ms": 0.014348958984555793
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 1024,
+          "ms": 0.01414326953863565
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 2048,
+          "ms": 0.013982035156345773
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01369491577207782
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 8192,
+          "ms": 0.014330790159888807
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025476786376543714
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02609398388742079
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025896128416746933
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025004852293619706
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02505768847527179
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013470784423930127
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.024203419918933378
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02572030639669265
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01342632031153812
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013319925781019037
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025110371826286837
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02514484667770489
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01332384228547312
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013276763915825995
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025239847900593304
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013512735836940237
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02792821240404919
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013102376218654399
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02648606347932514
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013018391847197108
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025779764893485435
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013528574463350651
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025517628905902257
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02592268896250971
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013863586424633922
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.0138226420887122
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02750788354433098
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013971822021119351
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.027827138183056377
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025835174557897744
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013918629882425648
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02648341894584405
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01377525854451278
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02758882666142881
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013749918700511898
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026570861816566094
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013821044923645331
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013588267087527583
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026673665281862213
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013525197267938438
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025360168457666532
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026068339110452143
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013420674562780732
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02593202734146871
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013124338622105824
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013462087160576175
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025948140379483675
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025833089111415575
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01350162743918304
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013098022460411585
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.0267080078124593
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026991760250894004
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013298858643651101
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.028020853758192743
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.0138361308579249
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025758005616438595
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013836527585908698
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013829579589952345
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026053731442488015
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.026162455078804214
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013846191407651531
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.013523762937950323
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.025564951414480674
+        },
+        {
+          "arm": "baseline",
+          "repetitions": 4096,
+          "ms": 0.02593507910120252
+        },
+        {
+          "arm": "candidate",
+          "repetitions": 4096,
+          "ms": 0.01347309374821748
+        }
+      ]
+    }
+  ],
+  "model_requests": 0
+}

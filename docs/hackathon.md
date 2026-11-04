@@ -33,6 +33,8 @@ was performed. These remain the entrant's portal steps.
 - [Function pilot](../results/2026-11-02-fp32-pilot/README.md) retains 2 wins and 7 no-win signatures.
 - [Separate FP16 pilot](../results/2026-11-03-assumed-fp16-pilot/README.md)
   verifies six promoted signatures across three workload families.
+- [Deeper Muse Wonder search and workflow audit](../results/2026-11-03-hackathon-extension/README.md)
+  adds the large FP16 RMSNorm win and the complete fixed attention benchmark.
 - [Whole-module compiler comparison](../results/2026-11-02-module-baselines/README.md)
   explains why the stricter promotion gate kept the original module.
 - `.env` and API credentials are excluded from the repository and demo.

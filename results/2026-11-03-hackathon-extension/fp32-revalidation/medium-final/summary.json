@@ -1,0 +1,25 @@
+{
+  "model_requests": 0,
+  "rows": [
+    {
+      "outcome": "promoted",
+      "run_path": "jobs/47cb0f3ee25a40c2a8e06e83faccd9c8",
+      "artifact_path": "artifacts/a0b223488eea0f373ba9bf01fce569d798062ca183763077a0982138478a2061",
+      "reason": "Numerically verified and faster in both independent confirmation sessions",
+      "study": "extension",
+      "source_artifact": "f8045df09c03192ce61c292207aa13b33d130c1743070354c7023f92a9c4abea",
+      "workload_id": "softmax:medium",
+      "shape": [
+        256,
+        1024
+      ],
+      "model_requests": 0,
+      "attempt": 3,
+      "required_original_baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ],
+      "original_baselines_complete": true
+    }
+  ]
+}

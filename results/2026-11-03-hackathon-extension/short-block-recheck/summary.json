@@ -1,0 +1,31 @@
+{
+  "model_requests": 0,
+  "attempts": [
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "dtype": "float16",
+      "source_run": "d16f03b0cdaa4ddc8b464a39930b7078",
+      "candidate_id": "1c1db747063ecf58c7c31951ede1a474d24f620eecfbf8017528de71c87ab01b",
+      "attempt": 1,
+      "outcome": "inconclusive",
+      "reason": "Confirmation did not yield stable valid measurements",
+      "run_path": "jobs/6fd4e16f7c6d4f239981dc69bc7a36aa",
+      "artifact_path": null,
+      "model_requests": 0
+    },
+    {
+      "family": "rmsnorm",
+      "case": "large",
+      "dtype": "float16",
+      "source_run": "d16f03b0cdaa4ddc8b464a39930b7078",
+      "candidate_id": "1c1db747063ecf58c7c31951ede1a474d24f620eecfbf8017528de71c87ab01b",
+      "attempt": 2,
+      "outcome": "promoted",
+      "reason": "Numerically verified and faster in both independent confirmation sessions",
+      "run_path": "jobs/84972bf8cd5d45deadc0f8dcdde0882f",
+      "artifact_path": "artifacts/845a4486e7a23a4144d4e3ebc224425f2786a7a6c6e6e33c3d95fda7b5dfe58e",
+      "model_requests": 0
+    }
+  ]
+}

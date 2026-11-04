@@ -11,10 +11,15 @@ CHECKED = "2026-11-03-checked-fp32-full"
 FP16_PILOT = "2026-11-03-assumed-fp16-pilot"
 RMSNORM = "2026-11-03-fp16-large-rmsnorm-resolution"
 FP16_RECHECK = "2026-11-03-fp16-confirmation-recheck"
+EXTENSION = Path("2026-11-03-hackathon-extension")
+DEEPER_RECHECK = EXTENSION / "short-block-recheck"
 BASELINES = {
     "original_eager": "Eager PyTorch",
     "functional_rms_norm": "PyTorch functional RMSNorm",
     "torch_compile_inductor_fullgraph": "Inductor fullgraph",
+    "eager_split_attention": "Eager split attention",
+    "pytorch_scaled_dot_product_attention": "PyTorch scaled dot-product attention",
+    "inductor_fullgraph_split_attention": "Inductor fullgraph split attention",
 }
 OUTCOMES = {"promoted": "Promoted", "no_win": "No win"}
 
@@ -158,7 +163,10 @@ def comparisons(session):
 
 
 def render_confirmations(sessions):
-    first, second = map(comparisons, sessions)
+    return render_timing_table(*map(comparisons, sessions))
+
+
+def render_timing_table(first, second):
     if first.keys() != second.keys():
         raise ValueError("Evidence sessions compare different baselines")
     # The smallest speed ratio in a session is the hardest baseline to beat.
@@ -203,7 +211,20 @@ def build_showcase(root):
     followed_up = read_json(root, Path(FP16_RECHECK) / "summary.json")
     wins = {(row["family"], row["case"]) for report in (fp16, followed_up)
             for row in report["rows"] if row["outcome"] == "promoted"}
-
+    deeper = read_json(root, DEEPER_RECHECK / "summary.json")
+    newer_rms = next(row for row in deeper["attempts"] if row["outcome"] == "promoted"
+                     and (row["family"], row["case"], row["dtype"]) == ("rmsnorm", "large", "float16"))
+    newer_rms_run = DEEPER_RECHECK / newer_rms["run_path"]
+    newer_rms_sessions = confirmation_sessions(root, newer_rms_run)
+    newer_rms_gain = min(item["speedup"] for session in newer_rms_sessions
+                         for item in comparisons(session).values())
+    current_wins = wins | {(newer_rms["family"], newer_rms["case"])}
+    workflow_path = EXTENSION / "workflow-measurements.json"
+    workflow = read_json(root, workflow_path)
+    attention_sessions = [
+        {name: result["summary"] for name, result in session["fp16_attention"]["comparisons"].items()}
+        for session in workflow["sessions"]
+    ]
 
     rms_path = Path(RMSNORM)
     rms = read_json(root, rms_path / "summary.json")
@@ -235,7 +256,8 @@ def build_showcase(root):
     <nav aria-label="Replay chapters">
       <a href="#search">01 · Search trace</a>
       <a href="#modes">02 · Measurement modes</a>
-      <a href="#rmsnorm">03 · No-win decision</a>
+      <a href="#rmsnorm">03 · RMSNorm rematch</a>
+      <a href="#attention">04 · Complete attention block</a>
     </nav>
   </header>
   <section class="grid" aria-label="Results at a glance">
@@ -248,12 +270,12 @@ def build_showcase(root):
       <p class="eyebrow">Assumed-domain FP16</p>
       <p class="kpi good">{strongest_softmax:.2f}×</p>
       <p class="muted">Medium softmax vs fastest verified baseline across both sessions</p>
-      <p class="muted">{len(wins)} / {int(fp16["attempted"])} promoted across the pilot and follow-up · {int(fp16["promoted"])} / {int(fp16["attempted"])} in the original pilot</p>
+      <p class="muted">{len(current_wins)} / {int(fp16["attempted"])} distinct signatures promoted across all studies · {int(fp16["promoted"])} / {int(fp16["attempted"])} in the original pilot</p>
     </div>
     <div class="card">
       <p class="eyebrow">Large FP16 RMSNorm</p>
-      <p class="kpi warn">{OUTCOMES[rms["outcome"]]}</p>
-      <p class="muted">Final confirmation kept the PyTorch path</p>
+      <p class="kpi good">{newer_rms_gain:.2f}×</p>
+      <p class="muted">New Muse Wonder kernel vs Inductor after the prior kernel tied it</p>
     </div>
   </section>
   <section id="search">
@@ -278,12 +300,28 @@ def build_showcase(root):
     </details>
   </section>
   <section id="rmsnorm">
-    <p class="eyebrow">03 · No-win decision</p>
-    <h2>Large FP16 RMSNorm stays on PyTorch</h2>
-    <p class="muted">{rms_shape} · assumed domain · {int(rms_cases)} private correctness cases passed</p>
-    {render_confirmations(rms_sessions)}
-    <p><strong class="warn">{OUTCOMES[rms["outcome"]]}.</strong> Promotion requires at least 1.05× and a lower interval bound above 1.00× against every verified baseline in both sessions. Inductor was the decisive baseline.</p>
-    {evidence_path(rms_path)}
+    <p class="eyebrow">03 · RMSNorm rematch</p>
+    <h2>Large FP16 RMSNorm, revisited</h2>
+    <p class="muted">{rms_shape} · assumed domain</p>
+    <p>The earlier kernel beat eager PyTorch by 17–18× and tied Inductor. MetalMind kept PyTorch. With that result and the prior source as feedback, Muse Wonder proposed a two-row schedule with cached weights and SIMD reductions.</p>
+    {render_confirmations(newer_rms_sessions)}
+    <p><strong class="good">Promoted.</strong> The new kernel passed 22 fresh private cases and both timing sessions in the decisive recheck. Promotion requires at least 1.05× and a lower interval bound above 1.00× against every verified baseline in both sessions.</p>
+    {evidence_path(newer_rms_run)}
+    <details>
+      <summary>Inspect the earlier no-win · {len(wins)} / {int(fp16["attempted"])} prior distinct FP16 promotions</summary>
+      <p class="muted">{int(rms_cases)} private correctness cases passed.</p>
+      {render_confirmations(rms_sessions)}
+      <p><strong class="warn">{OUTCOMES[rms["outcome"]]}.</strong> Inductor was the decisive baseline.</p>
+      {evidence_path(rms_path)}
+    </details>
+  </section>
+  <section id="attention">
+    <p class="eyebrow">04 · Complete attention block</p>
+    <h2>What the faster softmax saves end to end</h2>
+    <p class="muted">Q 256 × 64 · K and V 1024 × 64 · assumed-domain FP16</p>
+    <p>In this manually integrated block, the MetalMind artifact replaces softmax. The timed call still computes both matrix multiplications. All three PyTorch baselines passed whole-output verification.</p>
+    {render_timing_table(*attention_sessions)}
+    {evidence_path(workflow_path)}
   </section>
 </main>
 <footer>Saved MetalMind experiments · Source and timing records are archived in the repository.</footer>

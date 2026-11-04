@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "artifact_id": "4dcaef145f78d601f4a67a731131c026ddccd7e8e2fcad2f93677565707fcf0e",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:large",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "67a32c18f3f0d6cd5778c8043239db502eea350ed6dceaf64e3c3d842f702536",
+    "workload_hash": "f5c2684354f47ebdacdc7350d43d80786bfafbe3c19f5487b2b5b0b26313c8ce",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    uint col = gid.x * 4u;\n    uint row = gid.y;\n    if (col >= D || row >= B) return;\n    uint d4 = D >> 2;\n    uint idx = row * d4 + gid.x;\n    float4 xv = ((device const float4*)x)[idx];\n    float4 pv = ((device const float4*)parameter)[gid.x];\n    float4 z = xv + pv;\n    float4 z3 = z * z * z;\n    float4 a = 0.7978845608028654f * (z + 0.044715f * z3);\n    float4 th = float4(tanh(a.x), tanh(a.y), tanh(a.z), tanh(a.w));\n    float4 y = 0.5f * z * (1.0f + th);\n    ((device float4*)out)[idx] = y;\n}\n",
+      "threads": [
+        1024,
+        512,
+        1
+      ],
+      "group_size": [
+        64,
+        4,
+        1
+      ],
+      "hypothesis": "A 2D float4-vectorized dispatch maps columns directly to the bias vector, avoiding modulo arithmetic while coalescing 16-byte loads and stores for the 512x4096 tensor."
+    },
+    "parent_id": null,
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "cdff502221bed6f037868320d3fe1f2cc01c125ad371e6e3dd63aded13f9d9ae",
+  "evidence_hash": "a3564318a1b59f743212da8b0c63223e676986c54c80c88d29587ce8ea4a3796",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

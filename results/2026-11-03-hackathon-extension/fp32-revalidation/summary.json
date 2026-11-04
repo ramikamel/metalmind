@@ -1,0 +1,125 @@
+{
+  "model_requests": 0,
+  "rows": [
+    {
+      "outcome": "inconclusive",
+      "run_path": "jobs/18bdf3e734c14b1e9ec383a671a3bdf2",
+      "artifact_path": null,
+      "reason": "Confirmation did not yield stable valid measurements",
+      "study": "extension",
+      "source_artifact": "f8045df09c03192ce61c292207aa13b33d130c1743070354c7023f92a9c4abea",
+      "workload_id": "softmax:medium",
+      "shape": [
+        256,
+        1024
+      ],
+      "model_requests": 0,
+      "attempt": 1,
+      "required_original_baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ],
+      "original_baselines_complete": true
+    },
+    {
+      "outcome": "inconclusive",
+      "run_path": "jobs/8dc682ca823041e58199f49b3e05d825",
+      "artifact_path": null,
+      "reason": "Confirmation did not yield stable valid measurements",
+      "study": "extension",
+      "source_artifact": "f8045df09c03192ce61c292207aa13b33d130c1743070354c7023f92a9c4abea",
+      "workload_id": "softmax:medium",
+      "shape": [
+        256,
+        1024
+      ],
+      "model_requests": 0,
+      "attempt": 2,
+      "required_original_baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ],
+      "original_baselines_complete": false
+    },
+    {
+      "outcome": "promoted",
+      "run_path": "jobs/d5714973fe9f4f3e82f4e531c5f03f77",
+      "artifact_path": "artifacts/910d67efbd3512326f82720b1bee97e88d6ad3e93b16abfca3964affd201d35d",
+      "reason": "Numerically verified and faster in both independent confirmation sessions",
+      "study": "extension",
+      "source_artifact": "8213546e230607f64786638c9550c7c9a7c1f4029becac99706ef5c16adc76a7",
+      "workload_id": "softmax:large",
+      "shape": [
+        128,
+        4096
+      ],
+      "model_requests": 0,
+      "attempt": 1,
+      "required_original_baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ],
+      "original_baselines_complete": true
+    },
+    {
+      "outcome": "inconclusive",
+      "run_path": "jobs/b4fc20f45e5f455cb51da32c1fa87726",
+      "artifact_path": null,
+      "reason": "Confirmation did not yield stable valid measurements",
+      "study": "pilot",
+      "source_artifact": "4af22062f87308dc937c666cd7194c500d612ceb59510b75d46db74dc768807e",
+      "workload_id": "bias_gelu:large",
+      "shape": [
+        512,
+        4096
+      ],
+      "model_requests": 0,
+      "attempt": 1,
+      "required_original_baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ],
+      "original_baselines_complete": false
+    },
+    {
+      "outcome": "promoted",
+      "run_path": "jobs/221878fa3538413f8f45a3cc4a24ea3f",
+      "artifact_path": "artifacts/4dcaef145f78d601f4a67a731131c026ddccd7e8e2fcad2f93677565707fcf0e",
+      "reason": "Numerically verified and faster in both independent confirmation sessions",
+      "study": "pilot",
+      "source_artifact": "4af22062f87308dc937c666cd7194c500d612ceb59510b75d46db74dc768807e",
+      "workload_id": "bias_gelu:large",
+      "shape": [
+        512,
+        4096
+      ],
+      "model_requests": 0,
+      "attempt": 2,
+      "required_original_baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ],
+      "original_baselines_complete": true
+    },
+    {
+      "outcome": "promoted",
+      "run_path": "jobs/d870350b443144d38b7d104b6fbe04b0",
+      "artifact_path": "artifacts/703b49c38904a2f77e45fbf0e693d9657440932c38a82b601ed6d469bd420144",
+      "reason": "Numerically verified and faster in both independent confirmation sessions",
+      "study": "pilot",
+      "source_artifact": "db066f6dfe2e74cefc0c335852229dd2ed6a9058518279eabb7b3a28342caa87",
+      "workload_id": "bias_gelu:medium",
+      "shape": [
+        256,
+        1024
+      ],
+      "model_requests": 0,
+      "attempt": 1,
+      "required_original_baselines": [
+        "original_eager",
+        "torch_compile_inductor_fullgraph"
+      ],
+      "original_baselines_complete": true
+    }
+  ]
+}

@@ -28,8 +28,9 @@ fixture answers, benchmark scores or acceptance decisions.
 ## Working demonstration
 
 - [Offline evidence showcase](../demo/evidence-showcase.html)
-
-- [Three-minute silent walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
+- [Judging rehearsal and live dispatch command](judging-rehearsal.md)
+- [Deeper model search, rechecks, and complete attention benchmark](../results/2026-11-03-hackathon-extension/README.md)
+- [Original FP32 silent walkthrough](../demo/video/metalmind-evidence-walkthrough.mp4)
 - [Terminal recording and captions](../demo/README.md)
 - [Function pilot](../results/2026-11-02-fp32-pilot/README.md)
 - [Separate FP16 results and reuse audit](../results/2026-11-03-assumed-fp16-pilot/README.md)
@@ -39,9 +40,9 @@ fixture answers, benchmark scores or acceptance decisions.
 - [Whole-module compiler comparison](../results/2026-11-02-module-baselines/README.md)
 
 The walkthrough shows saved evaluator results from a real Muse Wonder search,
-including a valid Metal candidate and a proposal rejected for non-finite output. It then runs
-a fresh correctness check using a previously promoted artifact and shows
-fallback on a changed shape and in gradient mode.
+including a valid Metal candidate and a proposal rejected for non-finite output.
+Use the rehearsal command to run a fresh GPU check of a promoted artifact and
+show fallback on a changed shape, dtype and gradient mode.
 
 The assumed-domain FP32 pilot on a 14-core Apple M3 Pro promoted two of nine
 signatures. Medium bias/GELU reached 1.547× and 1.553× against PyTorch Inductor
@@ -54,6 +55,14 @@ across bias/GELU, RMSNorm and softmax. Medium softmax reached 2.641×
 and 2.544× against its fastest verified baseline. Each promoted artifact
 dispatched on new in-domain values and used PyTorch fallback on a changed
 shape, FP32 inputs and gradient mode.
+
+The follow-ups brought the FP16 total to nine distinct signatures with a
+promotion across studies. The last case, large RMSNorm, initially tied
+Inductor. After Muse Wonder received the earlier result and source, its new
+kernel beat Inductor by 1.252× and 1.268× after private verification. A fixed,
+manually integrated FP16 attention block reused the softmax artifact and
+measured 1.058× and 1.067× versus the fastest verified whole-block baseline,
+Inductor. The two matrix multiplications were included in that measurement.
 
 All 108 jobs in a separate checked-mode comparison fell back to PyTorch.
 At module level, the regional rewrite passed eight private correctness cases

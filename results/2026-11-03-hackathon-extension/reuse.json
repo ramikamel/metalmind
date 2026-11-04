@@ -1,0 +1,56 @@
+[
+  {
+    "family": "softmax",
+    "case": "medium",
+    "dtype": "float32",
+    "outcome": "passed",
+    "artifact_id": "f8045df09c03192ce61c292207aa13b33d130c1743070354c7023f92a9c4abea",
+    "optimized_enabled": true,
+    "new_values_match": true,
+    "changed_shape_fallback": true,
+    "gradient_fallback": true,
+    "max_absolute_error": 0.0,
+    "new_performance_measurement": false
+  },
+  {
+    "family": "softmax",
+    "case": "large",
+    "dtype": "float32",
+    "outcome": "passed",
+    "artifact_id": "8213546e230607f64786638c9550c7c9a7c1f4029becac99706ef5c16adc76a7",
+    "optimized_enabled": true,
+    "new_values_match": true,
+    "changed_shape_fallback": true,
+    "gradient_fallback": true,
+    "max_absolute_error": 0.0,
+    "new_performance_measurement": false
+  },
+  {
+    "family": "rmsnorm",
+    "case": "large",
+    "dtype": "float16",
+    "artifact_id": "845a4486e7a23a4144d4e3ebc224425f2786a7a6c6e6e33c3d95fda7b5dfe58e",
+    "domain_mode": "assume",
+    "new_values_match": true,
+    "changed_shape_fallback": true,
+    "fp32_input_fallback": true,
+    "gradient_fallback": true,
+    "observed_kernel_dispatches": 1,
+    "max_absolute_error": 0.001953125,
+    "model_requests": 0
+  },
+  {
+    "family": "softmax",
+    "case": "medium",
+    "dtype": "float16",
+    "artifact_id": "bc69c1dd244e635636f04c7f16e7eb4a9aaec6080fad14af949ff399dfc352e2",
+    "domain_mode": "assume",
+    "new_values_match": true,
+    "changed_shape_fallback": true,
+    "fp32_input_fallback": true,
+    "gradient_fallback": true,
+    "observed_kernel_dispatches": 1,
+    "max_absolute_error": 0.0,
+    "model_requests": 0
+  }
+]

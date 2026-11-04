@@ -1,0 +1,116 @@
+{
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "assume",
+    "max_candidates": 30,
+    "max_requests": 60,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 120000,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 420.0,
+    "stagnation_limit": 10,
+    "seed": 202611523,
+    "runs_dir": "/Users/rami/github/metalmind/runs/hackathon-fp32-revalidate.ivpOpJC3/jobs",
+    "artifacts_dir": "/Users/rami/github/metalmind/runs/hackathon-fp32-revalidate.ivpOpJC3/artifacts",
+    "warmups": 100,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "phase": "terminal",
+  "elapsed_seconds": 0,
+  "parent_artifact": "/Users/rami/github/metalmind/runs/hackathon-extension.VScHNRpi/artifacts/f8045df09c03192ce61c292207aa13b33d130c1743070354c7023f92a9c4abea",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "softmax:medium",
+    "family": "softmax",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          256,
+          1024
+        ],
+        "strides": [
+          1024,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        256,
+        1024
+      ],
+      "strides": [
+        1024,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "softmax",
+    "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+    "policy_version": 1
+  },
+  "requests": 0,
+  "output_tokens": 0,
+  "archive": [
+    {
+      "score": 1.05,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "65d795cfe25dcdd2713592a49efbf649505bef140947763c8c0ded5d4bafcdb7",
+        "workload_hash": "461b8c004d540d5e390f3bcc82607e9e604c6e9f6317f09d019a790b41b31762",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint tid [[thread_index_in_threadgroup]], uint gid [[threadgroup_position_in_grid]], uint ngroups [[threadgroups_per_grid]], uint tgsize [[threads_per_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint simd_id [[simdgroup_index_in_threadgroup]], uint simd_size [[threads_per_simdgroup]]) {\n  (void)epsilon;\n  (void)tid;\n  uint nsg = (tgsize + simd_size - 1u) / simd_size;\n  uint row0 = gid * nsg + simd_id;\n  uint rowStride = ngroups * nsg;\n  for (uint row = row0; row < B; row += rowStride) {\n    uint base = row * D;\n    if (D == 1024u && simd_size == 32u) {\n      device const float4* x4 = (device const float4*)(x + base);\n      float4 v0 = x4[lane];\n      float4 v1 = x4[lane + 32u];\n      float4 v2 = x4[lane + 64u];\n      float4 v3 = x4[lane + 96u];\n      float4 v4 = x4[lane + 128u];\n      float4 v5 = x4[lane + 160u];\n      float4 v6 = x4[lane + 192u];\n      float4 v7 = x4[lane + 224u];\n      float lm = max(max(v0.x, v0.y), max(v0.z, v0.w));\n      lm = max(lm, max(max(v1.x, v1.y), max(v1.z, v1.w)));\n      lm = max(lm, max(max(v2.x, v2.y), max(v2.z, v2.w)));\n      lm = max(lm, max(max(v3.x, v3.y), max(v3.z, v3.w)));\n      lm = max(lm, max(max(v4.x, v4.y), max(v4.z, v4.w)));\n      lm = max(lm, max(max(v5.x, v5.y), max(v5.z, v5.w)));\n      lm = max(lm, max(max(v6.x, v6.y), max(v6.z, v6.w)));\n      lm = max(lm, max(max(v7.x, v7.y), max(v7.z, v7.w)));\n      float rm = simd_max(lm);\n      float c = 1.4426950408889634f;\n      float4 e0 = exp2((v0 - rm) * c);\n      float4 e1 = exp2((v1 - rm) * c);\n      float4 e2 = exp2((v2 - rm) * c);\n      float4 e3 = exp2((v3 - rm) * c);\n      float4 e4 = exp2((v4 - rm) * c);\n      float4 e5 = exp2((v5 - rm) * c);\n      float4 e6 = exp2((v6 - rm) * c);\n      float4 e7 = exp2((v7 - rm) * c);\n      float ls = ((e0.x + e0.y) + (e0.z + e0.w)) + ((e1.x + e1.y) + (e1.z + e1.w));\n      ls += ((e2.x + e2.y) + (e2.z + e2.w)) + ((e3.x + e3.y) + (e3.z + e3.w));\n      ls += ((e4.x + e4.y) + (e4.z + e4.w)) + ((e5.x + e5.y) + (e5.z + e5.w));\n      ls += ((e6.x + e6.y) + (e6.z + e6.w)) + ((e7.x + e7.y) + (e7.z + e7.w));\n      float inv = 1.0f / simd_sum(ls);\n      device float4* o4 = (device float4*)(out + base);\n      o4[lane] = e0 * inv;\n      o4[lane + 32u] = e1 * inv;\n      o4[lane + 64u] = e2 * inv;\n      o4[lane + 96u] = e3 * inv;\n      o4[lane + 128u] = e4 * inv;\n      o4[lane + 160u] = e5 * inv;\n      o4[lane + 192u] = e6 * inv;\n      o4[lane + 224u] = e7 * inv;\n    } else {\n      float lm = -3.402823466e+38f;\n      for (uint i = lane; i < D; i += simd_size) lm = max(lm, x[base + i]);\n      float rm = simd_max(lm);\n      float ls = 0.0f;\n      for (uint i = lane; i < D; i += simd_size) ls += exp(x[base + i] - rm);\n      float inv = 1.0f / simd_sum(ls);\n      for (uint i = lane; i < D; i += simd_size) out[base + i] = exp(x[base + i] - rm) * inv;\n    }\n  }\n}\n",
+          "threads": [
+            8192,
+            1,
+            1
+          ],
+          "group_size": [
+            128,
+            1,
+            1
+          ],
+          "hypothesis": "One SIMD group per row with register-held float4 values eliminates threadgroup barriers and shared-memory reductions; exp2 via log2e scaling lowers transcendental cost versus the incumbent."
+        },
+        "parent_id": "abeacb7f5870f04a29c1a40fd6bb95710ce72a34a6b57a010c44b0bbf4c7a0e0",
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "evidence_kind": "revalidation; no model generation or search",
+  "outcome": "inconclusive"
+}

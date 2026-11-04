@@ -81,6 +81,17 @@ softmax measured **2.641× and 2.544×** versus the fastest verified baseline
 in its two confirmation sessions. All six artifacts passed an offline
 reuse audit with shape, dtype and gradient fallback.
 
+The [deeper Muse Wonder search and timing audit](results/2026-11-03-hackathon-extension/README.md)
+added two FP32 softmax wins and resolved the remaining FP16 signature.
+The new large FP16 RMSNorm kernel measured **1.252× and 1.268× versus
+Inductor**. Across the original FP16 pilot and follow-ups, **9 of 9** distinct
+signatures have an assumed-domain promotion. A fixed FP16 attention block
+using the medium softmax artifact measured **1.058× and 1.067× versus
+Inductor** for the whole block, including both matrix multiplications.
+All four FP32 winners across the pilot and deeper search reproduced in
+short-block confirmations. The checked wrapper remained substantially
+slower in the same-kernel diagnostic.
+
 ## Module workflow
 
 The module path reuses confirmed function artifacts and makes no model requests.

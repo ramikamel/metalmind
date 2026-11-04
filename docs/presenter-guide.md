@@ -141,6 +141,8 @@ training, or dynamic control flow fall outside that automatic workflow.
 | --- | --- |
 | Original FP32 pilot shown in the video | “Medium bias/GELU ran about **1.55× as fast as compiled PyTorch** in two confirmation sessions on our M3 Pro, when the caller guaranteed the input bounds.” |
 | Later FP16 pilot | “**Six of nine** signatures promoted across all three workload families. Medium softmax reached **2.64× and 2.54× against the fastest verified baseline** in two sessions. These were FP16 calls with guaranteed input bounds.” |
+| Deeper FP16 search | “Across the pilot and follow-ups, all nine fixed FP16 signatures have a promoted assumed-domain kernel. The last one, large RMSNorm, went from tying Inductor to beating it by about 25% after Muse Wonder got the old source and benchmark feedback.” |
+| Complete attention example | “We put the medium FP16 softmax artifact inside one fixed attention block. Both matrix multiplications were included, and the whole block ran about 1.06× as fast as the best verified PyTorch baseline.” |
 | Default checked-mode FP32 comparison | “We ran **108 jobs** with the input scan included. Zero kernels promoted, so those jobs kept PyTorch. The results didn’t establish a promotion advantage for model feedback.” |
 | Whole-module example | “The regional rewrite beat eager PyTorch, then lost to the compiled whole module. MetalMind kept the original.” |
 

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "artifact_id": "910d67efbd3512326f82720b1bee97e88d6ad3e93b16abfca3964affd201d35d",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "softmax:large",
+    "family": "softmax",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          128,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        128,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "softmax",
+    "reference_hash": "616e2a8e6bae55898051baab53eee647feee607a1963790f1859e0dd9f1cccef",
+    "policy_version": 1
+  },
+  "candidate": {
+    "schema_version": 1,
+    "candidate_id": "57eafa7db97ccf29085911d2c87a263eef82d03a150274622b53271009458271",
+    "workload_hash": "188082fcd624701bbbcbaf66782e3285fdd727b1862439bdbe80d43eaea41efd",
+    "proposal": {
+      "schema_version": 1,
+      "entry_point": "metalmind_kernel",
+      "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint tg [[threadgroup_position_in_grid]], uint tid [[thread_index_in_threadgroup]], uint tgs [[threads_per_threadgroup]], uint lane [[thread_index_in_simdgroup]], uint sgid [[simdgroup_index_in_threadgroup]], uint nsg [[simdgroups_per_threadgroup]]) {\n    (void)epsilon;\n    if (tg >= B || D == 0) return;\n    uint row = tg;\n    uint base = row * D;\n    threadgroup float buf[4096];\n    threadgroup float red[64];\n    if (D <= 4096) {\n        if ((D & 3u) == 0) {\n            uint D4 = D >> 2;\n            device const float4* x4 = (device const float4*)(x + base);\n            device float4* o4 = (device float4*)(out + base);\n            threadgroup float4* buf4 = (threadgroup float4*)buf;\n            float local_max = -3.402823466e+38f;\n            for (uint i = tid; i < D4; i += tgs) {\n                float4 v = x4[i];\n                buf4[i] = v;\n                local_max = max(local_max, max(max(v.x, v.y), max(v.z, v.w)));\n            }\n            float m = simd_max(local_max);\n            if (lane == 0) red[sgid] = m;\n            threadgroup_barrier(mem_flags::mem_threadgroup);\n            if (sgid == 0) {\n                float v = (lane < nsg) ? red[lane] : -3.402823466e+38f;\n                v = simd_max(v);\n                if (lane == 0) red[0] = v;\n            }\n            threadgroup_barrier(mem_flags::mem_threadgroup);\n            float row_max = red[0];\n            float local_sum = 0.0f;\n            for (uint i = tid; i < D4; i += tgs) {\n                float4 e = exp(buf4[i] - row_max);\n                buf4[i] = e;\n                local_sum += (e.x + e.y) + (e.z + e.w);\n            }\n            float s = simd_sum(local_sum);\n            if (lane == 0) red[sgid] = s;\n            threadgroup_barrier(mem_flags::mem_threadgroup);\n            if (sgid == 0) {\n                float v = (lane < nsg) ? red[lane] : 0.0f;\n                v = simd_sum(v);\n                if (lane == 0) red[0] = v;\n            }\n            threadgroup_barrier(mem_flags::mem_threadgroup);\n            float inv_sum = 1.0f / red[0];\n            for (uint i = tid; i < D4; i += tgs) {\n                o4[i] = buf4[i] * inv_sum;\n            }\n            return;\n        }\n        float local_max = -3.402823466e+38f;\n        for (uint i = tid; i < D; i += tgs) {\n            float v = x[base + i];\n            buf[i] = v;\n            local_max = max(local_max, v);\n        }\n        float m = simd_max(local_max);\n        if (lane == 0) red[sgid] = m;\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n        if (sgid == 0) {\n            float v = (lane < nsg) ? red[lane] : -3.402823466e+38f;\n            v = simd_max(v);\n            if (lane == 0) red[0] = v;\n        }\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n        float row_max = red[0];\n        float local_sum = 0.0f;\n        for (uint i = tid; i < D; i += tgs) {\n            float e = exp(buf[i] - row_max);\n            buf[i] = e;\n            local_sum += e;\n        }\n        float s = simd_sum(local_sum);\n        if (lane == 0) red[sgid] = s;\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n        if (sgid == 0) {\n            float v = (lane < nsg) ? red[lane] : 0.0f;\n            v = simd_sum(v);\n            if (lane == 0) red[0] = v;\n        }\n        threadgroup_barrier(mem_flags::mem_threadgroup);\n        float inv_sum = 1.0f / red[0];\n        for (uint i = tid; i < D; i += tgs) {\n            out[base + i] = float(buf[i] * inv_sum);\n        }\n        return;\n    }\n    float local_max = -3.402823466e+38f;\n    for (uint i = tid; i < D; i += tgs) {\n        local_max = max(local_max, x[base + i]);\n    }\n    float m = simd_max(local_max);\n    if (lane == 0) red[sgid] = m;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (sgid == 0) {\n        float v = (lane < nsg) ? red[lane] : -3.402823466e+38f;\n        v = simd_max(v);\n        if (lane == 0) red[0] = v;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float row_max = red[0];\n    float local_sum = 0.0f;\n    for (uint i = tid; i < D; i += tgs) {\n        local_sum += exp(x[base + i] - row_max);\n    }\n    float s = simd_sum(local_sum);\n    if (lane == 0) red[sgid] = s;\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    if (sgid == 0) {\n        float v = (lane < nsg) ? red[lane] : 0.0f;\n        v = simd_sum(v);\n        if (lane == 0) red[0] = v;\n    }\n    threadgroup_barrier(mem_flags::mem_threadgroup);\n    float inv_sum = 1.0f / red[0];\n    for (uint i = tid; i < D; i += tgs) {\n        out[base + i] = float(exp(x[base + i] - row_max) * inv_sum);\n    }\n}\n",
+      "threads": [
+        32768,
+        1,
+        1
+      ],
+      "group_size": [
+        256,
+        1,
+        1
+      ],
+      "hypothesis": "Caching each 4096-wide row once as float4 in threadgroup memory and reusing it for exp and scaling gives one global read, one exp per element, and fast SIMD reductions, beating the three-pass global-memory incumbent."
+    },
+    "parent_id": "97505c15ec11d4afeb5e482e221540cabf9bf8d1c672470389a87e71cf91ee14",
+    "model": "muse-wonder-1.0"
+  },
+  "environment_fingerprint": "a81cbb26aacec0bbce7890dc1bb25973c80923276c2bac0b52fd410f17360dbf",
+  "source_hash": "bf21d593f5fc531c5db461027fd5ad71355caef9a5c8f6c0273d5c3583169399",
+  "evidence_hash": "dd3d6a76a0deac1659bfd5cccfab35aef644fabe6ce2cb3228e0fedb4e9b756f",
+  "domain_mode": "assume",
+  "abi_version": 1
+}

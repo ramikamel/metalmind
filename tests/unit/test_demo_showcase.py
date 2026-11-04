@@ -24,12 +24,15 @@ def test_showcase_replays_the_archived_search_and_baseline_decisions(tmp_path):
     assert "A 2D float4-vectorized dispatch maps columns directly to the bias vector" in html
     assert "nonfinite output" in html
     assert "Checked FP32" in html and "0 / 108" in html
-    assert "Assumed-domain FP16" in html and "6 / 9" in html and "8 / 9" in html
+    assert "Assumed-domain FP16" in html and "6 / 9" in html and "8 / 9" in html and "9 / 9" in html
     assert "2.54×" in html
     assert "Inductor fullgraph" in html
     assert "1.093×" in html and "1.097×" in html
     assert "2.641×" in html and "2.544×" in html
     assert "0.997×" in html and "0.990×" in html
+    assert "1.252×" in html and "1.268×" in html
+    assert "Complete attention block" in html and "PyTorch scaled dot-product attention" in html
+    assert "1.058×" in html and "1.067×" in html
     assert "No win" in html
 
 

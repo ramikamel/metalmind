@@ -112,9 +112,10 @@ gradient checks passed without a key. A separate unchanged matmul plus medium
 activation measured 1.153× (95% interval 1.142–1.160×) in one 30-pair session.
 This is descriptive whole-workflow evidence, not two-session model confirmation.
 
-The full campaign remains outside the current request allowance. The event was
-subsequently identified and its public rules verified; see docs/hackathon.md.
-A recorded submission video and authenticated portal steps remain unfinished.
+The full campaign was pending at this checkpoint. The event was subsequently
+identified and its public rules verified in [event alignment](hackathon.md).
+The campaign and recorded walkthrough were completed in later checkpoints.
+Authenticated portal steps remain with the entrant.
 No arbitrary-model optimizer or general kernel support is claimed. Browser visual preview of the HTML report was blocked by the local
 file URL policy; automated report-content and escaping checks passed.
 
@@ -373,3 +374,24 @@ pairs, all failure categories, and the reproducible analysis.
 The demo and [submission draft](submission-draft.md) are ready. Entrant
 submission requires the authenticated portal. Later research items remain
 outside this release closeout.
+
+
+## Hackathon measurement audit and deeper search — November 3, 2026
+
+- Completed 24 live Muse Wonder requests across three FP32 cases and large FP16
+  RMSNorm, then rechecked saved candidates without additional model calls.
+- Added confirmed FP32 medium and large softmax candidates under the original
+  timer. Functional PyTorch retained the medium FP32 RMSNorm case.
+- Resolved large FP16 RMSNorm with the new model candidate after two fresh valid
+  short-block confirmations. Distinct FP16 assumed-domain wins reached nine of
+  nine across separate studies.
+- Bounded asymmetric timing blocks, serialized worker cleanup with GPU fault
+  recovery, and closed a late-stage deadline race. A real GPU regression
+  reproduced FP32 subnormal values passing the old guard as zero. The bitwise
+  scan now rejects those values while accepting both signed zeros.
+- Measured checked versus assumed wrappers on the exact same FP32 kernel and
+  measured the complete fixed FP16 attention block against eager, built-in
+  scaled dot-product attention and Inductor. Archived tests, results, raw timing
+  samples and offline reuse checks in [the follow-up evidence](../results/2026-11-03-hackathon-extension/README.md).
+- Refreshed the portable [evidence replay](../demo/evidence-showcase.html) and the
+  [judging rehearsal](judging-rehearsal.md) with the new rematch and attention result.

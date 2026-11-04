@@ -1,0 +1,128 @@
+{
+  "config": {
+    "schema_version": 1,
+    "model": "muse-wonder-1.0",
+    "reasoning_effort": "low",
+    "domain_mode": "assume",
+    "max_candidates": 30,
+    "max_requests": 60,
+    "wall_seconds": 1800.0,
+    "finalization_reserve_seconds": 300.0,
+    "max_output_tokens": 4096,
+    "total_output_tokens": 120000,
+    "request_timeout_seconds": 120.0,
+    "compile_timeout_seconds": 60.0,
+    "execution_timeout_seconds": 420.0,
+    "stagnation_limit": 10,
+    "seed": 202611529,
+    "runs_dir": "/Users/rami/github/metalmind/runs/hackathon-fp32-revalidate.ivpOpJC3/jobs",
+    "artifacts_dir": "/Users/rami/github/metalmind/runs/hackathon-fp32-revalidate.ivpOpJC3/artifacts",
+    "warmups": 100,
+    "search_pairs": 10,
+    "confirmation_pairs": 30,
+    "bootstrap_resamples": 10000,
+    "confirmation_cooldown_seconds": 60.0
+  },
+  "environment": {
+    "schema_version": 1,
+    "python_version": "3.14.6",
+    "torch_version": "2.15.0",
+    "os_version": "27.2",
+    "architecture": "arm64",
+    "capabilities": {
+      "mps_built": true,
+      "mps_available": true,
+      "compile_shader": true,
+      "timed_events": true
+    },
+    "unavailable_reason": null
+  },
+  "phase": "terminal",
+  "elapsed_seconds": 0,
+  "parent_artifact": "results/2026-11-02-fp32-pilot/artifacts/4af22062f87308dc937c666cd7194c500d612ceb59510b75d46db74dc768807e",
+  "workload": {
+    "schema_version": 1,
+    "workload_id": "bias_gelu:large",
+    "family": "bias_gelu",
+    "semantics_version": 1,
+    "inputs": [
+      {
+        "schema_version": 1,
+        "shape": [
+          512,
+          4096
+        ],
+        "strides": [
+          4096,
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      },
+      {
+        "schema_version": 1,
+        "shape": [
+          4096
+        ],
+        "strides": [
+          1
+        ],
+        "dtype": "float32",
+        "device": "mps",
+        "storage_offset": 0
+      }
+    ],
+    "output": {
+      "schema_version": 1,
+      "shape": [
+        512,
+        4096
+      ],
+      "strides": [
+        4096,
+        1
+      ],
+      "dtype": "float32",
+      "device": "mps",
+      "storage_offset": 0
+    },
+    "epsilon": 0.0,
+    "accumulation_dtype": "float32",
+    "reference_id": "bias_gelu",
+    "reference_hash": "c60ff43cba7f6567ccd2faca8450572306e4bddba487ec580500bd109f865777",
+    "policy_version": 1
+  },
+  "requests": 0,
+  "output_tokens": 0,
+  "archive": [
+    {
+      "score": 1.05,
+      "candidate": {
+        "schema_version": 1,
+        "candidate_id": "67a32c18f3f0d6cd5778c8043239db502eea350ed6dceaf64e3c3d842f702536",
+        "workload_hash": "f5c2684354f47ebdacdc7350d43d80786bfafbe3c19f5487b2b5b0b26313c8ce",
+        "proposal": {
+          "schema_version": 1,
+          "entry_point": "metalmind_kernel",
+          "source": "#include <metal_stdlib>\nusing namespace metal;\nkernel void metalmind_kernel(device const float* x, device const float* parameter, device float* out, constant uint& B, constant uint& D, constant float& epsilon, uint2 gid [[thread_position_in_grid]]) {\n    (void)epsilon;\n    uint col = gid.x * 4u;\n    uint row = gid.y;\n    if (col >= D || row >= B) return;\n    uint d4 = D >> 2;\n    uint idx = row * d4 + gid.x;\n    float4 xv = ((device const float4*)x)[idx];\n    float4 pv = ((device const float4*)parameter)[gid.x];\n    float4 z = xv + pv;\n    float4 z3 = z * z * z;\n    float4 a = 0.7978845608028654f * (z + 0.044715f * z3);\n    float4 th = float4(tanh(a.x), tanh(a.y), tanh(a.z), tanh(a.w));\n    float4 y = 0.5f * z * (1.0f + th);\n    ((device float4*)out)[idx] = y;\n}\n",
+          "threads": [
+            1024,
+            512,
+            1
+          ],
+          "group_size": [
+            64,
+            4,
+            1
+          ],
+          "hypothesis": "A 2D float4-vectorized dispatch maps columns directly to the bias vector, avoiding modulo arithmetic while coalescing 16-byte loads and stores for the 512x4096 tensor."
+        },
+        "parent_id": null,
+        "model": "muse-wonder-1.0"
+      }
+    }
+  ],
+  "evidence_kind": "revalidation; no model generation or search",
+  "outcome": "inconclusive"
+}

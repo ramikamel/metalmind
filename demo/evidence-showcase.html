@@ -75,7 +75,8 @@ footer { border-top: 1px solid var(--line); color: var(--muted); padding-block: 
     <nav aria-label="Replay chapters">
       <a href="#search">01 · Search trace</a>
       <a href="#modes">02 · Measurement modes</a>
-      <a href="#rmsnorm">03 · No-win decision</a>
+      <a href="#rmsnorm">03 · RMSNorm rematch</a>
+      <a href="#attention">04 · Complete attention block</a>
     </nav>
   </header>
   <section class="grid" aria-label="Results at a glance">
@@ -88,12 +89,12 @@ footer { border-top: 1px solid var(--line); color: var(--muted); padding-block: 
       <p class="eyebrow">Assumed-domain FP16</p>
       <p class="kpi good">2.54×</p>
       <p class="muted">Medium softmax vs fastest verified baseline across both sessions</p>
-      <p class="muted">8 / 9 promoted across the pilot and follow-up · 6 / 9 in the original pilot</p>
+      <p class="muted">9 / 9 distinct signatures promoted across all studies · 6 / 9 in the original pilot</p>
     </div>
     <div class="card">
       <p class="eyebrow">Large FP16 RMSNorm</p>
-      <p class="kpi warn">No win</p>
-      <p class="muted">Final confirmation kept the PyTorch path</p>
+      <p class="kpi good">1.25×</p>
+      <p class="muted">New Muse Wonder kernel vs Inductor after the prior kernel tied it</p>
     </div>
   </section>
   <section id="search">
@@ -200,9 +201,25 @@ kernel void metalmind_kernel(device const float* x, device const float* paramete
     </details>
   </section>
   <section id="rmsnorm">
-    <p class="eyebrow">03 · No-win decision</p>
-    <h2>Large FP16 RMSNorm stays on PyTorch</h2>
-    <p class="muted">512 × 4096 · assumed domain · 22 private correctness cases passed</p>
+    <p class="eyebrow">03 · RMSNorm rematch</p>
+    <h2>Large FP16 RMSNorm, revisited</h2>
+    <p class="muted">512 × 4096 · assumed domain</p>
+    <p>The earlier kernel beat eager PyTorch by 17–18× and tied Inductor. MetalMind kept PyTorch. With that result and the prior source as feedback, Muse Wonder proposed a two-row schedule with cached weights and SIMD reductions.</p>
+
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Timing confirmations">
+        <table>
+          <caption>Median paired speed ratio and 95% interval. Above 1.00× favors the candidate.</caption>
+          <thead><tr><th scope="col">Verified baseline</th><th scope="col">Session 1</th>
+            <th scope="col">Session 2</th></tr></thead>
+          <tbody><tr><th scope="row">Eager PyTorch</th><td><strong>19.157×</strong><small>18.661–20.496×</small><small>30 pairs</small></td><td><strong>18.692×</strong><small>18.463–18.805×</small><small>30 pairs</small></td></tr><tr><th scope="row">PyTorch functional RMSNorm</th><td><strong>6.314×</strong><small>6.231–6.506×</small><small>30 pairs</small></td><td><strong>6.364×</strong><small>6.101–6.511×</small><small>30 pairs</small></td></tr><tr class="decisive"><th scope="row">Inductor fullgraph</th><td><strong>1.252×</strong><small>1.245–1.260×</small><small>30 pairs</small></td><td><strong>1.268×</strong><small>1.256–1.283×</small><small>30 pairs</small></td></tr></tbody>
+        </table>
+      </div>
+
+    <p><strong class="good">Promoted.</strong> The new kernel passed 22 fresh private cases and both timing sessions in the decisive recheck. Promotion requires at least 1.05× and a lower interval bound above 1.00× against every verified baseline in both sessions.</p>
+    <p class="evidence">Archive <code>results/2026-11-03-hackathon-extension/short-block-recheck/jobs/84972bf8cd5d45deadc0f8dcdde0882f</code></p>
+    <details>
+      <summary>Inspect the earlier no-win · 8 / 9 prior distinct FP16 promotions</summary>
+      <p class="muted">22 private correctness cases passed.</p>
 
       <div class="table-wrap" tabindex="0" role="region" aria-label="Timing confirmations">
         <table>
@@ -213,8 +230,26 @@ kernel void metalmind_kernel(device const float* x, device const float* paramete
         </table>
       </div>
 
-    <p><strong class="warn">No win.</strong> Promotion requires at least 1.05× and a lower interval bound above 1.00× against every verified baseline in both sessions. Inductor was the decisive baseline.</p>
-    <p class="evidence">Archive <code>results/2026-11-03-fp16-large-rmsnorm-resolution</code></p>
+      <p><strong class="warn">No win.</strong> Inductor was the decisive baseline.</p>
+      <p class="evidence">Archive <code>results/2026-11-03-fp16-large-rmsnorm-resolution</code></p>
+    </details>
+  </section>
+  <section id="attention">
+    <p class="eyebrow">04 · Complete attention block</p>
+    <h2>What the faster softmax saves end to end</h2>
+    <p class="muted">Q 256 × 64 · K and V 1024 × 64 · assumed-domain FP16</p>
+    <p>In this manually integrated block, the MetalMind artifact replaces softmax. The timed call still computes both matrix multiplications. All three PyTorch baselines passed whole-output verification.</p>
+
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Timing confirmations">
+        <table>
+          <caption>Median paired speed ratio and 95% interval. Above 1.00× favors the candidate.</caption>
+          <thead><tr><th scope="col">Verified baseline</th><th scope="col">Session 1</th>
+            <th scope="col">Session 2</th></tr></thead>
+          <tbody><tr><th scope="row">Eager split attention</th><td><strong>1.173×</strong><small>1.160–1.195×</small><small>30 pairs</small></td><td><strong>1.173×</strong><small>1.166–1.191×</small><small>30 pairs</small></td></tr><tr><th scope="row">PyTorch scaled dot-product attention</th><td><strong>1.099×</strong><small>1.086–1.124×</small><small>30 pairs</small></td><td><strong>1.091×</strong><small>1.079–1.115×</small><small>30 pairs</small></td></tr><tr class="decisive"><th scope="row">Inductor fullgraph split attention</th><td><strong>1.058×</strong><small>1.047–1.071×</small><small>30 pairs</small></td><td><strong>1.067×</strong><small>1.052–1.080×</small><small>30 pairs</small></td></tr></tbody>
+        </table>
+      </div>
+
+    <p class="evidence">Archive <code>results/2026-11-03-hackathon-extension/workflow-measurements.json</code></p>
   </section>
 </main>
 <footer>Saved MetalMind experiments · Source and timing records are archived in the repository.</footer>
