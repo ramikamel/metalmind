@@ -175,7 +175,9 @@ separate screenshot of the later results.
 
 The [FP16 confirmation follow-up](../results/2026-11-03-fp16-confirmation-recheck/README.md)
 later promoted small bias/GELU and small RMSNorm from the original saved
-kernels. Large RMSNorm remained inconclusive after repeated baseline drift.
+kernels. A [later stable test](../results/2026-11-03-fp16-large-rmsnorm-resolution/README.md)
+resolved large RMSNorm as no win. It beat eager PyTorch by 17–18× while
+roughly tying Inductor.
 Use “six of nine” when describing the original pilot and “eight across the
 pilot and follow-up” when describing the combined evidence.
 

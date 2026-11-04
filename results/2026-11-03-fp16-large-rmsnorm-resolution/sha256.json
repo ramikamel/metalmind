@@ -1,0 +1,11 @@
+{
+  "benchmark.py": "1c42c2280076863a2c7d93344accd37ca9996656331333c61704ac7654a41807",
+  "private-gate-consumed.fixtures.json": "7fce27fe306ffa068236744cc92eb5acb7dbf34d7a43917624e98d235fb91cca",
+  "private-verification.json": "d180d8a3e1b605f409523a882dad2251d313e7019980316e2002dc48bf79b61a",
+  "protocol.json": "96ad940b49f51a9bb73c8e9d395629e8f13cd4d69391f329f71a2de85fbfc7a1",
+  "session-1-attempt-1-request.json": "32de38f6e611747bc7ef563b0ae020b7291cbdedcce79d6d20c9a75ff25681a7",
+  "session-1-attempt-1.json": "1eb0e2b9158c4fe252c962011d2ba0e208d92daab7188a460e78ecd215e3d7c4",
+  "session-2-attempt-1-request.json": "9b7c1cccfeec9953fc5b507878567f0a101f1d0a8c034c8a3e50de921f4ef5d5",
+  "session-2-attempt-1.json": "8c5741b5d8bf94f4dc4018bef8559ed04daf88ca8cadc9c3e0a83a75453e9334",
+  "summary.json": "0ac01d1ff16f115d09cbb9c97306db2561f413cb4f7a5299c3139b6fd852ef03"
+}

@@ -29,6 +29,9 @@ confirmation measurements determined the new outcomes.
 
 Both promoted artifacts passed the [offline reuse audit](reuse-audit.json)
 on new values. Shape, FP32 input and gradient fallback each used PyTorch.
+A [subsequent instrumented experiment](../2026-11-03-fp16-large-rmsnorm-resolution/README.md)
+resolved large RMSNorm as no win against Inductor, with two stable sessions.
+
 The rechecks bring the number of FP16 signatures with a confirmed win to
 **eight of nine across the original pilot and this follow-up**.
 

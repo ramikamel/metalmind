@@ -1,0 +1,20 @@
+{
+  "source_run": "runs/fp16-pilot/jobs/9407e5c708b7182ab5e5f7d893d3168ce4e19c3fe743cfc00b6ca8a81edaab93/007/d065bdd45ddb4b4d85264452acc08f1c",
+  "candidate_id": "e40789fd3da1fce5d888e0ea15c14a2bf11f3dbe897a0cc873673fe93c876e61",
+  "source_sha256": "3d31a03123688b46d0e467c280f151a7919f32e85e9fabe4f7357b6bfbb53a4a",
+  "domain": "assume",
+  "calibration_policy": "minimum of the two calibrated repetition counts",
+  "target_ms_for_slower_arm": 100,
+  "pairs": 30,
+  "warmups": 100,
+  "cooldown_seconds": 60,
+  "confirmation_sessions": 2,
+  "retry_invalid_session_at_most": 1,
+  "max_baseline_drift": 0.1,
+  "required_baselines": [
+    "functional_rms_norm",
+    "original_eager",
+    "torch_compile_inductor_fullgraph"
+  ],
+  "model_requests": 0
+}
