@@ -74,8 +74,9 @@ def _child(raw,connection):
 
 def evaluate(request,cancel_event=None):
     from metalmind.runtime.lock import gpu_lock
+    latched_reason="GPU fault latch is set; run doctor --smoke to recover"
     if cancel_event is not None and cancel_event.is_set(): return EvaluationResult(status="cancelled")
-    if gpu_faulted(): return EvaluationResult(status="runtime_error",device_fault=True,reason="GPU fault latch is set; run doctor --smoke to recover")
+    if gpu_faulted(): return EvaluationResult(status="runtime_error",device_fault=True,reason=latched_reason)
     started=time.monotonic()
     absolute=started+(request.total_timeout_seconds or request.compile_timeout_seconds+request.execution_timeout_seconds)
     ctx=mp.get_context("spawn");receive,send=ctx.Pipe(duplex=False)
@@ -85,27 +86,33 @@ def evaluate(request,cancel_event=None):
         return EvaluationResult(status=status,device_fault=True,reason=reason)
     try:
         with gpu_lock(min(request.compile_timeout_seconds,max(.001,absolute-time.monotonic()))):
+            if cancel_event is not None and cancel_event.is_set(): return EvaluationResult(status="cancelled")
+            if gpu_faulted(): return EvaluationResult(status="runtime_error",device_fault=True,reason=latched_reason)
             if time.monotonic()>=absolute: return EvaluationResult(status="timeout",reason="total deadline expired during lock acquisition")
-            process.start();send.close()
-            deadline=min(absolute,time.monotonic()+request.compile_timeout_seconds)
-            while True:
-                if cancel_event is not None and cancel_event.is_set():
-                    return fault("cancelled","evaluation interrupted; health validation required")
-                if time.monotonic()>=deadline: return fault("timeout","worker absolute/stage deadline exceeded; health validation required")
-                if receive.poll(min(.05,max(.001,deadline-time.monotonic()))):
-                    try: message=receive.recv()
-                    except EOFError: return fault("runtime_error","worker exited without a result")
-                    if "result" in message:
-                        if time.monotonic()>=absolute: return fault("timeout","result arrived after absolute deadline")
-                        result=EvaluationResult.model_validate(message["result"])
-                        if result.device_fault: _record_fault(result.reason)
-                        return result
-                    if message.get("stage")=="execution": deadline=min(absolute,time.monotonic()+request.execution_timeout_seconds)
-                if not process.is_alive() and not receive.poll(): return fault("runtime_error","worker crashed")
+            try:
+                process.start();send.close()
+                deadline=min(absolute,time.monotonic()+request.compile_timeout_seconds)
+                while True:
+                    if cancel_event is not None and cancel_event.is_set():
+                        return fault("cancelled","evaluation interrupted; health validation required")
+                    if time.monotonic()>=deadline: return fault("timeout","worker absolute/stage deadline exceeded; health validation required")
+                    if receive.poll(min(.05,max(.001,deadline-time.monotonic()))):
+                        try: message=receive.recv()
+                        except EOFError: return fault("runtime_error","worker exited without a result")
+                        now = time.monotonic()
+                        if now >= deadline:
+                            return fault("timeout","worker absolute/stage deadline exceeded; health validation required")
+                        if "result" in message:
+                            result=EvaluationResult.model_validate(message["result"])
+                            if result.device_fault: _record_fault(result.reason)
+                            return result
+                        if message.get("stage")=="execution": deadline=min(absolute,now+request.execution_timeout_seconds)
+                    if not process.is_alive() and not receive.poll(): return fault("runtime_error","worker crashed")
+            finally:
+                if process.pid is not None:
+                    if process.is_alive(): process.terminate()
+                    process.join(timeout=2)
+                    if process.is_alive(): process.kill();process.join(timeout=2)
     except TimeoutError as exc: return EvaluationResult(status="timeout",reason=str(exc))
     finally:
-        if process.pid is not None:
-            if process.is_alive(): process.terminate()
-            process.join(timeout=2)
-            if process.is_alive(): process.kill();process.join(timeout=2)
         receive.close();send.close()

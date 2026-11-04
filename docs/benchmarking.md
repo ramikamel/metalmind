@@ -11,7 +11,9 @@ applicable, and torch.compile/Inductor fullgraph when usable. Unsupported paths
 are recorded, not omitted silently. CPU fallback is disallowed during comparison.
 
 Use at least 25 warmups, calibrated common repetitions, balanced pair ordering,
-ten search pairs, and thirty independent confirmation pairs. Bootstrap whole
+ten search pairs, and thirty independent confirmation pairs. Use the smaller
+of the two calibrated repetition counts so the slower arm sets the block
+duration. Earlier frozen runs used the larger count. Bootstrap whole
 pairs 10,000 times. Promotion requires at least 1.05x median public-function gain
 and lower 95% bound above 1.0 in both confirmation sessions, separated by at least
 60 seconds. A private numerical gate precedes confirmation. Drift beyond 10%
