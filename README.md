@@ -13,6 +13,13 @@ A promoted artifact can be reused without a model request. Checked mode scans
 tensor values before dispatch. With caller-guaranteed bounds, the wrapper
 still checks the tensor signature. [Full project walkthrough](docs/project-flow.md)
 
+## Demo
+
+
+https://github.com/user-attachments/assets/6f6921ea-1350-4ee1-a3e4-d46a0748fcaa
+
+
+
 ## Run locally
 
 ```sh
